@@ -1,6 +1,10 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { useState } from 'react'
+
 
 function Login() {
+    const [ visible, setvisible] = useState(false);
+
     return (
         <>
             <div id="container" className="flex flex-col gap-8">
@@ -25,8 +29,14 @@ function Login() {
                             <div id="form-input">
                                 <label htmlFor="password" className="text-lg font-light">Password</label><br />
                                 <div className="relative w-full">
-                                    <EyeIcon className="absolute h-6 w-6 right-4 top-1/2 -translate-y-1/2 opacity-50"></EyeIcon>
-                                    <input id="password" type="password" placeholder="Masukkan password anda" className="input-text w-full h-10 px-4"/>
+                                    <button type="button" onClick={() => setvisible(!visible)}>
+                                        {visible ? (
+                                            <EyeSlashIcon className="absolute h-6 w-6 right-4 top-1/2 -translate-y-1/2 opacity-50"></EyeSlashIcon>
+                                            ) : (
+                                            <EyeIcon className="absolute h-6 w-6 right-4 top-1/2 -translate-y-1/2 opacity-50"></EyeIcon>
+                                            )}
+                                    </button> 
+                                    <input id="password" type={visible ? "text" : "password"} placeholder="Masukkan password anda" className="input-text w-full h-10 px-4"/>
                                 </div>
                             </div>
 
