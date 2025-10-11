@@ -1,9 +1,9 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
 function Login() {
-    const [ visible, setvisible] = useState(false);
+    const [ visible, setVisible] = useState(false);
 
     return (
         <>
@@ -29,7 +29,7 @@ function Login() {
                             <div id="form-input">
                                 <label htmlFor="password" className="text-lg font-light">Password</label><br />
                                 <div className="relative w-full">
-                                    <button type="button" onClick={() => setvisible(!visible)}>
+                                    <button type="button" onClick={() => setVisible(!visible)}>
                                         {visible ? (
                                             <EyeSlashIcon className="absolute h-6 w-6 right-4 top-1/2 -translate-y-1/2 opacity-50"></EyeSlashIcon>
                                             ) : (
