@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import MainLayout from "./layouts/MainLayout"
 import Dashboard from "./pages/Dashboard"
 import Login from "./pages/Login"
-import { HelmetProvider } from "react-helmet-async"
+import Register from "./pages/Register"
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
           <Route path="/" element={ <Dashboard /> }></Route>
         </Route>
         <Route path="/login" element={ <Login /> }></Route>
+        <Route path="/register" element={ <Register /> }></Route>
       </Routes>
     </BrowserRouter>
   )
