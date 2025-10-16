@@ -26,7 +26,7 @@ function Login() {
                             <form action="" method="post" className="font-poppins flex flex-col gap-4">
                                 <div id="form-input">
                                     <label htmlFor="email" className="text-lg font-light md:text-sm lg:text-base">Email</label><br />
-                                    <input id="email" type="email" placeholder="Masukkan email anda" className="input-text w-full h-10 px-4 md:text-xs lg:text-base"/>
+                                    <input id="email" type="email" placeholder="Masukkan email anda" className="input-text w-full h-10 px-4 md:text-xs lg:text-base" name="email" />
                                 </div>
                                 <div id="form-input">
                                     <label htmlFor="password" className="text-lg font-light md:text-sm lg:text-base">Password</label><br />
@@ -38,7 +38,7 @@ function Login() {
                                                 <EyeIcon className="absolute h-6 w-6 md:h-3 md:w-3 right-4 md:right-3 top-1/2 -translate-y-1/2 opacity-50 cursor-pointer hover:opacity-90"></EyeIcon>
                                                 )}
                                         </button> 
-                                        <input id="password" type={visible ? "text" : "password"} placeholder="Masukkan password anda" className="input-text w-full h-10 px-4 md:text-xs lg:text-base"/>
+                                        <input id="password" type={visible ? "text" : "password"} placeholder="Masukkan password anda" className="input-text w-full h-10 px-4 md:text-xs lg:text-base" name="password" />
                                     </div>
                                 </div>
 
@@ -50,7 +50,7 @@ function Login() {
                                     <p className="font-poppins font-light text-center mt-12 text-sm md:text-[12px] lg:text-sm">
                                         Belum punya akun? 
                                         <span>
-                                            <a href="" className="font-semibold"> Buat Akun</a>
+                                            <a href="/register" className="font-semibold"> Buat Akun</a>
                                         </span>
                                     </p>
                                 </div>
