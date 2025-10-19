@@ -59,7 +59,7 @@ function Login() {
                     </main>
                 </div>
                 <div id="image-container" className="hidden md:block md:flex-3/8">
-                    <img src={illustration} className="hidden object-cover md:block w-full h-full" />
+                    <img src={illustration} className="hidden object-cover md:block w-full h-full select-none pointer-events-none"/>
                 </div>
             </div>
         </>

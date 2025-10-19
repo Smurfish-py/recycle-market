@@ -11,7 +11,7 @@ function Register() {
         <>
             <div className="flex flex-row">
                 <div id="image-container" className="hidden md:block md:flex-3/8">
-                    <img src={illustration} className="hidden object-cover md:block w-full h-full" />
+                    <img src={illustration} className="hidden object-cover md:block w-full h-full select-none pointer-events-none" />
                 </div>
                 <div id="form-container" className="flex-col gap-8 w-full md:flex-1">
                     <header className="px-8 py-4 flex justify-between items-center">
