@@ -5,7 +5,7 @@ function Dashboard() {
     return (
         <main className="flex items-center justify-center">
             <div className="w-full flex gap-3 flex-col min-[320px]:px-2 min-[480px]:max-sm:px-12 sm:px-0">
-                <Navigation className="not-sr-only min-[1280px]:sr-only flex justify-between sm:justify-start text-sm" listStyle="dropdown absolute right-0 w-40 translate-y-2"/>
+                <Navigation className="not-sr-only min-[1280px]:sr-only flex justify-between sm:justify-center sm:gap-16" listStyle="dropdown absolute w-40 right-0 sm:-left-2 translate-y-2"/>
                 <form className="not-sr-only sm:sr-only">
                     <div className="relative">
                         <button className="absolute left-4 top-1/2 -translate-1/2 cursor-pointer" location="header">
@@ -15,7 +15,6 @@ function Dashboard() {
                     </div>
                 </form>
             </div>
-            
         </main>
     )
 }
