@@ -15,8 +15,12 @@ function Dashboard() {
                     </div>
                 </form>
             </section>
-            <article className="border w-full">
-                <p>Don't forget to SMILE! :D</p>
+            <article className="w-full">
+                <section id="hero" className="font-inter text-center flex flex-col gap-4 pt-8">
+                    <h3 className="text-xl">Kelompok 13</h3>
+                    <h1 className="font-semibold text-8xl">RECYCLE MARKET</h1>
+                    <h2 className="font-semibold text-2xl">Resell, Reuse, Recycle</h2>
+                </section>
             </article>
         </main>
     )
