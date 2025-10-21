@@ -14,7 +14,7 @@ library.add(fas, far, fab);
 
 function Footer() {
     return (
-        <footer className="w-full bg-green-main-1 min-h-50 flex flex-col md:flex-row px-6 py-4 gap-12 text-white md:px-12 md:py-8">
+        <footer className="w-full bg-green-main-1 min-h-50 flex flex-col md:flex-row px-6 py-4 gap-10 text-white md:px-12 md:py-8">
             
             {/* Merk + Slogan */}
             <section className="flex flex-col flex-1 gap-4 text-center md:text-left">
@@ -45,7 +45,7 @@ function Footer() {
 
             {/* Kontak */}
             <section className="flex flex-1 justify-center">
-                <div className='flex flex-rowtext-xs items-center justify-between md:flex-col md:justify-normal md:items-start md:gap-6 md:text-sm'>
+                <div className='flex flex-row text-xs items-center justify-between gap-8 md:flex-col md:justify-normal md:items-start md:gap-6 md:text-sm'>
                     <h1 className='sr-only font-inter text-xl font-semibold md:not-sr-only'>Kontak</h1>
                     <div className='flex flex-col gap-2 font-poppins'>
                         <div className='flex flex-row gap-2 items-center'>
