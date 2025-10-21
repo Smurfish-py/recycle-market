@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function Dashboard() {
     return (
-        <main className="flex flex-col items-center gap-4">
+        <main className="flex flex-col items-center gap-4 pt-16">
             <section className="w-full flex gap-3 flex-col min-[320px]:px-2 min-[480px]:max-sm:px-12 sm:px-0 lg:hidden">
                 <Navigation className="not-sr-only min-[1280px]:sr-only flex justify-between sm:justify-center sm:gap-16" listStyle="dropdown absolute w-40 right-0 sm:-left-2 translate-y-2"/>
                 <form className="not-sr-only sm:sr-only">
