@@ -19,7 +19,7 @@ function Footer() {
             {/* Merk + Slogan */}
             <section className="flex flex-col flex-1 gap-4 text-center md:text-left">
                 <div id="title" className="select-none md:flex md:flex-row md:items-center md:gap-4">
-                    <img src={logo} className='sr-only lg:not-sr-only lg:size-10 lg:rounded-full'/>
+                    <img src={logo} className='hidden rounded-full size-10 lg:block'/>
                     <div>
                         <h1 className="font-inter font-semibold text-xl">Recycle Market</h1>
                         <h3 className="font-poppins font-normal text-xs lg:hidden">Resell, Reuse, Recycle</h3>
