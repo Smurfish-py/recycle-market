@@ -15,8 +15,8 @@ function Dashboard() {
                     </div>
                 </form>
             </section>
-            <article className="w-full">
-                <section id="hero" className="font-inter text-center flex flex-col gap-4 pt-8">
+            <article className="w-full pt-4">
+                <section id="hero" className="sr-only *:font-inter text-center flex flex-col gap-4 pt-8 select-none lg:not-sr-only">
                     <h3 className="text-xl">Kelompok 13</h3>
                     <h1 className="font-semibold text-8xl">RECYCLE MARKET</h1>
                     <h2 className="font-semibold text-2xl">Resell, Reuse, Recycle</h2>
