@@ -3,7 +3,7 @@ import Navigation from './Navigation'
 
 export default function Header() {
     return (
-        <header className="flex px-4 py-2 items-center justify-between border-b-1 border-b-stone-300 gap-2">
+        <header className="fixed top-0 right-0 left-0 flex px-4 py-2 items-center justify-between gap-2 z-20 border-b-1 border-b-stone-300 bg-white">
             <div id="title" className="select-none">
                 <a href="/">
                     <h1 className="font-inter font-semibold text-xl">Recycle Market</h1>
