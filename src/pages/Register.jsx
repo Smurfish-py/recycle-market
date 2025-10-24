@@ -56,7 +56,7 @@ function Register() {
                                                 <EyeIcon className="absolute h-6 w-6 md:h-3 md:w-3 lg:h-6 lg:w-6 right-4 md:right-4 top-1/2 -translate-y-1/2 opacity-50 cursor-pointer hover:opacity-90"></EyeIcon>
                                                 )}
                                         </button> 
-                                        <input id="password" type={retypeVisible ? "text" : "password"} placeholder="Ketik ulang password anda" className="input-text w-full h-10 px-4 md:text-xs lg:text-base" name="retype-password"/>
+                                        <input id="password" type={retypeVisible ? "text" : "password"} placeholder="Ketik ulang password anda" className="input-text w-full h-10 px-4 md:text-xs lg:text-base" name="retypePassword"/>
                                     </div>
                                 </div>
 
