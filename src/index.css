@@ -49,6 +49,8 @@
   --color-green-main-1: #081C15;
   --color-green-main-2: #52B788;
   --color-green-accent: #D8F3DC;
+  --color-green-tag-noelectronic: #32CD32;
+  --color-gray-tag-electronic: #696969;
 }
 
 @layer components {
@@ -70,5 +72,14 @@
 
   .dropdown {
     @apply bg-white border-1 rounded-sm border-stone-200 shadow-sm z-10 
+  }
+
+  .card {
+    /* active:bg-stone-100 hover:bg-stone-100 cursor-pointer */
+    @apply flex rounded-2xl 
+  }
+
+  .hyperlink {
+    @apply hover:underline active:underline underline-offset-1 cursor-pointer
   }
 }
