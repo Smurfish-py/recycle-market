@@ -51,6 +51,9 @@
   --color-green-accent: #D8F3DC;
   --color-green-tag-noelectronic: #32CD32;
   --color-gray-tag-electronic: #696969;
+  --color-blue-tag-new: #0046FF;
+  --color-yellow-tag-mid: #FEB21A;
+  --color-red-tag-broken: #FF3F33
 }
 
 @layer components {
