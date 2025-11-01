@@ -26,7 +26,7 @@ function Footer() {
                     </div>
                 </div>
                 <p className='text-xs'>Platform inovatif untuk menukar barang daur ulang menjadi uang atau produk yang telah bermanfaat</p>
-                <p className='text-sm'>&copy; 2025 Kelompok 13 - MIT Lisence </p>
+                <p className='text-sm'>&copy; 2025 Kelompok 13 - MIT License </p>
             </section>
 
             {/* Navigasi */}
