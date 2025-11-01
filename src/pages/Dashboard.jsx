@@ -56,8 +56,12 @@ function Dashboard() {
         <div className="flex flex-col items-center pt-16 gap-1">
 
             {/* Navigation for small devices*/}
-            <section className="w-full flex gap-3 flex-col min-[320px]:px-2 min-[480px]:max-sm:px-12 sm:px-0 lg:hidden">
+            <section className="w-full flex gap-3 flex-col min-[320px]:px-2 min-[480px]:max-sm:px-12 sm:px-0 min-[1280px]:hidden">
+
+                {/* Navigation */}
                 <Navigation className="not-sr-only min-[1280px]:sr-only flex justify-between sm:justify-center sm:gap-16" listStyle="dropdown absolute w-40 right-0 sm:-left-2 translate-y-2"/>
+
+                {/* Search bar */}
                 <form className="not-sr-only sm:sr-only">
                     <div className="relative">
                         <button className="absolute left-4 top-1/2 -translate-1/2 cursor-pointer" location="header">
@@ -72,7 +76,7 @@ function Dashboard() {
             <article className="w-full flex flex-col gap-1 mt-2 md:mt-4">
 
                 {/* Hero Section */}
-                <section id="hero" className="sr-only font-inter text-center flex flex-col gap-4 lg:py-8 select-none lg:not-sr-only">
+                <section id="hero" className="sr-only font-inter text-center flex flex-col gap-4 lg:py-8 select-none min-[1280px]:not-sr-only">
                     <h3 className="text-xl">Kelompok 13</h3>
                     <h1 className="font-semibold text-8xl">RECYCLE MARKET</h1>
                     <h2 className="font-semibold text-2xl">Resell, Reuse, Recycle</h2>
@@ -88,11 +92,16 @@ function Dashboard() {
 
                 ) : (
                     <div className="min-[480px]:max-sm:px-4 md:px-6 lg:px-4">
-                        <div className={`card relative w-full h-35 cursor-pointer md:h-48 lg:h-80 lg:mt-8 ${products[0]?.fotoProduk?.[0]?.file != undefined ? `${API_URL}/api/images/products/${products[0]?.fotoProduk?.[0].file}` : "bg-green-main-2"
-                        }`}>
-
+                        <div className={`card relative w-full h-35 cursor-pointer bg-cover md:h-48 bg-position-[center_top_-5rem] lg:bg-position-[center_top_-10rem] lg:h-80 lg:mt-8`} style={{
+                            backgroundImage: products[0]?.fotoProduk?.[0]?.file != undefined ? `url(${API_URL}/api/images/products/${products[0]?.fotoProduk?.[0]?.file})` 
+                            : "none",
+                            backgroundColor: products[0]?.fotoProduk?.[0]?.file == undefined ? `#52B788` 
+                            : "none",
+                            
+                        }}>
+                            <div className="card bg-black opacity-50 backdrop-invert-50 w-full"></div>
                             {/* Container for Label and Price */}
-                            <div className="card absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-full h-full flex flex-row px-4 py-2 text-white md:py-4 md:px-6 lg:py-10 lg:px-8">
+                            <div className="card absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-full h-full flex flex-row px-4 z-10 py-2 text-white md:py-4 md:px-6 lg:py-10 lg:px-8">
 
                                 {/* Label side/Left side (Product name + seller) */}
                                 <section className="flex flex-1 flex-col justify-between font-medium min-[480px]:max-sm:text-3xl">
@@ -115,8 +124,8 @@ function Dashboard() {
 
                                     {/* Tag */}
                                     <div className="flex gap-1 md:gap-2">
-                                        <a href="" className={`text-[8px] border-1 py-0.5 px-1.5 sm:text-xs lg:text-sm rounded-full bg-white text-green-main-2`}>{products?.[0]?.kategori}</a>
-                                        <a href="" className={`text-[8px] border-1 py-0.5 px-1.5 sm:text-xs lg:text-sm rounded-full bg-white text-green-main-2`}>{products?.[0]?.kualitas}</a>
+                                        <a href="" className={`text-[8px] border-1 py-0.5 px-1.5 sm:text-xs lg:text-sm rounded-full ${products[0]?.fotoProduk?.[0]?.file != undefined ? "bg-transparent text-white" : "bg-white text-green-main-2"}`}>{products?.[0]?.kategori}</a>
+                                        <a href="" className={`text-[8px] border-1 py-0.5 px-1.5 sm:text-xs lg:text-sm rounded-full ${products[0]?.fotoProduk?.[0]?.file != undefined ? "bg-transparent text-white" : "bg-white text-green-main-2"}`}>{products?.[0]?.kualitas}</a>
                                     </div>
                                 </section>
                             </div>
