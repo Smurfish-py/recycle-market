@@ -14,7 +14,18 @@ function Dashboard() {
     const [ loading, setLoading ] = useState(true);
     const navigate = useNavigate();
 
+    // Object for controlling
+    const tagColor = {
+        BAGUS: "text-blue-tag-new border border-blue-tag-new",
+        MENENGAH: "text-yellow-tag-mid border border-yellow-tag-mid",
+        RUSAK: "text-red-tag-broken border border-red-tag-broken",
+        ELEKTRONIK: "text-gray-tag-electronic border border-gray-tag-electronic",
+        NON_ELEKTRONIK: "text-green-tag-noelectronic border-green-tag-noelectronic"
+    }
+
     useEffect(() => {
+
+        // Function for fetching all products (sorted desc)
         const fetchProducts = async () => {
             try {
                 const response = await findAllProducts();
@@ -29,6 +40,8 @@ function Dashboard() {
         fetchProducts();
     }, []);
 
+    
+    // Function for repeating the skeleton for items
     const skeleton = () => {
         let elements = [];
 
@@ -56,7 +69,7 @@ function Dashboard() {
             </section>
 
             {/* Main Content */}
-            <article className="w-full flex flex-col gap-1 mt-4">
+            <article className="w-full flex flex-col gap-1 mt-2 md:mt-4">
 
                 {/* Hero Section */}
                 <section id="hero" className="sr-only font-inter text-center flex flex-col gap-4 lg:py-8 select-none lg:not-sr-only">
@@ -64,6 +77,58 @@ function Dashboard() {
                     <h1 className="font-semibold text-8xl">RECYCLE MARKET</h1>
                     <h2 className="font-semibold text-2xl">Resell, Reuse, Recycle</h2>
                 </section>
+
+                {/* Newest Product */}
+                {loading ? (
+
+                    // Skeleton
+                    <div className="min-[480px]:max-sm:px-4 md:px-6 lg:px-4">
+                        <div className={`card relative w-full h-35 cursor-pointer md:h-48 lg:h-80 lg:mt-8 bg-gray-200 animate-pulse`}></div>
+                    </div>
+
+                ) : (
+                    <div className="min-[480px]:max-sm:px-4 md:px-6 lg:px-4">
+                        <div className={`card relative w-full h-35 cursor-pointer md:h-48 lg:h-80 lg:mt-8 ${products[0]?.fotoProduk?.[0]?.file != undefined ? `${API_URL}/api/images/products/${products[0]?.fotoProduk?.[0].file}` : "bg-green-main-2"
+                        }`}>
+
+                            {/* Container for Label and Price */}
+                            <div className="card absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-full h-full flex flex-row px-4 py-2 text-white md:py-4 md:px-6 lg:py-10 lg:px-8">
+
+                                {/* Label side/Left side (Product name + seller) */}
+                                <section className="flex flex-1 flex-col justify-between font-medium min-[480px]:max-sm:text-3xl">
+
+                                    {/* Label */}
+                                    <h3 className="font-inter text-2xl md:text-3xl lg:text-5xl">Baru Saja Hadir!</h3>
+
+                                    {/* Product name and seller */}
+                                    <div className="font-poppins font-medium">
+                                        <h4 className="text-sm min-[480px]:text-xl lg:text-3xl">{products[0]?.nama}</h4>
+                                        <p className="font-light text-[10px] min-[480px]:text-sm lg:text-2xl">Oleh {products[0]?.toko?.nama}</p>
+                                    </div>
+                                </section>
+
+                                {/* Label side/Roght side (Price) */}
+                                <section className="font-poppins flex flex-1 flex-col gap-1 justify-end items-end lg:gap-2">
+
+                                    {/* Price */}
+                                    <h3 className="font-medium text-xl sm:text-2xl md:text-4xl lg:text-6xl">{`Rp.${products[0]?.harga?.toLocaleString('id-ID')}`} <span className="text-xs sm:text-base md:text-xl lg:text-2xl">/{products[0]?.jenisHarga}</span></h3>
+
+                                    {/* Tag */}
+                                    <div className="flex gap-1 md:gap-2">
+                                        <a href="" className={`text-[8px] border-1 py-0.5 px-1.5 sm:text-xs lg:text-sm rounded-full bg-white text-green-main-2`}>{products?.[0]?.kategori}</a>
+                                        <a href="" className={`text-[8px] border-1 py-0.5 px-1.5 sm:text-xs lg:text-sm rounded-full bg-white text-green-main-2`}>{products?.[0]?.kualitas}</a>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        <div className="w-full flex justify-center mt-3 text-gray-400 text-xs sm:text-sm">
+                            <p>- Klik banner diatas untuk melihat produk terbaru -</p>
+                        </div>
+                    </div>
+                )}
+
+                {/* Divider */}
+                <hr className="text-stone-300 mt-3 md:my-3 mx-1 lg:my-3"/>
 
                 {/* Product Section */}
                 {loading ? (
@@ -82,10 +147,10 @@ function Dashboard() {
                     {products.map((product, index) => (
                         
                         // Card
-                        <div key={index} className="card items-center sm:max-md:w-full px-2 min-[480px]:max-[640px]:px-12 flex gap-4 md:gap-2 md:flex-col md:items-start">
+                        <div key={index} className="card items-center sm:max-md:w-full px-2 min-[480px]:max-[640px]:px-12 flex gap-2 sm:gap-0 md:flex-col md:items-start">
 
                             {/* Product picture */}
-                            <div className="cursor-pointer md:h-40 transition duration-300 hover:brightness-75" onClick={() => navigate(`/product/${product.id}`)}>
+                            <div className="cursor-pointer sm:min-w-26 md:h-40 transition duration-300 hover:brightness-75 active:brightness-75" onClick={() => navigate(`/product/${product.id}`)}>
                                 {
                                 product.fotoProduk?.[0]?.file ? (
                                     
@@ -100,7 +165,7 @@ function Dashboard() {
                             </div>
 
                             {/* Product Details */}
-                            <div className="h-full py-3 flex flex-col gap-4 justify-center sm:px-2 sm:gap-4">
+                            <div className="h-full py-3 flex flex-col gap-2 justify-center sm:px-2 sm:gap-4">
 
                                 {/* Product name and Seller */}
                                 <div>
@@ -117,14 +182,15 @@ function Dashboard() {
                                 </div>
 
                                 {/* Product price and tags */}
-                                <div className="flex flex-col md:gap-2">
+                                <div className="flex flex-col gap-2">
 
                                     {/* Price */}
-                                    <h3 className="font-inter font-semibold text-xl md:text-2xl">Rp. {product.harga} <span className="text-sm">/{product.jenisHarga}</span></h3>
+                                    <h3 className="font-inter font-semibold text-xl md:text-2xl">Rp. {product?.harga?.toLocaleString('id-ID')} <span className="text-sm">/{product.jenisHarga}</span></h3>
 
                                     {/* Tags */}
-                                    <div>
-                                        <a href="" className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${product.kategori === 'NON_ELEKTRONIK' ? "text-green-tag-noelectronic border-green-tag-noelectronic" : "text-gray-tag-electronic border border-gray-tag-electronic"}`}>{product.kategori}</a>
+                                    <div className="flex flex-row gap-2">
+                                        <a href="" className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kategori]}`}>{product.kategori}</a>
+                                        <a href="" className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kualitas]}`}>{product.kualitas}</a>
                                     </div>
 
                                 </div>
