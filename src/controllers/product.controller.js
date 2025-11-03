@@ -11,4 +11,13 @@ const findAllProducts = async () => {
     }
 }
 
-export default findAllProducts
+const findProductId = async (id) => {
+    try {
+        const product = await axios.get(`${API_URL}/api/produk/data/${id}`);
+        return product;
+    } catch (error) {
+        console.error({error: error});
+    }
+}
+
+export { findAllProducts, findProductId }
