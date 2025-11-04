@@ -70,21 +70,28 @@ function Product() {
         <>
             <div className="relative flex flex-col min-h-screen">
                 <Header isOnProductPage={true}/>
-                <main className="mt-12 grow">
-                    <div>
+                <main className="mt-12 grow md:mt-4">
+                    <div className="md:flex md:flex-row md:px-12 md:py-16 md:gap-8">
                         <section className="w-full flex flex-col gap-2 select-none">
+                            <div className="hidden lg:flex flex-row gap-3 font-poppins font-semibold my-3 text-xs pl-3">
+                                <p className="text-stone-400">{product.kategori}</p>
+                                <p className="text-stone-400">/</p>
+                                <p className="text-stone-400">{product.kategori}</p>
+                                <p className="text-stone-400">/</p>
+                                <p>{product.nama}</p>
+                            </div>
                             {images.length < 1 ? (
-                                <div className="h-80 w-full flex items-center justify-center font-poppins font-semibold bg-stone-300 text-stone-400">
+                                <div className="h-80 w-full flex items-center justify-center font-poppins font-semibold bg-stone-300 text-stone-400 md:w-80 md:h-80">
                                     <p>Produk ini tidak memiliki foto</p>
                                 </div>
                             ) : (
                                 <div>
-                                    <div className="h-80 w-full overflow-hidden">
+                                    <div className="h-80 w-full overflow-hidden md:h-80 md:w-full">
                                         {images?.[selected]?.file && (
-                                            <img src={`${API_URL}/api/images/products/${images?.[selected]?.file}`} className="h-full w-full object-cover object-top"/>
+                                            <img src={`${API_URL}/api/images/products/${images?.[selected]?.file}`} className="h-full w-full object-cover object-top md:rounded-lg"/>
                                         )}
-                                    </div>
-                                    <div className="flex flex-row px-4 mt-2 gap-3 w-full overflow-y-auto">
+                                    </div> 
+                                    <div className="flex flex-row px-4 mt-2 gap-3 w-full overflow-y-auto md:px-0">
                                         {images.map((image, index) => (
                                             <div key={index} className="border border-stone-400 rounded-md w-20 h-20 cursor-pointer transition duration-300 hover:brightness-75 active:brightness-75" onClick={() => {setSelected(index)}}>
                                                 <img src={`${API_URL}/api/images/products/${image?.file}`} className="rounded-md h-full w-full object-cover"/>
@@ -94,8 +101,8 @@ function Product() {
                                 </div>
                             )}
                         </section>
-                        <section className="select-none mt-4 px-4">
-                            <div className="py-4">
+                        <section className="select-none mt-4 px-4 md:mt-0 lg:mt-12">
+                            <div className="py-4 md:pt-0">
                                 <div className="flex flex-row gap-1 items-center py-1.5">
                                     <UserIcon className="size-4 text-stone-500 stroke-2"></UserIcon>
                                     <p className="font-poppins font-semibold text-xs text-stone-500 active:underline hover:underline">{product?.toko?.nama}</p>
@@ -157,10 +164,11 @@ function Product() {
                                     </div>
                                 </div>
                                 <div className="flex flex-row gap-2">
-                                    <button className="border-2 flex-1/12 btn">
+                                    <button className="block border-2 flex-1/12 btn md:hidden">
                                         <ShoppingCartIcon className="size-4 stroke-2" />
                                     </button>
-                                    <button className="border flex-11/12 btn-solid">Beli Sekarang</button>
+                                    <button className="border py-2 flex-11/12 md:flex-1/2 btn-solid">Beli Sekarang</button>
+                                    <button className="hidden py-2 border-2 md:flex justify-center md:flex-1/2 btn">Masukkan ke Troli</button>
                                 </div>
                             </form>
                         </section>
