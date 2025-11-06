@@ -131,7 +131,7 @@ function Product() {
                                 {product?.rating?.length < 1 ? (
                                     <p className="text-sm text-stone-400">Belum ada ulasan</p>
                                 ) : (
-                                    <div className="max-h-50 overflow-y-auto divide-y divide-gray-200">
+                                    <div className="max-h-50 overflow-y-scroll divide-y divide-gray-200">
                                         {product?.rating?.map((rating, index) => (
                                             <div key={index} className="flex flex-row gap-2 py-2 px-1.5">
                                                 <div className="flex items-center">
@@ -152,14 +152,14 @@ function Product() {
                                 <div className="flex flex-row justify-between items-center">
                                     <p className="font-semibold">Stok: {product.stok > 100 ? "100+" : product.stok}</p>
                                     <div className="flex flex-rowjustify-between items-center px-2 h-8 rounded-sm bg-green-accent">
-                                        <PlusIcon className="size-8 px-2 stroke-2" onClick={(e) => {
-                                            e.preventDefault;
-                                            setQuantity(quantity + 1);
-                                        }}/>
-                                        <input type="number" className="w-10 focus:outline-none text-center" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                                         <MinusIcon className="size-8 px-2 stroke-2" onClick={(e) => {
                                             e.preventDefault;
                                             setQuantity((prev) => Math.max(1, prev - 1));
+                                        }}/>
+                                        <input type="number" className="w-10 focus:outline-none text-center" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                                        <PlusIcon className="size-8 px-2 stroke-2" onClick={(e) => {
+                                            e.preventDefault;
+                                            setQuantity(quantity + 1);
                                         }}/>
                                     </div>
                                 </div>
