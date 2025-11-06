@@ -1,7 +1,21 @@
-import { UserCircleIcon, MagnifyingGlassIcon, UserIcon, ShoppingCartIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { UserCircleIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon, ShoppingCartIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { useState, useEffect } from "react";
 import Navigation from './Navigation'
 
+import isTokenExpired from "../service/isTokenExpired";
+
 export default function Header({ isOnProductPage }) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        if ( token == undefined || isTokenExpired(token) ) {
+            setIsLoggedIn(false);
+        } else {
+            setIsLoggedIn(true);
+        }
+    }, [])
+
     return (
         <header className="fixed top-0 right-0 left-0 px-4 py-2 z-20 border-b-1 border-b-stone-300 bg-white">
             <div className={`items-center justify-between ${isOnProductPage != true ? "flex" : "hidden sm:flex"}`}>
@@ -20,19 +34,28 @@ export default function Header({ isOnProductPage }) {
                         <input type="text" className="pl-8 pr-4 input-text-solid font-poppins w-full" placeholder="Cari yang kamu butuhkan"></input>
                     </div>
                 </form>
-                <div id="button" className="sr-only sm:not-sr-only flex flex-row gap-2 select-none">
-                    <a href="/login" className="btn flex flex-row items-center gap-2 hover:cursor-pointer">
-                        <UserCircleIcon className="size-6"></UserCircleIcon>
-                        <p>Akun</p>
+                {isLoggedIn ? (
+                    <>
+                        <div id="button" className="sr-only sm:not-sr-only flex flex-row gap-2 select-none">
+                            <a href="/login" className="btn flex flex-row items-center gap-2 hover:cursor-pointer">
+                                <UserCircleIcon className="size-6"></UserCircleIcon>
+                                <p>Akun</p>
+                            </a>
+                            <a href="" className="btn-solid flex flex-row items-center border gap-2 hover:cursor-pointer select-none">
+                                <ShoppingCartIcon className="size-6"></ShoppingCartIcon>
+                                <p>Troli</p>
+                            </a>
+                        </div>
+                        <i className="visible sm:hidden">
+                            <UserCircleIcon className="size-10"></UserCircleIcon>  
+                        </i>
+                    </>
+                ) : (
+                    <a className="btn-solid flex flex-row items-center border gap-2 hover:cursor-pointer select-none pr-3" href="/login">
+                        <ArrowLeftEndOnRectangleIcon className="size-6"/>
+                        <p>Sign In</p>
                     </a>
-                    <a href="" className="btn-solid flex flex-row items-center border gap-2 hover:cursor-pointer select-none">
-                        <ShoppingCartIcon className="size-6"></ShoppingCartIcon>
-                        <span>Troli</span>
-                    </a>
-                </div>
-                <i className="visible sm:hidden">
-                    <UserCircleIcon className="size-10"></UserCircleIcon>  
-                </i>
+                )}
             </div>
             <div className={`h-8 ${isOnProductPage == true ? "flex sm:hidden" : "hidden"} items-center`} onClick={() => window.history.back()}>
                 <ChevronLeftIcon className="size-5 stroke-2"></ChevronLeftIcon>
