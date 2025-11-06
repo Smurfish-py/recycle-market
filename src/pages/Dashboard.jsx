@@ -95,8 +95,6 @@ function Dashboard() {
                     <h2 className="font-semibold text-2xl">Resell, Reuse, Recycle</h2>
                 </section>
 
-                {console.log(products)}
-
                 {products.length < 1 ? (
                     <div className="h-15 flex flex-col justify-center">
                         <p className="text-center">Belum ada produk yang dijual nih...</p>
