@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function MainLayout() {
+    
     return (
         <div className="relative flex flex-col min-h-screen">
             <Header isOnProductPage={false} />
