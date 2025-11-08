@@ -3,7 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline"
 
 function Navigation({ className, listStyle }) {
     const [ isOpen, setIsOpen ] = useState(false);
-    const navigationList = ["Elektronik", "Non-elektronik"]
+    const navigationList = ["Elektronik", "Non_elektronik"]
     
     const dropdownRef = useRef(null);
 
@@ -21,9 +21,9 @@ function Navigation({ className, listStyle }) {
     }, [])
 
     let content = (
-        <div className={`${listStyle} ${!isOpen ? "hidden" : "visible"} flex flex-col`}>
+        <div className={`${listStyle} ${!isOpen ? "hidden" : "visible"} flex flex-col z-20`}>
             {navigationList.map((navList, index) => (
-                <a href="" key={index} className="p-2 active:bg-stone-100 hover:bg-stone-100 cursor-pointer">{navList}</a>
+                <a href={`/category/${navList?.toUpperCase()}`} key={index} className="p-2 active:bg-stone-100 hover:bg-stone-100 cursor-pointer">{navList}</a>
                 
             ))}
         </div>
@@ -32,7 +32,7 @@ function Navigation({ className, listStyle }) {
     return (
         <nav ref={dropdownRef}>
             <div className={`${className} flex flex-row select-none`}>
-                <a href="">Produk</a>
+                <a href="/">Beranda</a>
                 <a href="">Toko</a>
                 <a href="">Mitra</a>
                 <div className="relative">
