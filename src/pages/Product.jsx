@@ -31,8 +31,6 @@ function Product() {
     } else {
         average = productRating / product?.rating?.length;
     }
-
-    console.log(average);
     
     if (average == 0) {
         overall = "Belum ada penilaian"
@@ -74,11 +72,11 @@ function Product() {
                     <div className="md:flex md:flex-row md:px-12 md:py-16 md:gap-8">
                         <section className="w-full flex flex-col gap-2 select-none">
                             <div className="hidden lg:flex flex-row gap-3 font-poppins font-semibold my-3 text-xs pl-3">
-                                <p className="text-stone-400">{product.kategori}</p>
+                                <a className="text-stone-400" href="/">BERANDA</a>
                                 <p className="text-stone-400">/</p>
                                 <p className="text-stone-400">{product.kategori}</p>
                                 <p className="text-stone-400">/</p>
-                                <p>{product.nama}</p>
+                                <p>{product.nama?.toUpperCase()}</p>
                             </div>
                             {images.length < 1 ? (
                                 <div className="h-80 w-full flex items-center justify-center font-poppins font-semibold bg-stone-300 text-stone-400 md:w-80 md:h-80">
@@ -152,12 +150,12 @@ function Product() {
                                 <div className="flex flex-row justify-between items-center">
                                     <p className="font-semibold">Stok: {product.stok > 100 ? "100+" : product.stok}</p>
                                     <div className="flex flex-rowjustify-between items-center px-2 h-8 rounded-sm bg-green-accent">
-                                        <MinusIcon className="size-8 px-2 stroke-2" onClick={(e) => {
+                                        <MinusIcon className="size-8 px-2 stroke-2 cursor-pointer" onClick={(e) => {
                                             e.preventDefault;
                                             setQuantity((prev) => Math.max(1, prev - 1));
                                         }}/>
                                         <input type="number" className="w-10 focus:outline-none text-center" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
-                                        <PlusIcon className="size-8 px-2 stroke-2" onClick={(e) => {
+                                        <PlusIcon className="size-8 px-2 stroke-2 cursor-pointer" onClick={(e) => {
                                             e.preventDefault;
                                             setQuantity(quantity + 1);
                                         }}/>
