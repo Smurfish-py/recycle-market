@@ -28,8 +28,6 @@ function Login() {
                 localStorage.setItem('token', token);
                 navigate('/');
             }
-
-            console.log({ token });
         } catch (error) {
             setErrorMsg(error);
         }
