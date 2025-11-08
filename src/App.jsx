@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Product from "./pages/Product"
+import ProductByCathegory from "./pages/ProductByCategory"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route element={ <MainLayout /> }>
           <Route path="/" element={ <Dashboard /> }></Route>
+          <Route path="/category/:category" element={ <ProductByCathegory /> }></Route>
         </Route>
         <Route path="/login" element={ <Login /> }></Route>
         <Route path="/register" element={ <Register /> }></Route>
