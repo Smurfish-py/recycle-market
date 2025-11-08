@@ -20,4 +20,13 @@ const findProductId = async (id) => {
     }
 }
 
-export { findAllProducts, findProductId }
+const findProductByCategory = async (category) => {
+    try {
+        const product = await axios.get(`${API_URL}/api/produk/kategori/${category}`);
+        return product;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export { findAllProducts, findProductId, findProductByCategory }
