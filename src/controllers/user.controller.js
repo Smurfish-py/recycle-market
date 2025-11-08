@@ -6,19 +6,16 @@ const handleLogin = async ( email, password ) => {
     try {
         const res = await axios.post(`${API_URL}/api/user/login`, { email, password });
         const token = res.data.token;
-        const error = res.data.pesan;
+        const pesan = res.data.pesan;
 
-        if (!token) {
-            throw error?.response?.data.pesan;
+        if (pesan) {
+            throw pesan;
         }
 
         return token;
-    } catch (error) {
-        if (error) {
-            throw error?.response?.data.pesan;
-        }
 
-        throw new Error("Terjadi kesalahan saat login, silakan coba lagi.");
+    } catch (error) {
+        throw error;
     }
 }
 
