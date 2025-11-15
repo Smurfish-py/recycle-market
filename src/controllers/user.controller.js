@@ -15,7 +15,7 @@ const handleLogin = async ( email, password ) => {
         return token;
 
     } catch (error) {
-        throw error;
+        throw error?.response?.data?.pesan;
     }
 }
 
@@ -35,4 +35,13 @@ const handleRegister = async ( fullname, email, password, reTypePassword ) => {
         throw error?.response?.data;
     }
 }
-export { handleLogin, handleRegister }
+
+const userData = async ( id ) => {
+    try {
+        const res = await axios.get(`${API_URL}/api/user/data/${id}`);
+        return res;
+    } catch (error) {
+        throw error
+    }
+}
+export { handleLogin, handleRegister, userData }
