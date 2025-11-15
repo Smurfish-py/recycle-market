@@ -23,11 +23,11 @@ function Login() {
 
         try {
             const token = await handleLogin( email, password );
-            
             if (token != undefined) {
                 localStorage.setItem('token', token);
                 navigate('/');
             }
+            
         } catch (error) {
             setErrorMsg(error);
         }
