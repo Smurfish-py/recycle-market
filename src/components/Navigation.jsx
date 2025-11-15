@@ -33,8 +33,8 @@ function Navigation({ className, listStyle }) {
         <nav ref={dropdownRef}>
             <div className={`${className} flex flex-row select-none`}>
                 <a href="/">Beranda</a>
-                <a href="">Toko</a>
-                <a href="">Mitra</a>
+                <a href="/dashboard/shop">Toko</a>
+                <a href="/partnership">Mitra</a>
                 <div className="relative">
                     <div onClick={() => setIsOpen(!isOpen)} className="flex flex-row gap-2 items-center cursor-pointer">
                         <p>Kategori</p>
