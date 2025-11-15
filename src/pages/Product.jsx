@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { UserCircleIcon, UserIcon, ShoppingCartIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
+import { UserCircleIcon, UserIcon, BookmarkIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 
 import { findProductId } from "../controllers/product.controller"
 
@@ -163,7 +163,7 @@ function Product() {
                                 </div>
                                 <div className="flex flex-row gap-2">
                                     <button className="block border-2 flex-1/12 btn md:hidden">
-                                        <ShoppingCartIcon className="size-4 stroke-2" />
+                                        <BookmarkIcon className="size-4 stroke-2" />
                                     </button>
                                     <button className="border py-2 flex-11/12 md:flex-1/2 btn-solid cursor-pointer">Beli Sekarang</button>
                                     <button className="hidden py-2 border-2 md:flex justify-center md:flex-1/2 btn cursor-pointer">Simpan ke Markah</button>
