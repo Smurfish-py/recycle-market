@@ -1,12 +1,14 @@
-import { UserCircleIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon, ShoppingCartIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { UserCircleIcon, MagnifyingGlassIcon, ArrowLeftEndOnRectangleIcon, BookmarkIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
-import Navigation from './Navigation'
+import { useNavigate } from "react-router-dom";
+import Navigation from './Navigation';
 
 import isTokenExpired from "../service/isTokenExpired";
 
-export default function Header({ isOnProductPage }) {
+export default function Header({ customHeader, title }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if ( token == undefined || isTokenExpired(token) ) {
@@ -18,7 +20,7 @@ export default function Header({ isOnProductPage }) {
 
     return (
         <header className="fixed top-0 right-0 left-0 px-4 py-2 z-20 border-b-1 border-b-stone-300 bg-white">
-            <div className={`items-center justify-between ${isOnProductPage != true ? "flex" : "hidden sm:flex"}`}>
+            <div className={`items-center justify-between ${customHeader != true ? "flex" : "hidden sm:flex"}`}>
                 <div id="title" className="select-none">
                     <a href="/">
                         <h1 className="font-inter font-semibold text-xl">Recycle Market</h1>
@@ -37,13 +39,13 @@ export default function Header({ isOnProductPage }) {
                 {isLoggedIn ? (
                     <>
                         <div id="button" className="sr-only sm:not-sr-only flex flex-row gap-2 select-none">
-                            <a href="/login" className="btn flex flex-row items-center gap-2 hover:cursor-pointer">
-                                <UserCircleIcon className="size-6"></UserCircleIcon>
+                            <a href="/profile" className="btn flex flex-row items-center gap-2 hover:cursor-pointer">
+                                <UserCircleIcon className="size-6" />
                                 <p>Akun</p>
                             </a>
-                            <a href="" className="btn-solid flex flex-row items-center border gap-2 hover:cursor-pointer select-none">
-                                <ShoppingCartIcon className="size-6"></ShoppingCartIcon>
-                                <p>Troli</p>
+                            <a href='/bookmark' className="btn-solid flex flex-row items-center border gap-1 hover:cursor-pointer select-none">
+                                <BookmarkIcon className="size-6" />
+                                <p>Markah</p>
                             </a>
                         </div>
                         <i className="visible sm:hidden">
@@ -57,9 +59,11 @@ export default function Header({ isOnProductPage }) {
                     </a>
                 )}
             </div>
-            <div className={`h-8 ${isOnProductPage == true ? "flex sm:hidden" : "hidden"} items-center`} onClick={() => window.history.back()}>
-                <ChevronLeftIcon className="size-5 stroke-2"></ChevronLeftIcon>
-                <button className="text-sm">Kembali</button>
+            <div className={`h-8 ${customHeader == true ? "flex relative sm:hidden" : "hidden"} flex-row items-center`} onClick={() => window.history.back()}>
+                <ChevronLeftIcon className="absolute left-0 size-5 stroke-2"></ChevronLeftIcon>
+                <div className="font-poppins font-semibold text-center w-full ">
+                    { title }
+                </div>
             </div>
         </header>
     )
