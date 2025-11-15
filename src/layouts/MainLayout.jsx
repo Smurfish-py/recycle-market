@@ -6,7 +6,7 @@ export default function MainLayout() {
     
     return (
         <div className="relative flex flex-col min-h-screen">
-            <Header isOnProductPage={false} />
+            <Header customHeader={false} />
             <main className="px-4 py-2 grow">
                 <Outlet />
             </main>
