@@ -68,11 +68,11 @@ input[type=number] {
 
 @layer components {
   .btn {
-    @apply rounded-md font-poppins font-semibold border-2 border-green-main-2 text-green-main-2 px-2 py-1
+    @apply rounded-md font-poppins font-semibold border-2 border-green-main-2 text-green-main-2 px-2 py-1 select-none
   }
 
   .btn-solid {
-    @apply rounded-md font-poppins font-semibold bg-green-main-2 text-white border-2 border-green-main-2 px-2 py-1
+    @apply rounded-md font-poppins font-semibold bg-green-main-2 text-white border-2 border-green-main-2 px-2 py-1 select-none
   }
   
   .input-text {
