@@ -8,8 +8,6 @@ import ProductCard from "../components/ProductCard";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function ProductByCathegory() {
-
-    const navigate = useNavigate();
     
     // Object for controlling
     const tagColor = {
@@ -31,7 +29,7 @@ function ProductByCathegory() {
             const productData = response.data;
             setProducts(productData);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }}
         fetchData(category);
     }, [category]);
