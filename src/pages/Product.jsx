@@ -67,7 +67,7 @@ function Product() {
     return (
         <>
             <div className="relative flex flex-col min-h-screen">
-                <Header isOnProductPage={true}/>
+                <Header customHeader={true} title={"Detail Produk"} />
                 <main className="mt-12 grow md:mt-4">
                     <div className="md:flex md:flex-row md:px-12 md:py-16 md:gap-8">
                         <section className="w-full flex flex-col gap-2 select-none">
@@ -79,12 +79,12 @@ function Product() {
                                 <p>{product.nama?.toUpperCase()}</p>
                             </div>
                             {images.length < 1 ? (
-                                <div className="h-80 w-full flex items-center justify-center font-poppins font-semibold bg-stone-300 text-stone-400 md:w-80 md:h-80">
+                                <div className="h-80 w-full flex items-center justify-center font-poppins font-semibold bg-stone-300 text-stone-400 md:w-110 md:h-100">
                                     <p>Produk ini tidak memiliki foto</p>
                                 </div>
                             ) : (
                                 <div>
-                                    <div className="h-80 w-full overflow-hidden md:h-80 md:w-full">
+                                    <div className="h-80 w-full overflow-hidden md:w-110">
                                         {images?.[selected]?.file && (
                                             <img src={`${API_URL}/api/images/products/${images?.[selected]?.file}`} className="h-full w-full object-cover object-top md:rounded-lg"/>
                                         )}
@@ -129,7 +129,7 @@ function Product() {
                                 {product?.rating?.length < 1 ? (
                                     <p className="text-sm text-stone-400">Belum ada ulasan</p>
                                 ) : (
-                                    <div className="max-h-50 overflow-y-scroll divide-y divide-gray-200">
+                                    <div className="max-h-50 overflow-y-auto divide-y divide-gray-200">
                                         {product?.rating?.map((rating, index) => (
                                             <div key={index} className="flex flex-row gap-2 py-2 px-1.5">
                                                 <div className="flex items-center">
@@ -165,8 +165,8 @@ function Product() {
                                     <button className="block border-2 flex-1/12 btn md:hidden">
                                         <ShoppingCartIcon className="size-4 stroke-2" />
                                     </button>
-                                    <button className="border py-2 flex-11/12 md:flex-1/2 btn-solid">Beli Sekarang</button>
-                                    <button className="hidden py-2 border-2 md:flex justify-center md:flex-1/2 btn">Masukkan ke Troli</button>
+                                    <button className="border py-2 flex-11/12 md:flex-1/2 btn-solid cursor-pointer">Beli Sekarang</button>
+                                    <button className="hidden py-2 border-2 md:flex justify-center md:flex-1/2 btn cursor-pointer">Simpan ke Markah</button>
                                 </div>
                             </form>
                         </section>
