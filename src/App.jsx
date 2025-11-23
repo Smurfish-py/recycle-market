@@ -12,6 +12,8 @@ import ProductByCathegory from "./pages/ProductByCategory";
 import ShopPage from "./pages/ShopPage"
 import Profile from "./pages/Profile"
 import PartnershipPage from "./pages/PartnershipPage"
+import SellForm from "./pages/SellForm"
+import Admin from "./pages/Admin"
 
 function App() {
   return (
@@ -21,8 +23,10 @@ function App() {
           <Route path="/" element={ <Dashboard /> }></Route>
           <Route path="/category/:category" element={ <ProductByCathegory /> }></Route>
           <Route path="/shop/:shop" element={ <ShopPage /> }></Route>
-          <Route path="/dashboard/shop"></Route>
+          <Route path="/dashboard/shop" element={<ShopPage />}></Route>
           <Route path="/partnership" element={ <PartnershipPage /> }></Route>
+          <Route path="/sell" element={<SellForm />}></Route>
+          <Route path="/dashboard/admin" element={<Admin />}></Route> 
         </Route>
         <Route path="/login" element={ <Login /> }></Route>
         <Route path="/register" element={ <Register /> }></Route>
