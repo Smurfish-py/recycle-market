@@ -70,7 +70,7 @@ function Product() {
                 <Header customHeader={true} title={"Detail Produk"} />
                 <main className="mt-12 grow md:mt-4">
                     <div className="md:flex md:flex-row md:px-12 md:py-16 md:gap-8">
-                        <section className="w-full flex flex-col gap-2 select-none">
+                        <section className="w-full flex flex-col gap-2 select-none md:w-110">
                             <div className="hidden lg:flex flex-row gap-3 font-poppins font-semibold my-3 text-xs pl-3">
                                 <a className="text-stone-400" href="/">BERANDA</a>
                                 <p className="text-stone-400">/</p>
@@ -103,7 +103,7 @@ function Product() {
                             <div className="py-4 md:pt-0">
                                 <div className="flex flex-row gap-1 items-center py-1.5">
                                     <UserIcon className="size-4 text-stone-500 stroke-2"></UserIcon>
-                                    <p className="font-poppins font-semibold text-xs text-stone-500 active:underline hover:underline">{product?.toko?.nama}</p>
+                                    <p className="font-poppins font-semibold text-xs text-stone-500 cursor-pointer active:underline hover:underline">{product?.toko?.nama}</p>
                                 </div>
                                 <h1 className="font-inter font-semibold text-3xl">{product.nama}</h1>
                                 <p className="font-poppins font-normal text-xs text-stone-500 py-1.5">{product.deskripsi}</p>
