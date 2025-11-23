@@ -44,4 +44,22 @@ const userData = async ( id ) => {
         throw error
     }
 }
-export { handleLogin, handleRegister, userData }
+
+const findAllUsers = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/api/user/`);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const protectedPage = ( allowedPrivilege, userPrivilege ) => {
+    if (allowedPrivilege.includes(userPrivilege)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export { handleLogin, handleRegister, userData, protectedPage, findAllUsers }
