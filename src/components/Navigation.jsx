@@ -1,10 +1,23 @@
-import { useState, useEffect, useRef } from "react"
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline"
+import { useState, useEffect, useRef } from "react";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { jwtDecode } from "jwt-decode";
+import isTokenExpired from "../service/isTokenExpired";
 
 function Navigation({ className, listStyle }) {
     const [ isOpen, setIsOpen ] = useState(false);
-    const navigationList = ["Elektronik", "Non_elektronik"]
+    const navigationList = ["Elektronik", "Non_elektronik"];
+    const token = localStorage.getItem('token');
     
+    const decodeToken = () => {
+        if (token == null || token == undefined) {
+            return
+        } else {
+            return jwtDecode(token);
+        }
+    }
+
+    const decode = decodeToken();
+
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -33,7 +46,11 @@ function Navigation({ className, listStyle }) {
         <nav ref={dropdownRef}>
             <div className={`${className} flex flex-row select-none`}>
                 <a href="/">Beranda</a>
-                <a href="/dashboard/shop">Toko</a>
+                {decode?.privilege == "admin" && !isTokenExpired(token) ? (
+                    <a href="/dashboard/admin">Admin</a>
+                ) : (
+                    <a href="/dashboard/shop">Toko</a>
+                )}
                 <a href="/partnership">Mitra</a>
                 <div className="relative">
                     <div onClick={() => setIsOpen(!isOpen)} className="flex flex-row gap-2 items-center cursor-pointer">
