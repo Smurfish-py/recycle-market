@@ -62,7 +62,7 @@ function ProductByCathegory() {
             {products.length < 1 ? (
                 <p className="mt-8 text-center">Belum ada produk untuk kategori <span className="font-semibold text-green-main-2">{category}</span></p>
             ) : (
-                <div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3">
                     {products.map((product, index) => (
                         <ProductCard key={index} product={product} tagColor={tagColor} API_URL={API_URL}/>
                     ))}
