@@ -54,6 +54,15 @@ const findAllUsers = async () => {
     }
 }
 
+const countUsers = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/api/user/count`);
+        return res
+    } catch (error) {
+        throw error
+    }
+}
+
 const protectedPage = ( allowedPrivilege, userPrivilege ) => {
     if (allowedPrivilege.includes(userPrivilege)) {
         return true;
@@ -62,4 +71,11 @@ const protectedPage = ( allowedPrivilege, userPrivilege ) => {
     }
 }
 
-export { handleLogin, handleRegister, userData, protectedPage, findAllUsers }
+export { 
+    handleLogin, 
+    handleRegister, 
+    userData, 
+    protectedPage, 
+    findAllUsers,
+    countUsers
+}
