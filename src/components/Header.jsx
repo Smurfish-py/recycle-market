@@ -35,7 +35,7 @@ export default function Header({ customHeader, title, sendToParent}) {
     const userOption = (
         <div className={`absolute border-1 border-stone-300 rounded-md top-2 translate-y-15 right-3 bg-white w-40 h-40 px-2 py-2 ${isOpen ? "block" : "hidden"} flex flex-col justify-between gap-2`}>
             <div className="flex flex-col gap-2">
-               <h1 className="text-center font-inter font-semibold text-sm pb-2 border-b-1 border-stone-200">Pengaturan Akun</h1>
+                <h1 className="text-center font-inter font-semibold text-sm pb-2 border-b-1 border-stone-200">Pengaturan Akun</h1>
                 <div className="px-2 flex items-center">
                     <UserIcon className="size-6" />
                     <p className="text-sm text-right w-full active:underline hover:underline" onClick={() => navigate('/profile')}>Akun saya</p>
