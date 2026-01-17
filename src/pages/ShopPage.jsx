@@ -41,8 +41,6 @@ export default function ShopPage() {
         }
     }
 
-    console.log(decode)
-
     const productData = async (id) => {
         try {
             if (!id) return;
