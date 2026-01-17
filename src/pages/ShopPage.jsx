@@ -1,32 +1,39 @@
 import { useEffect, useState } from "react";
 import { protectedPage, userData } from "../controllers/user.controller";
 import { findRelatedProduct, deleteProductById } from "../controllers/product.controller.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import isTokenExpired from "../service/isTokenExpired.js";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default function ShopPage() {
-    const [ userDetails, setUserDetails ] = useState(null);
-    const [ product, setProduct ] = useState([]);
-    const token = localStorage.getItem('token');
-
     const navigate = useNavigate();
+    const location = useLocation();
 
-    if (token == null) {
-        useEffect(() => {
-            navigate('/login');
-        }, [navigate]);
+    const [ userDetails, setUserDetails ] = useState(null);
+    const [ decode, setDecode ] = useState(null);
+    const [ products, setProducts ] = useState([]);
+    const [ product, setProduct ] = useState(location.state?.products || null);
+    const token = localStorage.getItem('token');
+    
+    // const decode = jwtDecode(token);
 
-        return null;
-    } else if (isTokenExpired(token)) {
-        useEffect(() => {
+    useEffect(() => {
+        if (token == null || isTokenExpired(token)) {
             navigate('/login');
-        }, [navigate]);
-    }
+            return;
+        }
+
+        setDecode(jwtDecode(token))
+    }, [navigate]);
+
+    const privilege = decode?.privilege;
+    const userId = decode?.id;
+    const idToko = decode?.idToko;
 
     const fetchData = async (id) => {
         try {
+            if (!id) return;
             const res = await userData(id);
             setUserDetails(res.data);
         } catch (error) {
@@ -34,18 +41,21 @@ export default function ShopPage() {
         }
     }
 
+    console.log(decode)
+
     const productData = async (id) => {
         try {
-          const res = await findRelatedProduct(id);
-            setProduct(res);  
+            if (!id) return;
+            const res = await findRelatedProduct(id);
+            setProducts(res);  
         } catch (error) {
             console.log(error);
-        }
-        
+        }   
     }
 
     const handleDelete = async (id) => {
         try {
+            if (!id) return;
             await deleteProductById(id);
             window.location.reload();
         } catch (error) {
@@ -53,35 +63,41 @@ export default function ShopPage() {
         }
     }
 
-    const decode = jwtDecode(token);
-    const privilege = decode.privilege;
-    const userId = decode.id;
-    const idToko = decode.idToko;
-
     useEffect(() => {
-        const userIsAllowed = protectedPage(['admin', 'seller'], privilege);
+        const checkPrivilege = async () => {
+            const userIsAllowed = await protectedPage(['ADMIN', 'PARTNER'], privilege);
 
-        if (!userIsAllowed) {
+            if (!userIsAllowed) {
             navigate('/partnership');
         }
+
+        checkPrivilege();
+        }
+
     }, [privilege, navigate]);
 
     useEffect(() => {
-        if (userId) {
+        if (!userId || !idToko) return
+        fetchData(userId);
+        productData(idToko);
+    }, [userId]);
+
+    useEffect(() => {
+        if (product == null) {
             fetchData(userId);
-            productData(idToko);
         }
     }, [userId]);
 
     return (
         <section className="mt-16">
             <h1 className="text-2xl font-semibold">Dashboard</h1>
-            <p>Selamat datang {userDetails?.fullname}</p>
+            <p>Selamat datang, {userDetails?.fullname}</p>
+            <p className="text-sm text-stone-400"><strong>Tips:</strong> Jika produk tidak di acc, coba perpendek deskripsi harga dan deskripsi singkat pada saat mengisi form jual produk</p>
             <br />
             <div className="flex flex-col gap-4">
                 <div className="w-fit flex flex-row gap-4">
                     <div className="flex-1 rounded-md border-1 border-stone-200 w-full flex justify-center items-end gap-2 px-4 py-2">
-                        <h1 className="font-semibold text-6xl">{product.length}</h1>
+                        <h1 className="font-semibold text-6xl">{products.length}</h1>
                         <h3>Produk Terdaftar</h3>
                     </div>
                     <a className="btn-solid w-full flex flex-col items-center justify-center cursor-pointer" onClick={() => navigate('/sell')}>
@@ -107,7 +123,7 @@ export default function ShopPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {product.map((data, index) => (
+                                {products.map((data, index) => (
                                     <tr key={index} className="odd:bg-stone-100 font-poppins text-sm content-center">
                                         <td className="px-2 py-2 max-w-5">{index + 1}</td>
                                         <td className="px-2">{data.nama}</td>
