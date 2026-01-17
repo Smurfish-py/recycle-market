@@ -46,7 +46,7 @@ function Navigation({ className, listStyle }) {
         <nav ref={dropdownRef}>
             <div className={`${className} flex flex-row select-none`}>
                 <a href="/">Beranda</a>
-                {decode?.privilege == "admin" && !isTokenExpired(token) ? (
+                {decode?.privilege == "ADMIN" && !isTokenExpired(token) ? (
                     <a href="/dashboard/admin">Admin</a>
                 ) : (
                     <a href="/dashboard/shop">Toko</a>
