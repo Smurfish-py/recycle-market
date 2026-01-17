@@ -47,6 +47,15 @@ const findRelatedProduct = async (id) => {
     }
 }
 
+const countProducts = async () => {
+    try {
+        const res = await axios.get(`${API_URL}/api/produk/count`);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const addProduct = async ( formData ) => {
     try {
         const res = await axios.post(
@@ -80,5 +89,6 @@ export {
     searchProduct,
     findRelatedProduct,
     addProduct,
-    deleteProductById
+    deleteProductById,
+    countProducts
 }
