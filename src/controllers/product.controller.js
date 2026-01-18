@@ -75,7 +75,7 @@ const addProduct = async ( formData ) => {
 
 const deleteProductById = async (id) => {
     try {
-       const res = await axios.delete(`${API_URL}/api/produk/delete/${id}`, {timeout: 60000});
+        const res = await axios.delete(`${API_URL}/api/produk/delete/${id}`, {timeout: 60000});
         return res; 
     } catch (error) {
         throw error;
