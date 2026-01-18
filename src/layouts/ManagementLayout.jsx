@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { HomeIcon, UserIcon, ShoppingBagIcon, ExclamationTriangleIcon, BanknotesIcon, Cog6ToothIcon, ListBulletIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, UserIcon, ShoppingBagIcon, InboxArrowDownIcon, BanknotesIcon, Cog6ToothIcon, ListBulletIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { jwtDecode } from "jwt-decode";
 import isTokenExpired from "../service/isTokenExpired";
 import { userData } from "../controllers/user.controller";
@@ -39,7 +39,7 @@ export default function ManagementLayout() {
         { label: "Dashboard", to:"/dashboard/admin", icon:HomeIcon, end: true },
         { label: "Pengguna", to:"/dashboard/admin/pengguna", icon: UserIcon },
         { label: "Produk", to:"/dashboard/admin/produk", icon:ShoppingBagIcon },
-        { label: "Pengaduan", to:"/dashboard/admin/pengaduan", icon: ExclamationTriangleIcon },
+        { label: "Permintaan", to:"/dashboard/admin/requests", icon: InboxArrowDownIcon },
         { label: "Pesanan", to:"/dashboard/admin/pesanan", icon: BanknotesIcon },
     ]
 
