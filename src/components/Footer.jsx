@@ -14,7 +14,7 @@ library.add(fas, far, fab);
 
 function Footer() {
     return (
-        <footer className="w-full bg-green-main-1 min-h-50 flex flex-col md:flex-row px-6 py-4 gap-10 text-white md:px-12 md:py-8">
+        <footer className="w-full bg-green-main-1 min-h-50 flex flex-col md:flex-row px-6 py-4 gap-10 text-white md:px-12 md:py-8 select-none">
             
             {/* Merk + Slogan */}
             <section className="flex flex-col flex-1 gap-4 text-center md:text-left">
