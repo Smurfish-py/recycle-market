@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import MainLayout from "./layouts/MainLayout";
 
 // Pages
-import { Dashboard, Login, Register, Profile, PartnershipPage, Product, ProductByCategory } from "@/pages/default/index.js"
+import { Dashboard, Login, Register, EditProfile, PartnershipPage, Product, ProductByCategory } from "@/pages/default/index.js"
 import ShopPage from "./pages/ShopPage";
 import SellForm from "./pages/SellForm";
 import { Admin, UserListAdmin } from "@/pages/admin/index";
@@ -27,14 +27,14 @@ function App() {
           <Route path="/dashboard/admin" element={<Admin />}></Route>
           <Route path="/dashboard/admin/pengguna" element={ <UserListAdmin /> }></Route>
           <Route path="/dashboard/admin/produk"></Route>
-          <Route path="/dashboard/admin/pengaduan"></Route>
+          <Route path="/dashboard/admin/requests"></Route>
           <Route path="/dashboard/admin/pesanan"></Route>
         {/* Partner */}
         </Route>
         <Route path="/login" element={ <Login /> }></Route>
         <Route path="/register" element={ <Register /> }></Route>
         <Route path="/product/:id" element={ <Product /> }></Route>
-        <Route path="/profile" element={ <Profile /> }></Route>
+        <Route path="/profile/edit" element={ <EditProfile /> }></Route>
       </Routes>
     </BrowserRouter>
   )
