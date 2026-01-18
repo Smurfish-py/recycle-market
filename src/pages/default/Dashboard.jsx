@@ -14,13 +14,13 @@ import errorPng from "@/assets/images/error.png"
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Dashboard() {
-    const [ products, setProducts ] = useState([]);
-    const [ data, setData ] = useState([]);
-    const [ loading, setLoading ] = useState(true);
-    const [error, setError] = useState(null);
-    const [ search, setSearch ] = useState(false);
     const navigate = useNavigate();
     const { queryResults } = useOutletContext();
+    const [ products, setProducts ] = useState([]);
+    const [ loading, setLoading ] = useState(true);
+    const [ isError, setIsError ] = useState(null);
+    const [ error, setError ] = useState(null);
+    const [ search, setSearch ] = useState(false);
 
     // Object for controlling
     const tagColor = {
@@ -36,19 +36,21 @@ function Dashboard() {
         // Function for fetching all products (sorted desc)
         const fetchProducts = async () => {
             try {
-                if (queryResults < 1 && queryResults.message == undefined) {
+                if (queryResults < 1 && isError == null) {
                     const response = await findAllProducts();
                     const productData = await response.data;
                     setProducts(productData);
                     
                 } else {
+                    if (queryResults.message != undefined) {
+                        setError(queryResults.message);
+                    }
                     setProducts(queryResults);
                     setSearch(true);
                 }
-
             } catch (error) {
                 console.log({ error: error });
-                setError("Gagal terhubung ke backend :(");
+                setIsError({message:"Gagal terhubung ke backend :("});
             } finally {
                 setLoading(false);
             }
@@ -57,10 +59,10 @@ function Dashboard() {
     }, [queryResults]);
 
     // Backend Error handling
-    if (error) return (
+    if (isError) return (
         <div className="flex flex-col w-full mt-16 h-120 items-center justify-center font-inter text-center">
             <img src={errorPng} className="w-50 h-50 mb-8" />
-            <h1 className="text-xl font-bold">{error}</h1>
+            <h1 className="text-xl font-bold">{isError.message}</h1>
             <p className="">Mohon maaf atas ketidaknyamanannya</p>
         </div>
     );
@@ -86,7 +88,13 @@ function Dashboard() {
                 <Navigation className="not-sr-only min-[1280px]:sr-only flex justify-between sm:justify-center sm:gap-16" listStyle="dropdown absolute w-40 right-0 sm:-left-2 translate-y-2"/>
 
                 {/* Search bar */}
-                <SearchBar className={"sm:sr-only not-sr-only"} sendToParent={setData} />
+                <SearchBar className={"sm:sr-only not-sr-only"} sendToParent={
+                    products => {
+                        setProducts(products);
+                        setSearch(true);
+                        setError(products.message);
+                    }
+                    } />
 
             </section>
 
@@ -94,7 +102,7 @@ function Dashboard() {
             <article className="w-full flex flex-col gap-1 mt-2 md:mt-4">
 
                 {/* Hero Section */}
-                {Array.isArray(products) &&  search ? "" : <>
+                {search ? "" : <>
                     <section id="hero" className="sr-only font-inter text-center flex flex-col gap-4 lg:py-8 select-none min-[1280px]:not-sr-only">
                         <h3 className="text-xl">Kelompok 13</h3>
                         <h1 className="font-semibold text-8xl">RECYCLE MARKET</h1>
@@ -119,7 +127,7 @@ function Dashboard() {
 
                         ) : (
                             <>
-                                {Array.isArray(products) && search ? "" : <>
+                                {search ? "" : <>
                                     <div className="min-[480px]:max-sm:px-4 md:px-6 lg:px-4" onClick={() => navigate(`/product/${products[0]?.id}`)}>
                                         <div className={`card relative w-full h-35 cursor-pointer bg-cover md:h-48 bg-position-[center_top_-5rem] lg:bg-position-[center_top_-10rem] lg:h-80 lg:mt-8`} style={{
                                             backgroundImage: products[0]?.fotoProduk?.[0]?.file != undefined ? `url(${API_URL}/api/images/products/${products[0]?.fotoProduk?.[0]?.file})` 
@@ -179,7 +187,7 @@ function Dashboard() {
                         ) : (
 
                             <>
-                                { search ? <p>Test</p> : <></> }
+                                { !error ? "" : <p>{error}</p> }
                                 
                                 <section className="grid grid-cols-1 sm:grid-cols-2 sm:justify-items-center md:gap-y-5 lg:grid-cols-3 select-none">
 
