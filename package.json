@@ -1,7 +1,7 @@
 {
   "name": "recycle-market",
   "private": true,
-  "version": "26.1.17",
+  "version": "v2026.1.18",
   "type": "module",
   "scripts": {
     "dev": "vite",
