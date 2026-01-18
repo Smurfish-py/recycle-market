@@ -1,6 +1,6 @@
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { findAllUsers, protectedPage, countUsers } from "../../controllers/user.controller";
-import { countProducts } from "../../controllers/product.controller";
+import { findAllUsers, protectedPage, countUsers } from "@/controllers/user.controller";
+import { countProducts } from "@/controllers/product.controller";
 import { useEffect, useState } from "react";
 import { ExclamationTriangleIcon, ShoppingBagIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 
