@@ -63,6 +63,15 @@ const countUsers = async () => {
     }
 }
 
+const updateUser = async (id, data) => {
+    try {
+        const res = await axios.patch(`${API_URL}/api/user/update/${id}`, data);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const protectedPage = ( allowedPrivilege, userPrivilege ) => {
     if (allowedPrivilege.includes(userPrivilege)) {
         return true;
@@ -77,5 +86,6 @@ export {
     userData, 
     protectedPage, 
     findAllUsers,
+    updateUser,
     countUsers
 }
