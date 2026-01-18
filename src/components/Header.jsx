@@ -1,18 +1,40 @@
 import { ArrowLeftStartOnRectangleIcon, UserIcon, UserCircleIcon,  ArrowLeftEndOnRectangleIcon, BookmarkIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
+import { userData } from "../controllers/user.controller";
+import isTokenExpired from "../service/isTokenExpired";
 
 import Navigation from './Navigation';
 import SearchBar from "./SearchBar";
-
-import isTokenExpired from "../service/isTokenExpired";
 
 export default function Header({ customHeader, title, sendToParent}) {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const token = localStorage.getItem('token');
     const [ productData, setProductData ] = useState([]);
+    const [ user, setUser ] = useState({});
+
+    const token = localStorage.getItem('token');
+    const decode = token ? jwtDecode(token) : null;
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            const findUser = async (id) => {
+                try {
+                    const res = await userData(id);
+                    setUser(res?.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            findUser(decode?.id);
+        }
+    }, [isLoggedIn, decode.id]);
+    
     
     const logout = () => {
         localStorage.clear();
@@ -36,9 +58,15 @@ export default function Header({ customHeader, title, sendToParent}) {
         <div className={`absolute border-1 border-stone-300 rounded-md top-2 translate-y-15 right-3 bg-white w-40 h-40 px-2 py-2 ${isOpen ? "block" : "hidden"} flex flex-col justify-between gap-2`}>
             <div className="flex flex-col gap-2">
                 <h1 className="text-center font-inter font-semibold text-sm pb-2 border-b-1 border-stone-200">Pengaturan Akun</h1>
-                <div className="px-2 flex items-center">
-                    <UserIcon className="size-6" />
-                    <p className="text-sm text-right w-full active:underline hover:underline" onClick={() => navigate('/profile')}>Akun saya</p>
+                <div className="px-2 flex items-center gap-4">
+                    {!user?.profilePfp ? (
+                        <UserIcon className="size-6" />
+                    ) : (
+                        <div className="w-8 aspect-square rounded-full overflow-hidden">
+                            <img src={`${API_URL}/api/images/users/${user?.profilePfp}`} className="object-cover" />
+                        </div>
+                    )}
+                    <p className="flex flex-col gap-0 text-sm text-left active:underline hover:underline" onClick={() => navigate('/profile')}><strong>Edit Profil</strong><span className="text-xs">{user.username}</span></p>
                 </div> 
             </div>
 
@@ -86,9 +114,9 @@ export default function Header({ customHeader, title, sendToParent}) {
                     </a>
                 )}
             </div>
-            <div className={`h-8 ${customHeader == true ? "flex relative sm:hidden" : "hidden"} flex-row items-center`} onClick={() => window.history.back()}>
-                <ChevronLeftIcon className="absolute left-0 size-5 stroke-2"></ChevronLeftIcon>
-                <div className="font-poppins font-semibold text-center w-full ">
+            <div className={`h-8 ${customHeader == true ? "flex relative sm:hidden" : "hidden"} flex-row items-center`}>
+                <ChevronLeftIcon className="absolute left-0 size-5 stroke-2" onClick={() => window.history.back()} />
+                <div className="font-poppins font-semibold text-center w-full select-none">
                     { title }
                 </div>
             </div>
