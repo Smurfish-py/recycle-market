@@ -1,14 +1,23 @@
 import { findProductByCategory } from "../../controllers/product.controller"
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import Navigation from "../../components/Navigation";
-import ProductCard from "../../components/ProductCard";
+import Navigation from "@/components/Navigation";
+import ProductCard from "@/components/ProductCard";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function ProductByCategory() {
-    
+    const { queryResults } = useOutletContext();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (queryResults[0] != undefined || queryResults.message != null) {
+            console.log(queryResults)
+            navigate('/');
+        }
+    }, [queryResults]);
+
     // Object for controlling
     const tagColor = {
         BAGUS: "text-blue-tag-new border border-blue-tag-new",
