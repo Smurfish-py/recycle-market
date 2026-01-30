@@ -33,7 +33,7 @@ export default function Header({ customHeader, title, sendToParent}) {
             }
             findUser(decode?.id);
         }
-    }, [isLoggedIn, decode.id]);
+    }, [isLoggedIn, decode?.id]);
     
     
     const logout = () => {
@@ -93,14 +93,14 @@ export default function Header({ customHeader, title, sendToParent}) {
                 {isLoggedIn ? (
                     <>
                         <div id="button" className="relative sr-only sm:not-sr-only flex flex-row gap-2 select-none">
-                            <a href="/profile" className="btn flex flex-row items-center gap-2 hover:cursor-pointer">
+                            <button className="btn flex flex-row items-center gap-2 hover:cursor-pointer" onClick={() => navigate('/profile')}>
                                 <UserCircleIcon className="size-6" />
                                 <p>Akun</p>
-                            </a>
-                            <a href='/bookmark' className="btn-solid flex flex-row items-center border gap-1 hover:cursor-pointer select-none">
+                            </button>
+                            <button className="btn-solid flex flex-row items-center border gap-1 hover:cursor-pointer select-none" onClick={() => navigate('/bookmark')}>
                                 <BookmarkIcon className="size-6" />
                                 <p>Markah</p>
-                            </a>
+                            </button>
                         </div>
                         <button className="visible sm:hidden" >
                             <UserCircleIcon className="size-10" onClick={() => setIsOpen(!isOpen)}></UserCircleIcon>
