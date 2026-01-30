@@ -1,4 +1,4 @@
-import logo from '@/assets/images/starry-night.jpg'
+import logo from '@/assets/images/plant.png'
 
 import { PhoneIcon } from '@heroicons/react/24/outline';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
@@ -19,7 +19,7 @@ function Footer() {
             {/* Merk + Slogan */}
             <section className="flex flex-col flex-1 gap-4 text-center md:text-left">
                 <div id="title" className="select-none md:flex md:flex-row md:items-center md:gap-4">
-                    <img src={logo} className='hidden rounded-full size-10 lg:block'/>
+                    <img src={logo} className='hidden rounded-full size-10 bg-white p-1 lg:block'/>
                     <div>
                         <h1 className="font-inter font-semibold text-xl">Recycle Market</h1>
                         <h3 className="font-poppins font-normal text-xs lg:hidden">Resell, Reuse, Recycle</h3>
@@ -27,6 +27,7 @@ function Footer() {
                 </div>
                 <p className='text-xs'>Platform inovatif untuk menukar barang daur ulang menjadi uang atau produk yang telah bermanfaat</p>
                 <p className='text-sm'>&copy; 2025 Kelompok 13 - MIT License </p>
+                <a className='text-xs' href="https://www.flaticon.com/free-icons/plant" title="plant icons">Plant icons created by Freepik - Flaticon</a>
             </section>
 
             {/* Navigasi */}
@@ -69,7 +70,6 @@ function Footer() {
                         </a>
                     </div>
                 </div>
-                
             </section>
         </footer>
     )   
