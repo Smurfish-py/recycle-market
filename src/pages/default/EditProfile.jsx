@@ -43,6 +43,7 @@ export default function EditProfile() {
             }
 
             updateProfile(formData);
+            navigate('/profile')
         } catch (error) {
             console.log(error.data);
         }
@@ -99,13 +100,6 @@ export default function EditProfile() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <button type="submit" className="btn-solid cursor-pointer active:bg-green-800">Perbarui Profil</button>
-                                <button className="btn-solid bg-red-400 border-none cursor-pointer" onClick={(e) => {
-                                    e.preventDefault();
-                                    localStorage.clear()
-                                    navigate('/');
-                                }}>
-                                    Logout
-                                </button>
                             </div>
                         </form>
                     </div> 
