@@ -69,13 +69,13 @@ export default function ManagementLayout() {
 
     return (
         <div className="flex flex-row">
-            <aside className={`fixed md:flex left-0 z-50 flex-1/5 border-r-1 border-zinc-300 h-screen px-4 py-2 flex-col gap-4 bg-white md:static ${open ? 'w-2/3 md:hidden' : 'hidden'}`}>
+            <aside className={`fixed md:flex left-0 z-50 flex-1/5 border-r-1 border-zinc-300 h-screen px-4 py-2 flex-col gap-4 bg-white md:sticky ${open ? 'w-2/3 md:hidden' : 'hidden'}`}>
                 <div className="border-b-1 border-stone-200 pb-2 flex flex-row items-center justify-between">
                     <div id="title" className="select-none">
                         <a href="/" className="font-inter font-semibold text-xl">Recycle Market</a>
                         <h3 className="font-poppins font-normal text-xs">Resell, Reuse, Recycle</h3>
                     </div>
-                    <button className="cursor-pointer sm:hidden" onClick={() => handleOpen()}>
+                    <button className="cursor-pointer md:hidden" onClick={() => handleOpen()}>
                         <XMarkIcon className="size-5" />
                     </button>
                     
@@ -134,7 +134,7 @@ export default function ManagementLayout() {
                     </p>
                 </header>
                 <section className="px-4 py-2">
-                    <Outlet context={ userInfo }/>
+                    <Outlet context={ userInfo } />
                 </section>
             </main>
         </div>
