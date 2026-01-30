@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { findAllUsers } from "@/controllers/user.controller";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
 
 export default function UserListPage() {
+    const navigate = useNavigate();
     const [ usersList, setUsersList ] = useState([]); 
     const styles = {
         admin: "bg-sky-100 px-4 py-1 rounded-sm font-semibold text-sm text-sky-400",
@@ -14,14 +16,13 @@ export default function UserListPage() {
         const fetchAllAccount = async () => {
             const users = await findAllUsers();
             setUsersList(users.data);
-            console.log(users.data)
         }
 
         fetchAllAccount();
     }, [findAllUsers]);
 
     return (
-        <section className="w-full grid grid-cols-1">
+        <section className="w-full grid grid-cols-1 h-130 overflow-y-auto">
             <div className="card border-1 border-zinc-300 flex flex-col py-4 px-6">
                 <h3 className="text-xl">Daftar Pengguna</h3>
                 <p className="text-sm text-zinc-400"><strong>Catatan:</strong> untuk user mobile, geser ke kanan untuk melihat kolom aksi</p>
@@ -41,7 +42,7 @@ export default function UserListPage() {
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Privilege</th>
-                                <th>Aksi</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,11 +58,10 @@ export default function UserListPage() {
                                     </td>
                                     <td>
                                         <div className="w-full flex justify-center gap-2">
-                                            <button className="cursor-pointer p-1 rounded-md hover:bg-zinc-200 active::bg-zinc-200">
-                                                <PencilSquareIcon className="size-6 stroke-1" />
+                                            <button className="cursor-pointer p-1 rounded-md hover:bg-zinc-200 active::bg-zinc-200" onClick={() => navigate(`/dashboard/admin/pengguna/detail/${user.id}`)}>
+                                                <EllipsisHorizontalCircleIcon className="size-6 stroke-1" />
                                             </button>
                                         </div>
-                                        
                                     </td>
                                 </tr>
                             )) }
