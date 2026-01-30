@@ -30,8 +30,6 @@ export default function Admin() {
         setAdminAccount(admins);
     }, [usersList]);
 
-    console.log(adminAccount)
-
     useEffect(() => {
         const userCount = async () => {
             const res = await countUsers();
