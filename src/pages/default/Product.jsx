@@ -2,17 +2,21 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-import { UserCircleIcon, UserIcon, BookmarkIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
+import { UserCircleIcon, BuildingStorefrontIcon, BookmarkIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 
-import { findProductId } from "../../controllers/product.controller"
+import { findProductId } from "@/controllers/product.controller"
+import { findShopData } from "@/controllers/shop.controller"
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 function Product() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const API_URL = import.meta.env.VITE_API_URL;
 
     const [product, setProduct] = useState([]);
+    const [shop, setShop] = useState([]);
     const [error, setError] = useState(null);
     const [selected, setSelected] = useState(0);
     const [images, setImages] = useState([]);
@@ -49,10 +53,22 @@ function Product() {
     }
 
     useEffect(() => {
+        const fetchShopData = async (shopId) => {
+            try {
+                const response = await findShopData(shopId);
+                setShop(response);
+            } catch (error) {
+                console.error({ error: error });
+            }
+        }
+
         const fetchData = async (productId) => {
             try {
                 const response = await findProductId(productId);
                 const productData = response.data;
+
+                await fetchShopData(productData?.idToko);
+
                 setProduct(productData);
                 setImages(productData?.fotoProduk);
             } catch (error) {
@@ -86,7 +102,7 @@ function Product() {
                                 <div>
                                     <div className="h-80 w-full overflow-hidden md:w-110">
                                         {images?.[selected]?.file && (
-                                            <img src={`${API_URL}/api/images/products/${images?.[selected]?.file}`} className="h-full w-full object-cover object-top md:rounded-lg"/>
+                                            <img src={`${API_URL}/api/images/products/${images?.[selected]?.file}`} className="h-full w-full object-cover object-center md:rounded-lg"/>
                                         )}
                                     </div> 
                                     <div className="flex flex-row px-4 mt-2 gap-3 w-full overflow-y-auto md:px-0">
@@ -101,9 +117,16 @@ function Product() {
                         </section>
                         <section className="w-full select-none mt-4 px-4 md:mt-0 lg:mt-12">
                             <div className="py-4 md:pt-0">
-                                <div className="flex flex-row gap-1 items-center py-1.5">
-                                    <UserIcon className="size-4 text-stone-500 stroke-2"></UserIcon>
-                                    <p className="font-poppins font-semibold text-xs text-stone-500 cursor-pointer active:underline hover:underline">{product?.toko?.nama}</p>
+                                <div className="flex flex-row gap-1 items-center py-1.5 text-stone-500 ">
+                                    <BuildingStorefrontIcon className="size-4 stroke-2"></BuildingStorefrontIcon>
+
+                                    <a className="font-poppins font-semibold text-xs cursor-pointer active:underline hover:underline" onClick={() => navigate(`/shop/${product?.idToko}`)}>
+                                        {product?.toko?.nama}
+                                    </a>
+
+                                    {shop?.shopStatus == 'APPROVE' && (
+                                        <CheckBadgeIcon className="size-4" />
+                                    )}
                                 </div>
                                 <h1 className="font-inter font-semibold text-3xl">{product.nama}</h1>
                                 <p className="font-poppins font-normal text-xs text-stone-500 py-1.5">{product.deskripsi}</p>
@@ -151,13 +174,20 @@ function Product() {
                                     <p className="font-semibold">Stok: {product.stok > 100 ? "100+" : product.stok}</p>
                                     <div className="flex flex-rowjustify-between items-center px-2 h-8 rounded-sm bg-green-accent">
                                         <MinusIcon className="size-8 px-2 stroke-2 cursor-pointer" onClick={(e) => {
-                                            e.preventDefault;
+                                            e.preventDefault();
                                             setQuantity((prev) => Math.max(1, prev - 1));
                                         }}/>
-                                        <input type="number" className="w-10 focus:outline-none text-center" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+
+                                        <input type="number" className="w-10 focus:outline-none text-center" value={quantity} onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (val >= 1 && val <= 6) {
+                                                setQuantity(val);
+                                            }
+                                        }}/>
+
                                         <PlusIcon className="size-8 px-2 stroke-2 cursor-pointer" onClick={(e) => {
                                             e.preventDefault;
-                                            setQuantity(quantity + 1);
+                                            setQuantity((prev) => Math.min(product.stok, prev + 1));
                                         }}/>
                                     </div>
                                 </div>
