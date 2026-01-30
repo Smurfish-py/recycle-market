@@ -3,8 +3,11 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { jwtDecode } from "jwt-decode";
 import isTokenExpired from "../service/isTokenExpired";
 
+import { findShopDataByUser } from '@/controllers/shop.controller';
+
 function Navigation({ className, listStyle }) {
     const [ isOpen, setIsOpen ] = useState(false);
+    const [ myShop, setMyShop ] = useState(null);
     const navigationList = ["Elektronik", "Non_elektronik"];
     const token = localStorage.getItem('token');
     
@@ -21,6 +24,18 @@ function Navigation({ className, listStyle }) {
     const dropdownRef = useRef(null);
 
     useEffect(() => {
+        async function findShop(idUser) {
+            const res = await findShopDataByUser(idUser);
+
+            if (res.length < 1) {
+                return setMyShop('/partnership');
+            }
+            
+            setMyShop(`/shop/${res?.[0]?.id}`);
+        }
+
+        findShop(decode?.id);
+
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsOpen(false);
@@ -31,7 +46,7 @@ function Navigation({ className, listStyle }) {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         };
-    }, [])
+    }, [decode])
 
     let content = (
         <div className={`${listStyle} ${!isOpen ? "hidden" : "visible"} flex flex-col z-20`}>
@@ -49,7 +64,7 @@ function Navigation({ className, listStyle }) {
                 {decode?.privilege == "ADMIN" && !isTokenExpired(token) ? (
                     <a href="/dashboard/admin">Admin</a>
                 ) : (
-                    <a href="/dashboard/shop">Toko</a>
+                    <a href={myShop}>Toko</a>
                 )}
                 <a href="/partnership">Mitra</a>
                 <div className="relative">
