@@ -32,7 +32,6 @@ function Dashboard() {
     }
 
     useEffect(() => {
-
         // Function for fetching all products (sorted desc)
         const fetchProducts = async () => {
             try {
@@ -85,14 +84,13 @@ function Dashboard() {
             <section className="w-full flex gap-3 flex-col min-[320px]:px-2 min-[480px]:max-sm:px-12 sm:px-0 min-[1280px]:hidden">
 
                 {/* Navigation */}
-                <Navigation className="not-sr-only min-[1280px]:sr-only flex justify-between sm:justify-center sm:gap-16" listStyle="dropdown absolute w-40 right-0 sm:-left-2 translate-y-2"/>
+                <Navigation className="not-sr-only min-[1280px]:sr-only flex justify-between sm:justify-center sm:gap-16" listStyle="dropdown absolute w-40 right-0 sm:-left-2 translate-y-2" />
 
                 {/* Search bar */}
                 <SearchBar className={"sm:sr-only not-sr-only"} sendToParent={
                     products => {
                         setProducts(products);
                         setSearch(true);
-                        setError(products.message);
                     }
                     } />
 
@@ -187,7 +185,7 @@ function Dashboard() {
                         ) : (
 
                             <>
-                                { !error ? "" : <p>{error}</p> }
+                                { products[0] == undefined ? <p>{error}</p> : "" }
                                 
                                 <section className="grid grid-cols-1 sm:grid-cols-2 sm:justify-items-center md:gap-y-5 lg:grid-cols-3 select-none">
 
