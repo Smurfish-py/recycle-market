@@ -26,11 +26,11 @@ export default function ProductCard({ tagColor, product, API_URL }) {
                 {/* Product name and Seller */}
                 <div>
                     {/* Product Name */}
-                    <h2 className="hyperlink font-inter font-semibold md:text-xl" onClick={() => navigate(`/product/${product.id}`)}>{product?.nama}</h2>
+                    <h2 className="hyperlink font-inter font-semibold md:text-xl" onClick={() => navigate(`/product/${product?.id}`)}>{product?.nama}</h2>
                     {/* Seller */}
                     <div className="flex flex-row gap-1">
                         <UserCircleIcon className="size-4 md:size-5"></UserCircleIcon>
-                        <h4 className="hyperlink font-poppins font-normal text-xs md:text-sm" onClick={() => navigate(`/toko/${product.toko?.nama}`)}>{product.toko?.nama}</h4>
+                        <h4 className="hyperlink font-poppins font-normal text-xs md:text-sm" onClick={() => navigate(`/shop/${product.toko?.id}`)}>{product.toko?.nama}</h4>
                     </div>
                 </div>
                 {/* Product price and tags */}
@@ -39,7 +39,7 @@ export default function ProductCard({ tagColor, product, API_URL }) {
                     <h3 className="font-inter font-semibold text-xl md:text-2xl">Rp. {product?.harga?.toLocaleString('id-ID')} <span className="text-sm">/{product.jenisHarga}</span></h3>
                     {/* Tags */}
                     <div className="flex flex-row gap-2">
-                        <a href={`/category/${product.kategori}`} className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kategori]}`}>{product.kategori}</a>
+                        <a href={`/category/${product?.kategori}`} className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kategori]}`}>{product.kategori}</a>
                         <a href="" className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kualitas]}`}>{product.kualitas}</a>
                     </div>
                 </div>
