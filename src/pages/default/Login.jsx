@@ -31,7 +31,6 @@ function Login() {
         } catch (error) {
             setErrorMsg(error);
         }
-        
     }
 
     return (
