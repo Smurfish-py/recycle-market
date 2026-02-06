@@ -45,14 +45,14 @@ export default function PartnershipPage() {
                                     <BuildingStorefrontIcon className='size-8'/>
                                 </div>
                                 
-                                <h3 className='flex-5/6'>Membuka fitur halaman khusus toko (Halaman ini akan dibuat otomatis dan nama toko akan menyesuaikan dengan nama user saat ini)</h3>
+                                <h3 className='flex-5/6'>Membuka fitur halaman khusus toko (Halaman ini bisa anda buat dan nama toko bisa di kustom)</h3>
                             </div>
                             <div className='px-2 py-2 flex flex-row items-center gap-4'>
                                 <div className='flex-1/6 flex items-center justify-center'>
                                     <CheckBadgeIcon className='size-8'/>
                                 </div>
                                 
-                                <h3 className='flex-5/6'>Badge certified di sebelah nama user yang menunjukkan bahwa anda adalah user tersertifikasi</h3>
+                                <h3 className='flex-5/6'>Badge certified di sebelah nama user yang menunjukkan bahwa anda adalah user tersertifikasi <strong>(Jika lolos tahap sertifikasi oleh admin)</strong></h3>
                             </div>
                             <div className='px-2 py-2 flex flex-row items-center gap-4'>
                                 <div className='flex-1/6 flex items-center justify-center'>
@@ -81,7 +81,7 @@ export default function PartnershipPage() {
                                     <a className='btn w-fit cursor-pointer' onClick={() => {
                                         navigate('/partnership/policy')
                                     }}>Baca Peraturan dan Kebijakan</a>
-                                    <a className='btn-solid w-fit cursor-pointer' onClick={() => navigate(`/partnership/form/${decode?.id}`)}>DAFTAR PARTNERSHIP</a>
+                                    <a className='btn-solid w-fit cursor-pointer' onClick={() => navigate(`/partnership/form/`)}>DAFTAR PARTNERSHIP</a>
                                 </div>
                             </div>
                         </div>
