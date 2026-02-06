@@ -13,6 +13,9 @@ const registerShop = async (data) => {
 
 const findShopData = async (id) => {
     try {
+        if (!id) {
+            return
+        }
         const res = await axios.get(`${API_URL}/api/toko/data/${id}`);
         return res.data;
     } catch (error) {
