@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-import { userData } from "../controllers/user.controller";
-import isTokenExpired from "../service/isTokenExpired";
+import { userData } from "@/controllers/user.controller";
+import isTokenExpired from "@/service/isTokenExpired";
 
 import Navigation from './Navigation';
 import SearchBar from "./SearchBar";
@@ -18,7 +18,7 @@ export default function Header({ customHeader, title, sendToParent}) {
 
     const token = localStorage.getItem('token');
     const decode = token ? jwtDecode(token) : null;
-
+    
     const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
