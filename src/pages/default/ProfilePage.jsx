@@ -66,11 +66,11 @@ export default function ProfilePage() {
                 </button>
             </div>
             <div className='w-full lg:w-200 pb-2 flex flex-col border border-stone-300 rounded-xl'>
-                <div className="h-40 overflow-hidden">
-                    <img src={placeholder || `${API_URL}/api/images/users/${user?.profilePfp}`} className='w-full h-full object-cover object-center rounded-t-xl' />
+                <div className="h-30 lg:h-40 overflow-hidden">
+                    <img src={user?.profilePfp == null ? placeholder : `${API_URL}/api/images/users/${user?.profilePfp}`} className='w-full h-full object-cover object-center rounded-t-xl brightness-50' />
                 </div>
                 <hr className='text-stone-300' />
-                <div className="min-h-28 lg:min-h-60 flex flex-row justify-between gap-4 lg:gap-8 px-2 lg:px-4">
+                <div className="lg:min-h-60 flex flex-row justify-between gap-4 lg:gap-8 px-2 lg:px-4">
                     <div className='w-1/3 flex justify-center items-center'>
                         {user?.profilePfp == null ? (
                             <UserCircleIcon className='size-50 text-green-main-2/80' />
