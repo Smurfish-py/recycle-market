@@ -1,4 +1,5 @@
-import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { BuildingStorefrontIcon } from "@heroicons/react/24/outline";
+import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ tagColor, product, API_URL }) {
@@ -6,7 +7,6 @@ export default function ProductCard({ tagColor, product, API_URL }) {
 
     return (
         <div className="card items-center sm:max-md:w-full px-2 min-[480px]:max-[640px]:px-12 flex gap-2 sm:gap-0 md:flex-col md:items-start">
-
             {/* Product picture */}
             <div className="cursor-pointer sm:min-w-26 md:h-40 transition duration-300 hover:brightness-75 active:brightness-75" onClick={() => navigate(`/product/${product.id}`)}>
                 {
@@ -29,8 +29,9 @@ export default function ProductCard({ tagColor, product, API_URL }) {
                     <h2 className="hyperlink font-inter font-semibold md:text-xl" onClick={() => navigate(`/product/${product?.id}`)}>{product?.nama}</h2>
                     {/* Seller */}
                     <div className="flex flex-row gap-1">
-                        <UserCircleIcon className="size-4 md:size-5"></UserCircleIcon>
+                        <BuildingStorefrontIcon className="size-4 md:size-5"></BuildingStorefrontIcon>
                         <h4 className="hyperlink font-poppins font-normal text-xs md:text-sm" onClick={() => navigate(`/shop/${product.toko?.id}`)}>{product.toko?.nama}</h4>
+                        {product?.toko?.shopStatus == "APPROVE" && ( <CheckBadgeIcon className="size-4 inline-block self-center text-green-main-2" /> )}
                     </div>
                 </div>
                 {/* Product price and tags */}
