@@ -29,6 +29,15 @@ const findProductByCategory = async (category) => {
     }
 }
 
+const findProductByShopId = async (id) => {
+    try {
+        const res = await axios.get(`${API_URL}/api/produk/toko/${id}`);
+        return res
+    } catch (error) {
+        throw error;
+    }
+}
+
 const searchProduct = async (productName) => {
     try {
         const product = await axios.get(`${API_URL}/api/produk/search/${productName}`);
@@ -82,13 +91,53 @@ const deleteProductById = async (id) => {
     }
 }
 
+const getBookMarkList = async (idUser) => {
+    try {
+        const res = await axios.post(`${API_URL}/bookmark/get/${idUser}`);
+    } catch (error) {
+        throw error;
+    }
+}
+
+const addToBookMark = async (idUser, idProduct) => {
+    try {
+        const res = await axios.post(`${API_URL}/api/produk/bookmark/add/${idUser}/${idProduct}`);
+        return res.data;
+    } catch (error) {
+        throw error
+    }
+}
+
+const removeBookMark = async (idUser, idProduct) => {
+    try {
+        const res = await axios.delete(`${API_URL}/api/produk/bookmark/delete/${idUser}/${idProduct}`);
+        return res.data;
+    } catch (error) {
+        throw error
+    }
+}
+
+const checkBookmark = async (idUser, idProduct) => {
+    try {
+        const res = await axios.get(`${API_URL}/api/produk/bookmark/check/${idUser}/${idProduct}`);
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export { 
     findAllProducts, 
     findProductId, 
     findProductByCategory, 
     searchProduct,
     findRelatedProduct,
+    findProductByShopId,
     addProduct,
     deleteProductById,
-    countProducts
+    countProducts,
+    getBookMarkList,
+    checkBookmark,
+    addToBookMark,
+    removeBookMark
 }
