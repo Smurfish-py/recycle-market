@@ -12,7 +12,8 @@ import {
   EditProfile,
   PartnershipPage,
   Product,
-  ProductByCategory
+  ProductByCategory,
+  BookmarkPage
 } from "@/pages/default/index.js";
 
 import { 
@@ -43,7 +44,7 @@ function App() {
           <Route path="/category/:category" element={ <ProductByCategory /> }></Route>
           <Route path="/shop/:id" element={ <ShopPage /> }></Route>
           <Route path="/shop/:id/edit" element={ <ShopEdit /> }></Route>
-          {/* <Route path="/dashboard/shop" element={<ShopPage />}></Route> */}
+          <Route path="/bookmark" element={ <BookmarkPage /> }></Route>
           <Route path="/partnership" element={ <PartnershipPage /> }></Route>
           <Route path="/sell" element={<SellForm />}></Route>
         </Route>
