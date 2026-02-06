@@ -25,6 +25,8 @@ function Navigation({ className, listStyle }) {
 
     useEffect(() => {
         async function findShop(idUser) {
+            if (!idUser) return setMyShop('/partnership');
+
             const res = await findShopDataByUser(idUser);
 
             if (res.length < 1) {
