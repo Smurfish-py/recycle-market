@@ -6,13 +6,13 @@ export default function ProductCard({ tagColor, product, API_URL }) {
     const navigate = useNavigate();
 
     return (
-        <div className="card items-center sm:max-md:w-full px-2 min-[480px]:max-[640px]:px-12 flex gap-2 sm:gap-0 md:flex-col md:items-start">
+        <div className="card items-center sm:max-md:w-full px-2 min-[480px]:max-[640px]:px-12 flex gap-2 sm:gap-0 md:flex-col md:items-start select-none">
             {/* Product picture */}
-            <div className="cursor-pointer sm:min-w-26 md:h-40 transition duration-300 hover:brightness-75 active:brightness-75" onClick={() => navigate(`/product/${product.id}`)}>
+            <div className="cursor-pointer sm:min-w-26 md:h-40 transition duration-300 hover:brightness-75 active:brightness-75" onClick={() => navigate(`/product/${product?.produk?.id || product.id}`)}>
                 {
-                product.fotoProduk?.[0]?.file ? (
+                product.fotoProduk?.[0]?.file || product?.produk?.fotoProduk?.[0]?.file ? (
                     
-                    <img src={`${API_URL}/api/images/products/${product?.fotoProduk?.[0]?.file}`} className="size-26 rounded-md object-cover object-top md:w-80 md:h-40 sm:object-cover md:object-[25%_15%]" />
+                    <img src={`${API_URL}/api/images/products/${product?.fotoProduk?.[0]?.file || product?.produk?.fotoProduk?.[0]?.file}`} className="size-26 rounded-md object-cover object-top md:w-80 md:h-40 sm:object-cover md:object-[25%_15%]" />
                     
                 ) : (
                     <div className="size-26 rounded-md bg-gray-200 flex items-center justify-center text-xs text-center md:w-80 md:h-40">
@@ -20,28 +20,27 @@ export default function ProductCard({ tagColor, product, API_URL }) {
                     </div>
                 )}
             </div>
-
             <div className="h-full py-3 flex flex-col gap-2 justify-center sm:px-2 sm:gap-4">
             {/* Product Details */}
                 {/* Product name and Seller */}
                 <div>
                     {/* Product Name */}
-                    <h2 className="hyperlink font-inter font-semibold md:text-xl" onClick={() => navigate(`/product/${product?.id}`)}>{product?.nama}</h2>
+                    <h2 className="hyperlink font-inter font-semibold md:text-xl" onClick={() => navigate(`/product/${product?.produk?.id || product?.id}`)}>{product?.nama || product?.produk?.nama}</h2>
                     {/* Seller */}
                     <div className="flex flex-row gap-1">
                         <BuildingStorefrontIcon className="size-4 md:size-5"></BuildingStorefrontIcon>
-                        <h4 className="hyperlink font-poppins font-normal text-xs md:text-sm" onClick={() => navigate(`/shop/${product.toko?.id}`)}>{product.toko?.nama}</h4>
+                        <h4 className="hyperlink font-poppins font-normal text-xs md:text-sm" onClick={() => navigate(`/shop/${product.toko?.id}`)}>{product.toko?.nama || product?.produk?.toko?.nama}</h4>
                         {product?.toko?.shopStatus == "APPROVE" && ( <CheckBadgeIcon className="size-4 inline-block self-center text-green-main-2" /> )}
                     </div>
                 </div>
                 {/* Product price and tags */}
                 <div className="flex flex-col gap-2">
                     {/* Price */}
-                    <h3 className="font-inter font-semibold text-xl md:text-2xl">Rp. {product?.harga?.toLocaleString('id-ID')} <span className="text-sm">/{product.jenisHarga}</span></h3>
+                    <h3 className="font-inter font-semibold text-xl md:text-2xl">Rp. {product?.harga?.toLocaleString('id-ID') || product?.produk?.harga?.toLocaleString('id-ID')} <span className="text-sm">/{product?.jenisHarga || product?.produk?.jenisHarga}</span></h3>
                     {/* Tags */}
                     <div className="flex flex-row gap-2">
-                        <a href={`/category/${product?.kategori}`} className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kategori]}`}>{product.kategori}</a>
-                        <a href="" className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kualitas]}`}>{product.kualitas}</a>
+                        <a href={`/category/${product?.kategori || product?.produk?.kategori}`} className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kategori || product?.produk?.kategori]}`}>{product.kategori || product?.produk?.kategori}</a>
+                        <a href="" className={`text-xs border-1 py-0.5 px-1.5 md:text-sm rounded-full ${tagColor[product.kualitas || product?.produk?.kualitas]}`}>{product.kualitas || product?.produk?.kualitas}</a>
                     </div>
                 </div>
             </div>
