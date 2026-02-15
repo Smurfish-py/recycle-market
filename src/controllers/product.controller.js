@@ -100,18 +100,18 @@ const getBookMarkList = async (idUser) => {
     }
 }
 
-const addToBookMark = async (idUser, idProduct) => {
+const addToBookMark = async (idUser, idProduct, idToko) => {
     try {
-        const res = await axios.post(`${API_URL}/api/produk/bookmark/add/${idUser}/${idProduct}`);
+        const res = await axios.post(`${API_URL}/api/produk/bookmark/add/${idUser}/${idProduct}/${idToko}`);
         return res.data;
     } catch (error) {
         throw error
     }
 }
 
-const removeBookMark = async (idUser, idProduct) => {
+const removeBookMark = async (idUser, idProduct, idToko) => {
     try {
-        const res = await axios.delete(`${API_URL}/api/produk/bookmark/delete/${idUser}/${idProduct}`);
+        const res = await axios.delete(`${API_URL}/api/produk/bookmark/delete/${idUser}/${idProduct}/${idToko}`);
         return res.data;
     } catch (error) {
         throw error
