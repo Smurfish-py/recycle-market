@@ -58,20 +58,6 @@ function Product() {
     } else {
         overall = "Luar Biasa Positif";
     }
-    
-    async function handleMarked(e) {
-        e.preventDefault();
-
-        if (marked) {
-            const res = await removeBookMark(decode?.id, id);
-            setMarked(false);
-            alert(res?.msg);
-        } else {
-            const res = await addToBookMark(decode?.id, id);
-            setMarked(true);
-            alert(res?.msg);
-        }
-    }
 
     useEffect(() => {
         if (token != null && !isTokenExpired(token)) setIsLoggedIn(true);
@@ -115,6 +101,22 @@ function Product() {
             checkMarked(decode?.id, id);
         }
     }, [id]);
+
+    async function handleMarked(e) {
+        e.preventDefault();
+        const product = await findProductId(id);
+        const shopData = await findShopData(product?.data?.idToko);
+
+        if (marked) {
+            const res = await removeBookMark(decode?.id, id, shopData.id);
+            setMarked(false);
+            alert(res?.msg);
+        } else {
+            const res = await addToBookMark(decode?.id, id, shopData.id);
+            setMarked(true);
+            alert(res?.msg);
+        }
+        }
 
     return (
         <>
@@ -230,23 +232,23 @@ function Product() {
 
                                 { !isLoggedIn ? (
                                     <div className="flex flex-row gap-2">
-                                        <button className="btn-solid w-full border-none font-normal cursor-not-allowed bg-zinc-300 text-zinc-500/70 py-2">Anda harus login untuk membeli barang</button>
+                                        <button className="btn-solid w-full border-none font-normal cursor-not-allowed bg-zinc-300 text-zinc-500/70 py-2" onClick={(e) => e.preventDefault()}>Anda harus login untuk membeli barang</button>
                                     </div>
                                 ) : (
-                                    <div className="flex flex-row gap-2">
-                                        <button className="block border-2 flex-1/12 btn md:hidden" onClick={(e) => handleMarked(e)}>
+                                    <div className="flex flex-row justify-between gap-2">
+                                        <button className="flex justify-center items-center border-2 flex-1/12 btn md:hidden" onClick={(e) => handleMarked(e)}>
                                             {marked ? (
-                                                <BookmarkSolid className="size-4 stroke-2" />
+                                                <BookmarkSolid className="size-6 stroke-2" />
                                             ) : (
-                                                <BookmarkOutline className="size-4 stroke-2" />
+                                                <BookmarkOutline className="size-6 stroke-2" />
                                             )}
                                             
                                         </button>
                                         <button className="border py-2 flex-11/12 md:flex-1/2 btn-solid cursor-pointer">Beli Sekarang</button>
-                                        <section className="md:flex-1/2">
+                                        <section className="hidden md:block md:flex-1/2">
                                             <input type="hidden" value={id} name="idProduk" />
                                             <input type="hidden" value={decode?.id} name="idUser" />
-                                            <button className={`hidden ${ marked ? "btn-solid" : "btn" } py-2 w-full border-2 md:flex justify-center cursor-pointer`} onClick={(e) => handleMarked(e)}>
+                                            <button className={`${ marked ? "btn-solid" : "btn" } py-2 w-full border-2 md:flex justify-center cursor-pointer`} onClick={(e) => handleMarked(e)}>
                                                 {marked ? "Disimpan di Markah" : "Simpan ke Markah"}
                                             </button> 
                                         </section>
