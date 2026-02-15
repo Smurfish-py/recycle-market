@@ -1,4 +1,4 @@
-import { ArrowLeftStartOnRectangleIcon, UserIcon, UserCircleIcon,  ArrowLeftEndOnRectangleIcon, BookmarkIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftStartOnRectangleIcon, UserIcon, UserCircleIcon,  ArrowLeftEndOnRectangleIcon, BookmarkIcon, ChevronLeftIcon, BookmarkSquareIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -15,8 +15,7 @@ export default function Header({ customHeader, title, sendToParent}) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [ productData, setProductData ] = useState([]);
     const [ user, setUser ] = useState({});
-
-    const token = localStorage.getItem('token');
+    const [token, setToken] = useState(() => localStorage.getItem('token'));
     const decode = token ? jwtDecode(token) : null;
     
     const API_URL = import.meta.env.VITE_API_URL;
@@ -34,7 +33,7 @@ export default function Header({ customHeader, title, sendToParent}) {
             findUser(decode?.id);
         }
     }, [isLoggedIn, decode?.id]);
-    
+
     
     const logout = () => {
         localStorage.clear();
@@ -42,7 +41,7 @@ export default function Header({ customHeader, title, sendToParent}) {
     }
 
     useEffect(() => {
-        if ( token == undefined || isTokenExpired(token) ) {
+        if ( !token || isTokenExpired(token) ) {
             setIsLoggedIn(false);
         } else {
             setIsLoggedIn(true);
@@ -55,7 +54,7 @@ export default function Header({ customHeader, title, sendToParent}) {
     }, [productData]);
 
     const userOption = (
-        <div className={`absolute border-1 border-stone-300 rounded-md top-2 translate-y-15 right-3 bg-white w-40 h-40 px-2 py-2 ${isOpen ? "block" : "hidden"} flex flex-col justify-between gap-2`}>
+        <div className={`absolute border-1 border-stone-300 rounded-md top-2 translate-y-15 right-3 bg-white w-fit max-w-60 h-fit px-2 py-2 ${isOpen ? "block" : "hidden"} flex flex-col justify-between gap-2`}>
             <div className="flex flex-col gap-2">
                 <h1 className="text-center font-inter font-semibold text-sm pb-2 border-b-1 border-stone-200">Pengaturan Akun</h1>
                 <div className="px-2 flex items-center gap-4">
@@ -66,7 +65,15 @@ export default function Header({ customHeader, title, sendToParent}) {
                             <img src={`${API_URL}/api/images/users/${user?.profilePfp}`} className="object-cover" />
                         </div>
                     )}
-                    <p className="flex flex-col gap-0 text-sm text-left active:underline hover:underline" onClick={() => navigate('/profile')}><strong>Edit Profil</strong><span className="text-xs">{user.username}</span></p>
+                    <a className="flex flex-col gap-0 text-sm text-left active:underline hover:underline" href="/profile">
+                        <strong>Edit Profil</strong><span className="text-xs">{user.username}</span>
+                    </a>
+                </div> 
+                <div className="px-2 flex items-center gap-4">
+                    <BookmarkSquareIcon className="size-8" />
+                    <a className="flex flex-col gap-0 text-sm text-left active:underline hover:underline" href="/bookmark">
+                        <strong>Markah</strong><span className="text-xs">Lihat produk yang anda simpan</span>
+                    </a>
                 </div> 
             </div>
 
@@ -89,7 +96,6 @@ export default function Header({ customHeader, title, sendToParent}) {
                 <Navigation className="sr-only min-[1280px]:not-sr-only gap-4" listStyle="dropdown absolute left translate-y-3 -translate-x-2.5 w-50" />
 
                 <SearchBar className={"sr-only sm:not-sr-only"} sendToParent={setProductData} />
-
                 {isLoggedIn ? (
                     <>
                         <div id="button" className="relative sr-only sm:not-sr-only flex flex-row gap-2 select-none">
