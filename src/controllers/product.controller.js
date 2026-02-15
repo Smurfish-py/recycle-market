@@ -93,7 +93,8 @@ const deleteProductById = async (id) => {
 
 const getBookMarkList = async (idUser) => {
     try {
-        const res = await axios.post(`${API_URL}/bookmark/get/${idUser}`);
+        const res = await axios.get(`${API_URL}/api/produk/bookmark/get/${idUser}`);
+        return res.data;
     } catch (error) {
         throw error;
     }
