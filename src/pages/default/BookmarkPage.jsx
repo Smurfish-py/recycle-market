@@ -6,7 +6,8 @@ import placeholder from '@/assets/images/login-illustration.png';
 import { getBookMarkList } from '@/controllers/product.controller';
 import isTokenExpired from '@/service/isTokenExpired';
 
-import ProductCard from '@/components/ProductCard'
+import ProductCard from '@/components/ProductCard';
+import { BookmarkIcon } from '@heroicons/react/24/outline';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -38,7 +39,7 @@ export default function BookmarkPage() {
     }, []);
 
     return (
-        <div className="mt-16 w-full">
+        <div className="mt-16 w-full flex flex-col items-center">
             <div className="w-full flex flex-col h-fit lg:h-80 gap-2 md:border md:border-zinc-300 rounded-t-2xl">
                 <img src={placeholder} className='h-20 md:flex-1/3 lg:h-full w-full object-cover rounded-t-2xl' />
                 <section className='md:flex-1/3 flex flex-col justify-center px-10 pb-2'>
@@ -46,16 +47,22 @@ export default function BookmarkPage() {
                     <h4 className='text-xs md:text-base'>Lihat barang-barang yang sudah kamu simpan</h4>
                 </section>
             </div>
-            <h2 className='text-xl md:text-2xl my-6 text-center'>Produk yang kamu simpan</h2>
-            <section>
-                {/* Element Loop */}
-                {Array.isArray(products) && products.map((product, index) => (
-                
-                    // Card
-                    console.log(product)
-                    // <ProductCard key={index} tagColor={tagColor} product={product} API_URL={API_URL} />
-                ))}
-            </section>
+            {products?.length < 1 ? (
+                <section className='text-center leading-8'>
+                    <p className='mt-6'>Kamu belum nyimpen barang nih!</p>
+                    <p>klik icon <i className='inline-flex border border-green-main-2 text-green-main-2'><BookmarkIcon className='size-4' /></i> atau <span className='btn-solid text-xs rounded-sm'>Simpan ke Markah</span> pada halaman produk untuk lihat nanti!</p>
+                </section>
+            ) : (
+                <section className='w-full mt-6 lg:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+                    {/* Element Loop */}
+                    {Array.isArray(products) && products.map((product, index) => (
+                    
+                        // Card
+                        <ProductCard key={index} tagColor={tagColor} product={product} API_URL={API_URL} />
+                    ))}
+                </section>
+            )}
+            
         </div>
     )
 }
