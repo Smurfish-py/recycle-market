@@ -1,4 +1,4 @@
-import { ArrowLeftStartOnRectangleIcon, UserIcon, UserCircleIcon,  ArrowLeftEndOnRectangleIcon, BookmarkIcon, ChevronLeftIcon, BookmarkSquareIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftStartOnRectangleIcon, UserIcon, UserCircleIcon,  ArrowLeftEndOnRectangleIcon, BookmarkIcon, ChevronLeftIcon, BookmarkSquareIcon, Bars3BottomRightIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -15,12 +15,14 @@ export default function Header({ customHeader, title, sendToParent}) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [ productData, setProductData ] = useState([]);
     const [ user, setUser ] = useState({});
-    const [token, setToken] = useState(() => localStorage.getItem('token'));
-    const decode = token ? jwtDecode(token) : null;
     
     const API_URL = import.meta.env.VITE_API_URL;
+    const token = localStorage.getItem("token");
+
+    let decode = null;
 
     useEffect(() => {
+        decode = token ? jwtDecode(token) : null;
         if (isLoggedIn) {
             const findUser = async (id) => {
                 try {
@@ -59,14 +61,14 @@ export default function Header({ customHeader, title, sendToParent}) {
                 <h1 className="text-center font-inter font-semibold text-sm pb-2 border-b-1 border-stone-200">Pengaturan Akun</h1>
                 <div className="px-2 flex items-center gap-4">
                     {!user?.profilePfp ? (
-                        <UserIcon className="size-6" />
+                        <UserIcon className="size-8" />
                     ) : (
                         <div className="w-8 aspect-square rounded-full overflow-hidden">
                             <img src={`${API_URL}/api/images/users/${user?.profilePfp}`} className="object-cover" />
                         </div>
                     )}
                     <a className="flex flex-col gap-0 text-sm text-left active:underline hover:underline" href="/profile">
-                        <strong>Edit Profil</strong><span className="text-xs">{user.username}</span>
+                        <strong>Edit Profil</strong><span className="text-xs">{user?.username}</span>
                     </a>
                 </div> 
                 <div className="px-2 flex items-center gap-4">
@@ -99,17 +101,17 @@ export default function Header({ customHeader, title, sendToParent}) {
                 {isLoggedIn ? (
                     <>
                         <div id="button" className="relative sr-only sm:not-sr-only flex flex-row gap-2 select-none">
-                            <button className="btn flex flex-row items-center gap-2 hover:cursor-pointer" onClick={() => navigate('/profile')}>
+                            <a className="btn flex flex-row items-center gap-2 hover:cursor-pointer" href="/profile">
                                 <UserCircleIcon className="size-6" />
                                 <p>Akun</p>
-                            </button>
-                            <button className="btn-solid flex flex-row items-center border gap-1 hover:cursor-pointer select-none" onClick={() => navigate('/bookmark')}>
+                            </a>
+                            <a className="btn-solid flex flex-row items-center border gap-1 hover:cursor-pointer select-none" href="/bookmark">
                                 <BookmarkIcon className="size-6" />
                                 <p>Markah</p>
-                            </button>
+                            </a>
                         </div>
                         <button className="visible sm:hidden" >
-                            <UserCircleIcon className="size-10" onClick={() => setIsOpen(!isOpen)}></UserCircleIcon>
+                            <Bars3BottomRightIcon className="size-8" onClick={() => setIsOpen(!isOpen)} />
                             { userOption }
                         </button>
                     </>
