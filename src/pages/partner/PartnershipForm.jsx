@@ -40,16 +40,22 @@ export default function PartnershipForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         const idUser = e.target.idUser.value;
         const nama = e.target.nama.value;
         const deskripsi = e.target.deskripsi.value;
         const noHp = e.target.noHp.value;
 
         const addShop = async (data) => {
-            const res = await registerShop(data);
-            
-            if (res) {
-                navigate('/')
+            try {
+                const res = await registerShop(data);
+                localStorage.setItem('token', res?.token);
+                if (alert(res.message) && res) {
+                    navigate('/');
+                }
+
+            } catch (error) {
+                return alert(error?.response?.data?.message);
             }
         }
         addShop({ idUser, nama, deskripsi, noHp })
