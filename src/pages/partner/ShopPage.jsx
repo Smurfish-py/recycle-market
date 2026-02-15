@@ -122,7 +122,7 @@ export default function ShopPage() {
             ) : (
                 <>
                     <h3 className='w-full lg:text-center py-4 text-xl'>Barang kami</h3>
-                    <div className='px-2 lg:px-0 grid grid-cols-1 sm:grid-cols-2 sm:justify-items-center md:gap-y-5 lg:grid-cols-3 select-none'>
+                    <div className='grid grid-cols-1 sm:justify-items-center sm:grid-cols-2 md:gap-y-5 lg:grid-cols-3'>
                         {products?.map((product, index) => (
                             <ProductCard key={index} tagColor={tagColor} product={product} API_URL={API_URL} />
                         ))}
