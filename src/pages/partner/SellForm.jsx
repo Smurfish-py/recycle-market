@@ -39,7 +39,7 @@ export default function SellForm() {
         try {
             const sellProduct = async (data) => {
                 const res = await addProduct(data);
-                console.log(res);
+                alert(res.message);
                 return res;
             }
 
@@ -47,7 +47,7 @@ export default function SellForm() {
         } catch (error) {
             console.log(error.data);
         } finally {
-            navigate('/dashboard/shop');
+            navigate(`/shop/${id?.value}`);
         }
     }
 
@@ -63,7 +63,7 @@ export default function SellForm() {
                     <p>Admin akan meninjau produk anda sebelum menjualnya kedalam website</p>
                     <hr className="my-4 text-stone-300" />
                     <div>
-                        <input type="hidden" value={decode?.idToko} name="id" />
+                        <input type="hidden" defaultValue={decode?.idToko} name="id" />
                         <label htmlFor="nama">Nama Produk</label>
                         <input name="nama" className="input-text w-full mb-3" placeholder="Contoh: Baju tak Terpakai" maxLength="30" required />
                         <label htmlFor="deskripsi">Deskripsi Singkat</label><br />
