@@ -8,3 +8,4 @@ export { default as Product } from './Product';
 export { default as ProductByCategory } from './ProductByCategory';
 export { default as PolicyPage } from './PolicyPage';
 export { default as BookmarkPage } from './BookmarkPage';
+export { default as BuyProductPage } from './BuyProductPage';
