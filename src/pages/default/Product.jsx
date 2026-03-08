@@ -244,7 +244,7 @@ function Product() {
                                             )}
                                             
                                         </button>
-                                        <button className="border py-2 flex-11/12 md:flex-1/2 btn-solid cursor-pointer">Beli Sekarang</button>
+                                        <a className="border py-2 flex-11/12 md:flex-1/2 btn-solid cursor-pointer text-center" href={`/buy/${id}?quantity=${quantity}`}>Beli Sekarang</a>
                                         <section className="hidden md:block md:flex-1/2">
                                             <input type="hidden" value={id} name="idProduk" />
                                             <input type="hidden" value={decode?.id} name="idUser" />
