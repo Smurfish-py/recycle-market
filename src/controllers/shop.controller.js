@@ -32,4 +32,18 @@ const findShopDataByUser = async (id) => {
     }
 }
 
-export { registerShop, findShopData, findShopDataByUser }
+const updateShop = async (id, data) => {
+    try {
+        const res = await axios.patch(`${API_URL}/api/toko/update/${id}`, data);
+        return res.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export { 
+    registerShop, 
+    findShopData, 
+    findShopDataByUser, 
+    updateShop 
+}
