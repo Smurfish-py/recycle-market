@@ -8,7 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import isTokenExpired from "@/service/isTokenExpired";
 import { userData, updateUser } from "@/controllers/user.controller";
 
-import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -73,7 +73,7 @@ export default function EditProfile() {
                         <h1 className="text-2xl font-inter font-semibold">BIODATA PENGGUNA</h1>
                         {user.profilePfp == undefined || user.profilePfp == null ? <UserCircleIcon className="size-24"/> : (
                             <>
-                                <img src={`${API_URL}/api/images/users/${user?.profilePfp}`} />
+                                <img src={`${API_URL}/api/images/users/${user?.profilePfp}`} className="size-32 rounded-full aspect-square object-cover" />
                             </>
                         )}
                         
@@ -95,8 +95,11 @@ export default function EditProfile() {
                                 <input name="noHp" className="input-text w-full mb-3" defaultValue={user.noHp} placeholder="Contoh: 08123456789"/>
                                 <label htmlFor="alamat">Alamat Rumah</label>
                                 <input name="alamat" className="input-text w-full mb-3" defaultValue={user.alamat} placeholder="Contoh: Jl. melati no.3 rt02 rw01"/>
-                                <label htmlFor="profilePfp">Foto Profil</label> <br />
-                                <input name="profilePfp" type="file" accept="image/*" onChange={handleFileChange} />
+                                <label htmlFor="profilePfp" className="btn w-full cursor-pointer text-center flex items-center justify-center gap-2 mb-4">
+                                    <ArrowUpTrayIcon className="size-4 stroke-2" />
+                                    Upload foto profil
+                                </label>
+                                <input name="profilePfp" id="profilePfp" type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <button type="submit" className="btn-solid cursor-pointer active:bg-green-800">Perbarui Profil</button>
