@@ -99,7 +99,7 @@ export default function PartnershipForm() {
                         </div>
                         
                     </div>
-                    <p className="text-sm border border-orange-300 bg-orange-50 text-orange-400 p-4">Setiap orang hanya dapat membuat <strong>satu</strong> halaman toko. Nama dan deskripsi <strong>tidak dapat diubah atau diedit</strong> setelah toko dibuat. Pikirkanlah baik-baik!</p>
+                    <p className="text-sm border border-orange-300 bg-orange-50 text-orange-400 p-4">Setiap orang hanya dapat membuat <strong>satu</strong> halaman toko. Nama <strong>tidak dapat diubah atau diedit</strong> setelah toko dibuat. Pikirkanlah baik-baik!</p>
                     <button className="bg-green-main-2/80 hover:bg-green-main-2 active:bg-green-main-2 cursor-pointer px-4 py-2 rounded-sm text-center text-white font-semibold">Submit</button> 
                 </form>
             </div>
