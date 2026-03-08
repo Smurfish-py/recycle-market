@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { ExclamationTriangleIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { UserIcon, CheckBadgeIcon } from '@heroicons/react/24/solid';
 
 import placeholder from '@/assets/images/login-illustration.png';
 import { findShopData } from '@/controllers/shop.controller';
 import { userData } from '@/controllers/user.controller';
 import { findProductByShopId } from '@/controllers/product.controller';
-import isTokenExpired from '@/service/isTokenExpired';
 import ProductCard from '@/components/ProductCard';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -69,14 +68,22 @@ export default function ShopPage() {
     return (
         <div className="mt-16 w-full">
             <div className="flex flex-col rounded-t-lg lg:min-h-120 w-full relative">
-                <img src={placeholder} className='h-20 lg:h-70 rounded-t-lg object-cover brightness-80' />
+                <img src={shop?.fileBanner ? `${API_URL}/api/images/users/shop/banner/${shop?.fileBanner}` : placeholder} className='h-20 lg:h-70 rounded-t-lg object-cover brightness-50' />
                 <div className='flex flex-col lg:flex-row'>
                     <div className='h-12 lg:flex-1/4'>
                         {/* DiV Kosong */}
                     </div>
                     <div className='flex-3/4 p-4'>
                         <section>
-                            <h2 className='text-2xl lg:text-4xl font-semibold'>{shop?.nama}</h2>
+                            <h2 className='text-2xl lg:text-4xl font-semibold'>
+                                {shop?.nama}
+                                {ownerState ? (
+                                    <a className='inline-flex cursor-pointer text-green-main-2 ml-2 text-xs items-center font-semibold' href={`/shop/${id}/edit`}>
+                                        <PencilSquareIcon className='size-5 stroke-2' /> edit toko
+                                    </a>
+                                ) : ""}
+                                
+                            </h2>
                             <div className='mt-2 flex justify-between w-fit gap-2'>
                                 <section className='btn text-xs lg:text-base bg-green-accent font-normal flex items-center gap-2 border w-fit px-2 py-0.5'>
                                     <UserIcon className='size-5 lg:size-6' />
@@ -98,21 +105,21 @@ export default function ShopPage() {
                             </div>
                             <p className='text-sm lg:text-base p-2 my-4 rounded-md bg-green-accent/60 border border-green-main-2/80'>{shop?.deskripsi}</p>
                             <br />
-                            { !enableEdit && ownerState && (
+                            { ownerState && (
                                 <section className='grid grid-cols-2 gap-4'>
                                     <button type='button' className='btn-solid' onClick={() => navigate('/sell')}>
-                                        Jual Barang
+                                        Jual barang
                                     </button>
-                                    <button type='button' className='btn' onClick={() => setEnableEdit(true)}>
-                                        Kelola Toko
-                                    </button>
+                                    <a href={`/shop/${id}/manage`} className='btn text-center'>
+                                        Kelola produk
+                                    </a>
                                 </section>
                             )}
                             
                         </section>
                     </div>
                 </div>
-                <img src={placeholder} className='absolute left-6 lg:left-1/12 top-8 lg:top-2/5 size-25 lg:size-45 rounded-full object-cover object-left border border-zinc-400'/>
+                <img src={shop?.filePfp ? `${API_URL}/api/images/users/shop/pfp/${shop?.filePfp}` : placeholder} className='absolute left-6 lg:left-1/12 top-8 lg:top-2/5 size-25 lg:size-45 rounded-full object-cover object-left border border-zinc-400'/>
             </div>
             {/* <hr className='my-4 text-zinc-400/80' /> */}
             {products?.length < 1 ? (
