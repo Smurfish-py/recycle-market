@@ -62,11 +62,7 @@ export default function ManagementLayout() {
         const selectedQuotes = quotes[Math.floor(Math.random() * quotes.length)];
         setQuote(selectedQuotes);
     }, []);
-
-    useEffect(() => {
-
-    }, []);
-
+    
     return (
         <div className="flex flex-row">
             <aside className={`fixed md:flex left-0 z-50 flex-1/5 border-r-1 border-zinc-300 h-screen px-4 py-2 flex-col gap-4 bg-white md:sticky ${open ? 'w-2/3 md:hidden' : 'hidden'}`}>
