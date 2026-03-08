@@ -13,14 +13,16 @@ import {
   PartnershipPage,
   Product,
   ProductByCategory,
-  BookmarkPage
+  BookmarkPage,
+  BuyProductPage
 } from "@/pages/default/index.js";
 
 import { 
   ShopPage,
   SellForm,
   PartnershipForm,
-  ShopEdit
+  ShopEdit,
+  ManageShopPage
 } from "@/pages/partner/index.js";
 
 import {
@@ -47,6 +49,7 @@ function App() {
           <Route path="/bookmark" element={ <BookmarkPage /> }></Route>
           <Route path="/partnership" element={ <PartnershipPage /> }></Route>
           <Route path="/sell" element={<SellForm />}></Route>
+          <Route path="/shop/:id/manage" element={<ManageShopPage />} />
         </Route>
         <Route element={ <ManagementLayout /> }>
         {/* Admin */}
@@ -61,6 +64,7 @@ function App() {
         <Route path="/login" element={ <Login /> }></Route>
         <Route path="/register" element={ <Register /> }></Route>
         <Route path="/product/:id" element={ <Product /> }></Route>
+        <Route path="/buy/:id" element={<BuyProductPage />}></Route>
         <Route path="/profile/edit" element={ <EditProfile /> }></Route>
         <Route path="/partnership/policy" element={ <PolicyPage /> }></Route>
       </Routes>
