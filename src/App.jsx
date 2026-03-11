@@ -14,7 +14,8 @@ import {
   Product,
   ProductByCategory,
   BookmarkPage,
-  BuyProductPage
+  BuyProductPage,
+  MyOrdersPage
 } from "@/pages/default/index.js";
 
 import { 
@@ -50,6 +51,7 @@ function App() {
           <Route path="/partnership" element={ <PartnershipPage /> }></Route>
           <Route path="/sell" element={<SellForm />}></Route>
           <Route path="/shop/:id/manage" element={<ManageShopPage />} />
+          <Route path="/pesanan" element={<MyOrdersPage />} />
         </Route>
         <Route element={ <ManagementLayout /> }>
         {/* Admin */}
