@@ -9,6 +9,7 @@ import placeholder from '@/assets/images/login-illustration.png';
 import { findShopData } from '@/controllers/shop.controller';
 import { userData } from '@/controllers/user.controller';
 import { findProductByShopId } from '@/controllers/product.controller';
+import isTokenExpired from '@/service/isTokenExpired';
 import ProductCard from '@/components/ProductCard';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -20,7 +21,6 @@ export default function ShopPage() {
     const [ shop, setShop ] = useState(null);
     const [ products, setProducts ] = useState(null);
     const [ ownerState, setOwnerState ] = useState(false);
-    const [ enableEdit, setEnableEdit ] = useState(false);
     const [ user, setUser ] = useState(null);
 
     const token = localStorage.getItem('token');
@@ -105,7 +105,7 @@ export default function ShopPage() {
                             </div>
                             <p className='text-sm lg:text-base p-2 my-4 rounded-md bg-green-accent/60 border border-green-main-2/80'>{shop?.deskripsi}</p>
                             <br />
-                            { ownerState && (
+                            { !isTokenExpired(token) && ownerState && (
                                 <section className='grid grid-cols-2 gap-4'>
                                     <button type='button' className='btn-solid' onClick={() => navigate('/sell')}>
                                         Jual barang
@@ -119,7 +119,7 @@ export default function ShopPage() {
                         </section>
                     </div>
                 </div>
-                <img src={shop?.filePfp ? `${API_URL}/api/images/users/shop/pfp/${shop?.filePfp}` : placeholder} className='absolute left-6 lg:left-1/12 top-8 lg:top-2/5 size-25 lg:size-45 rounded-full object-cover object-left border border-zinc-400'/>
+                <img src={shop?.filePfp ? `${API_URL}/api/images/users/shop/pfp/${shop?.filePfp}` : placeholder} className='absolute left-6 lg:left-1/12 top-8 lg:top-2/5 size-25 lg:size-45 rounded-full object-cover object-center border-6 border-white'/>
             </div>
             {/* <hr className='my-4 text-zinc-400/80' /> */}
             {products?.length < 1 ? (
