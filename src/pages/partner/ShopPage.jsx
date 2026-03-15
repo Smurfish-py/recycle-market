@@ -34,8 +34,12 @@ export default function ShopPage() {
     }
 
     useEffect(() => {
-
         const decode = token ? jwtDecode(token) : null;
+
+        if (token == null || isTokenExpired(token)) {
+            navigate('/login');
+            return;
+        }
 
         async function  fetchUserInfo(id) {
             const res = await userData(id);

@@ -1,8 +1,9 @@
 import { CloudArrowUpIcon, XMarkIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import { jwtDecode } from 'jwt-decode';
 import { useState, useEffect } from "react";
-import { addProduct } from "../../controllers/product.controller";
+import { addProduct } from "@/controllers/product.controller";
 import { useNavigate } from "react-router-dom";
+import isTokenExpired from '@/service/isTokenExpired';
 
 export default function SellForm() {
     const navigate = useNavigate();
@@ -13,6 +14,13 @@ export default function SellForm() {
     // Safety check untuk token
     const token = localStorage.getItem('token');
     const decode = token ? jwtDecode(token) : null;
+
+    useEffect(() => {
+        if (token == null || isTokenExpired(token)) {
+            navigate('/login');
+            return;
+        }
+    }, [token, isTokenExpired]);
 
     // Handle file upload & buat preview image
     const handleFileChange = (e) => {
