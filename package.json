@@ -1,7 +1,7 @@
 {
   "name": "recycle-market",
   "private": true,
-  "version": "2025.3.15-unstable",
+  "version": "2026.3.1-5.2-unstable",
   "type": "module",
   "scripts": {
     "dev": "vite",
