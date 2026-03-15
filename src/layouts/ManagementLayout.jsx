@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { HomeIcon, UserIcon, ShoppingBagIcon, InboxArrowDownIcon, BanknotesIcon, Cog6ToothIcon, ListBulletIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { BuildingStorefrontIcon, HomeIcon, UserIcon, ShoppingBagIcon, InboxArrowDownIcon, BanknotesIcon, Cog6ToothIcon, ListBulletIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { jwtDecode } from "jwt-decode";
 import isTokenExpired from "../service/isTokenExpired";
 import { userData } from "../controllers/user.controller";
@@ -41,6 +41,7 @@ export default function ManagementLayout() {
         { label: "Produk", to:"/dashboard/admin/produk", icon:ShoppingBagIcon },
         { label: "Permintaan", to:"/dashboard/admin/requests", icon: InboxArrowDownIcon },
         { label: "Pesanan", to:"/dashboard/admin/pesanan", icon: BanknotesIcon },
+        { label: "Toko", to:"/dashboard/admin/shop", icon: BuildingStorefrontIcon },
     ]
 
     const quotes = [
