@@ -230,9 +230,9 @@ function Product() {
                                     </div>
                                 </div>
 
-                                { !isLoggedIn ? (
+                                { !isLoggedIn || product?.status !== "LOLOS" ? (
                                     <div className="flex flex-row gap-2">
-                                        <button className="btn-solid w-full border-none font-normal cursor-not-allowed bg-zinc-300 text-zinc-500/70 py-2" onClick={(e) => e.preventDefault()}>Anda harus login untuk membeli barang</button>
+                                        <button className="btn-solid w-full border-none font-normal cursor-not-allowed bg-zinc-300 text-zinc-500/70 py-2" onClick={(e) => e.preventDefault()}>Barang belum terverifikasi atau anda belum login</button>
                                     </div>
                                 ) : (
                                     <div className="flex flex-row justify-between gap-2">
