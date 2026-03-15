@@ -62,6 +62,7 @@ function App() {
           <Route path="/dashboard/admin/produk" element={ <AdminProduct /> }></Route>
           <Route path="/dashboard/admin/requests" element={ <AdminRequests /> }></Route>
           <Route path="/dashboard/admin/pesanan"></Route>
+          <Route path="/dashboard/admin/shop"></Route>
         {/* Partner */}
         </Route>
         <Route path="/login" element={ <Login /> }></Route>
