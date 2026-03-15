@@ -1,9 +1,21 @@
 import { BuildingStorefrontIcon } from "@heroicons/react/24/outline";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ tagColor, product, API_URL }) {
+    const [ productStatus, setProductStatus ] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (product?.status === "DALAM_PENINJAUAN") {
+            setProductStatus("DALAM PENINJAUAN ADMIN");
+        } else if (product?.status === "TIDAK_LOLOS") {
+            setProductStatus("DITOLAK");
+        } else {
+            setProductStatus("");
+        }
+    }, [product, setProductStatus]);
 
     return (
         <div className="card items-center sm:max-md:w-full px-2 min-[480px]:max-[640px]:px-12 flex gap-2 sm:gap-0 md:flex-col md:items-start select-none">
@@ -26,6 +38,9 @@ export default function ProductCard({ tagColor, product, API_URL }) {
                 <div>
                     {/* Product Name */}
                     <h2 className="hyperlink font-inter font-semibold md:text-xl" onClick={() => navigate(`/product/${product?.produk?.id || product?.id}`)}>{product?.nama || product?.produk?.nama}</h2>
+                    {productStatus != "" && (
+                        <p className={`text-sm font-semibold ${product?.status === 'DALAM_PENINJAUAN' ? "text-amber-300" : "text-red-600"}`}>{productStatus}</p>
+                    )}
                     {/* Seller */}
                     <div className="flex flex-row gap-1">
                         <BuildingStorefrontIcon className="size-4 md:size-5"></BuildingStorefrontIcon>
