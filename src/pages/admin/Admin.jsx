@@ -18,6 +18,14 @@ export default function Admin() {
     const privilege = userInfo?.privilege?.[0]?.privilege;
 
     useEffect(() => {
+        if (userInfo !== null) {
+            if (privilege !== "ADMIN") {
+                navigate('/');
+            }
+        }
+    }, [userInfo, privilege, navigate]);
+
+    useEffect(() => {
         const fetchAllAccount = async () => {
             const res = await findAllUsers();
             setUsersList(res.data);
