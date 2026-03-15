@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PlusIcon, TrashIcon, ArrowTopRightOnSquareIcon, ShoppingCartIcon, ArchiveBoxIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { jwtDecode } from "jwt-decode";
-import { findShopDataByUser } from "../../controllers/shop.controller";
-import { findProductByShopId, deleteProductById } from "../../controllers/product.controller";
+import { findShopDataByUser } from "@/controllers/shop.controller";
+import { findProductByShopId, deleteProductById } from "@/controllers/product.controller";
 import placeholder from '@/assets/images/login-illustration.png';
+import isTokenExpired from '@/service/isTokenExpired';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -26,8 +27,8 @@ export default function ManageShopPage() {
                 
                 if (!token) {
                     if (isMounted) {
-                        setError("Sesi tidak ditemukan, silakan login kembali.");
                         setLoading(false);
+                        navigate('/login');
                     }
                     return;
                 }
