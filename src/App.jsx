@@ -29,7 +29,8 @@ import {
 import {
   Admin, 
   UserListAdmin,
-  AdminProduct
+  AdminProduct,
+  AdminRequests
 } from "@/pages/admin/index";
 
 import ManagementLayout from "@/layouts/ManagementLayout";
@@ -59,7 +60,7 @@ function App() {
           <Route path="/dashboard/admin/pengguna" element={ <UserListAdmin /> }></Route>
           <Route path="/dashboard/admin/pengguna/detail/:id" element={ <UserDetails /> }></Route>
           <Route path="/dashboard/admin/produk" element={ <AdminProduct /> }></Route>
-          <Route path="/dashboard/admin/requests"></Route>
+          <Route path="/dashboard/admin/requests" element={ <AdminRequests /> }></Route>
           <Route path="/dashboard/admin/pesanan"></Route>
         {/* Partner */}
         </Route>
