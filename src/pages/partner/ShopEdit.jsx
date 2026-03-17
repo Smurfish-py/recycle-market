@@ -78,7 +78,7 @@ export default function ShopEdit() {
     if (loading) {
         return (
             <div className="w-full h-screen flex flex-col justify-center items-center gap-3 text-zinc-500 mt-16">
-                <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-green-main-2 border-t-transparent rounded-full animate-spin"></div>
                 <p>Memuat informasi toko...</p>
             </div>
         );
@@ -100,7 +100,7 @@ export default function ShopEdit() {
                     <p className="text-gray-500 text-sm mt-1">Sesuaikan profil dan banner untuk menarik lebih banyak pembeli.</p>
                 </div>
 
-                <form className="bg-white border border-gray-200 shadow-sm rounded-xl p-6 sm:p-8 flex flex-col gap-6" onSubmit={handleSubmit}>
+                <form className="bg-white border border-gray-200 rounded-xl p-6 sm:p-8 flex flex-col gap-6" onSubmit={handleSubmit}>
                     
                     {/* Informasi Dasar */}
                     <div className="flex flex-col gap-4">
@@ -120,7 +120,7 @@ export default function ShopEdit() {
                         <div>
                             <label htmlFor="deskripsi" className="block font-semibold text-gray-700 mb-1.5">Deskripsi Toko</label>
                             <textarea 
-                                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition-colors min-h-[120px]"
+                                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-main-2 focus:ring-1 focus:ring-green-main-2 outline-none transition-colors min-h-[120px]"
                                 id="deskripsi" 
                                 name="deskripsi" 
                                 placeholder="Ceritakan tentang toko Anda..."
@@ -167,7 +167,7 @@ export default function ShopEdit() {
                                 </div>
                             </div>
                         </div>
-                        <label htmlFor="pfp" className="mt-2 flex items-center justify-center gap-2 w-full py-2.5 border-2 border-green-500 text-green-600 font-semibold rounded-lg cursor-pointer hover:bg-green-50 transition-colors">
+                        <label htmlFor="pfp" className="mt-2 flex items-center justify-center gap-2 w-full py-2.5 border-2 border-green-main-2/80 text-green-main-2 font-semibold rounded-lg cursor-pointer hover:bg-green-50 transition-colors">
                             <CloudArrowUpIcon className="w-5 h-5" /> Unggah Foto Profil Baru
                         </label>
                         <input name="pfp" type="file" accept="image/*" id="pfp" onChange={handleFileChangePfp} className="hidden" />
@@ -211,7 +211,7 @@ export default function ShopEdit() {
                                 </div>
                             </div>
                         </div>
-                        <label htmlFor="banner" className="mt-2 flex items-center justify-center gap-2 w-full py-2.5 border-2 border-green-500 text-green-600 font-semibold rounded-lg cursor-pointer hover:bg-green-50 transition-colors">
+                        <label htmlFor="banner" className="mt-2 flex items-center justify-center gap-2 w-full py-2.5 border-2 border-green-main-2/80 text-green-main-2  font-semibold rounded-lg cursor-pointer hover:bg-green-50 transition-colors">
                             <CloudArrowUpIcon className="w-5 h-5" /> Unggah Banner Baru
                         </label>
                         <input name="banner" type="file" accept="image/*" id="banner" onChange={handleFileChangeBanner} className="hidden" />
@@ -232,7 +232,7 @@ export default function ShopEdit() {
                             type="submit" 
                             disabled={submitting}
                             className={`px-8 py-2.5 rounded-lg font-semibold text-white transition-colors flex items-center gap-2 
-                                ${submitting ? 'bg-green-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
+                                ${submitting ? 'bg-green-main-2/60 cursor-not-allowed' : 'bg-green-main-2/80 hover:bg-green-main-2 '}`}
                         >
                             {submitting ? (
                                 <>
