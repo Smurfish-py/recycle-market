@@ -1,6 +1,6 @@
 export default function PolicyPage() {
     return (
-        <div className="min-h-screen min-w-screen flex justify-center items-start py-4">
+        <div className="min-h-screen min-w-screen flex justify-center items-start py-4 px-4 md:px-0">
             <div className="max-w-150">
                 <h1 className="text-2xl font-semibold text-center">KEBIJAKAN GREENSHIFT PARTNERSHIP</h1>
                 <p className="text-center">Kebijakan per 22 Januari 2026</p>
