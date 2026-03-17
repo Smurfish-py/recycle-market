@@ -75,16 +75,17 @@ export default function SellForm() {
         }
     };
 
-    const inputClass = "w-full rounded-md border border-stone-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent transition-all bg-stone-50 focus:bg-white";
-    const labelClass = "block text-sm font-semibold text-zinc-700 mb-1.5";
+    const inputClass = "font-inter w-full rounded-md border border-stone-300 px-4 py-2.5 text-md focus:outline-none focus:ring-2 bg-stone-50 focus:bg-white";
+    const labelClass = "block text-lg font-poppins font-semibold text-zinc-700 mb-1.5";
 
     return (
-        <div className="min-h-screen bg-stone-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+        <div className="min-h-screen bg-stone-50 mt-16 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto bg-white rounded-2xl border border-stone-200 overflow-hidden">
                 {/* Header Section */}
                 <div className="bg-green-main-2 px-8 py-6 text-white border-b border-green-700">
                     <h1 className="font-inter font-bold text-2xl">Form Pengajuan Produk Baru</h1>
-                    <p className="text-green-100 text-sm mt-1">Admin akan meninjau produk Anda sebelum ditampilkan ke publik.</p>
+                    <p className="text-md mt-1">Admin akan meninjau produk Anda sebelum ditampilkan ke publik. Batas waktu peninjauan 1 - 7 hari setelah upload.</p>
+                    <p className="text-green-100 text-sm mt-1">Admin belum menyetujui produk anda? Hubungi admin ke no 0812-3456-7890</p>
                 </div>
 
                 <form className="p-8 space-y-8" onSubmit={handleSubmit}>
@@ -92,7 +93,10 @@ export default function SellForm() {
 
                     {/* Section 1: Informasi Dasar */}
                     <div className="space-y-4">
-                        <h2 className="text-lg font-bold text-zinc-800 border-b border-stone-200 pb-2">Informasi Dasar</h2>
+                        <div>
+                            <h2 className="font-inter text-lg font-bold text-zinc-800">Informasi Dasar</h2>
+                            <p className="text-red-500">Input dengan tanda bintang (*) = Wajib diisi</p>
+                        </div>
                         
                         <div>
                             <label htmlFor="nama" className={labelClass}>Nama Produk <span className="text-red-500">*</span></label>
@@ -112,7 +116,7 @@ export default function SellForm() {
 
                     {/* Section 2: Harga & Stok */}
                     <div className="space-y-4">
-                        <h2 className="text-lg font-bold text-zinc-800 border-b border-stone-200 pb-2">Harga & Ketersediaan</h2>
+                        <h2 className="font-inter text-lg font-bold text-zinc-800 border-b border-stone-200 pb-2">Harga & Ketersediaan</h2>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="md:col-span-2">
@@ -197,7 +201,7 @@ export default function SellForm() {
                                 </p>
                                 <div className="flex flex-wrap gap-4">
                                     {previewUrls.map((url, index) => (
-                                        <div key={index} className="relative group w-24 h-24 rounded-md overflow-hidden border border-stone-300 shadow-sm bg-white">
+                                        <div key={index} className="relative group w-24 h-24 rounded-md overflow-hidden border border-stone-300 bg-white">
                                             <img src={url} alt={`Preview ${index}`} className="w-full h-full object-cover" />
                                         </div>
                                     ))}
@@ -219,7 +223,7 @@ export default function SellForm() {
                             type="submit" 
                             disabled={isLoading}
                             className={`px-8 py-2.5 rounded-lg font-semibold text-white transition-all flex items-center justify-center gap-2
-                                ${isLoading ? 'bg-green-400 cursor-not-allowed' : 'bg-green-main-2 hover:bg-green-700 shadow-md hover:shadow-lg'}
+                                ${isLoading ? 'bg-green-400 cursor-not-allowed' : 'bg-green-main-2/80 hover:bg-green-main-2 shadow-md hover:shadow-lg'}
                             `}
                         >
                             {isLoading ? (
