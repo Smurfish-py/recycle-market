@@ -74,14 +74,14 @@ export default function AdminRequests() {
                 </div>
             </div>
 
-            <div className="card border border-zinc-300 bg-white flex flex-col p-6 col-span-1 lg:col-span-3">
+            <div className="w-82 md:w-full overflow-auto card border border-zinc-300 bg-white flex flex-col p-6 col-span-1 lg:col-span-3">
                 <div className="overflow-x-auto rounded-md">
                     {isLoading ? (
                         <div className="text-center py-10 text-zinc-500">Memuat data permintaan...</div>
                     ) : (
                         <table className="
                             w-full border border-zinc-300 border-collapse
-                            [&_tr]:h-14 [&_tr]:border [&_tr]:border-zinc-300
+                            [&_tr]:h-10  [&_tr]:border [&_tr]:border-zinc-300
                             [&_th]:px-4 [&_th]:border [&_th]:border-zinc-300
                             [&_td]:px-4 [&_td]:border [&_td]:border-zinc-300 
                         ">
