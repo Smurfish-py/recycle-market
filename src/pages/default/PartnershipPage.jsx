@@ -52,7 +52,7 @@ export default function PartnershipPage() {
                                     <CheckBadgeIcon className='size-8'/>
                                 </div>
                                 
-                                <h3 className='flex-5/6'>Badge certified di sebelah nama user yang menunjukkan bahwa anda adalah user tersertifikasi <strong>(Jika lolos tahap sertifikasi oleh admin)</strong></h3>
+                                <h3 className='flex-5/6'>Badge certified di sebelah nama user yang menunjukkan bahwa anda adalah user tersertifikasi <strong>(Jika lolos tahap verifikasi oleh admin)</strong></h3>
                             </div>
                             <div className='px-2 py-2 flex flex-row items-center gap-4'>
                                 <div className='flex-1/6 flex items-center justify-center'>
