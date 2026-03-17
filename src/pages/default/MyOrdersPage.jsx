@@ -75,7 +75,7 @@ export default function MyOrdersPage() {
                 )}
 
                 {(!orders || orders.length === 0) && !error ? (
-                    <div className="bg-white p-12 text-center rounded-xl border border-stone-200 shadow-sm flex flex-col items-center">
+                    <div className="bg-white p-12 text-center rounded-xl border border-stone-200 flex flex-col items-center">
                         <ShoppingBagIcon className="w-16 h-16 text-zinc-300 mb-4" />
                         <h2 className="text-xl font-semibold text-zinc-700">Belum Ada Transaksi</h2>
                         <p className="text-zinc-500 mt-2 mb-6">Anda belum pernah melakukan pembelian produk apapun.</p>
@@ -86,7 +86,7 @@ export default function MyOrdersPage() {
                 ) : (
                     <div className="space-y-4">
                         {orders?.map((order) => (
-                            <div key={order.id} className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow">
+                            <div key={order.id} className="bg-white p-5 rounded-xl border border-stone-200">
                                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b border-stone-100 pb-4 mb-4">
                                     <div className="flex items-center gap-2 text-sm text-zinc-500">
                                         <CalendarDaysIcon className="w-4 h-4" />
@@ -103,10 +103,10 @@ export default function MyOrdersPage() {
 
                                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                                     <div className="flex-1">
-                                        <h3 className="text-lg font-bold text-zinc-800">
+                                        <h3 className="font-inter text-xl font-bold text-zinc-800">
                                             {order.produk?.nama || "Produk Tidak Ditemukan / Dihapus"}
                                         </h3>
-                                        <p className="text-sm text-zinc-500 mt-1">
+                                        <p className="text-md text-zinc-500 mt-1">
                                             Penjual: {order.penjual?.toko?.[0]?.nama || order.penjual?.fullname || "Tidak diketahui"}
                                         </p>
                                         {order.keterangan && (
@@ -116,7 +116,7 @@ export default function MyOrdersPage() {
                                         )}
                                     </div>
 
-                                    <div className="text-left sm:text-right bg-stone-50 p-3 rounded-lg border border-stone-100 min-w-[200px]">
+                                    <div className="text-left sm:text-right p-3">
                                         <p className="text-sm text-zinc-500">Total Harga ({order.kuantitas} Barang)</p>
                                         <p className="text-lg font-bold text-green-600 mt-0.5">
                                             Rp {(order.produk?.harga * order.kuantitas)?.toLocaleString('id-ID') || "0"}
@@ -127,7 +127,7 @@ export default function MyOrdersPage() {
                                 <div className="mt-4 pt-4 border-t border-stone-100 flex justify-end">
                                     <Link 
                                         to={`/product/${order.idProduk}`} 
-                                        className="text-sm font-semibold text-green-main-2 border border-green-main-2 hover:bg-green-50 px-4 py-2 rounded-md transition-colors"
+                                        className="text-sm font-semibold text-white bg-green-main-2 px-4 py-2 rounded-md"
                                     >
                                         Beli Lagi
                                     </Link>
