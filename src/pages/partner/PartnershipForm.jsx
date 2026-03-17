@@ -49,11 +49,9 @@ export default function PartnershipForm() {
         const addShop = async (data) => {
             try {
                 const res = await registerShop(data);
+                alert(res.message);
                 localStorage.setItem('token', res?.token);
-                if (alert(res.message) && res) {
-                    navigate('/');
-                }
-
+                navigate('/');
             } catch (error) {
                 return alert(error?.response?.data?.message);
             }
