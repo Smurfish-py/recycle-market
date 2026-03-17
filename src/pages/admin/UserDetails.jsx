@@ -83,10 +83,11 @@ export default function UserDetails() {
         );
     }
 
-    const userPrivilege = user?.privilege?.[0]?.privilege || "DEFAULT";
+    
 
+    const userPrivilege = user?.privilege?.[0]?.privilege || "DEFAULT";
     return (
-        <section className="flex flex-col gap-6 py-2 px-4 h-full pb-10">
+        <section className="flex flex-col gap-6 py-2 px-4 h-full max-h-140 pb-10 overflow-auto">
             {/* Header & Back Button */}
             <div>
                 <button 
@@ -100,21 +101,21 @@ export default function UserDetails() {
             </div>
             
             {/* Kartu Profil Utama */}
-            <div className="bg-white rounded-xl shadow-sm border border-zinc-200 p-6 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-6">
+            <div className="bg-white rounded-xl  border border-zinc-200 p-6 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-6">
                 <div className="flex flex-row items-center gap-6">
                     {user?.profilePfp ? (
                         <img 
                             src={`${API_URL}/api/images/users/${user?.profilePfp}`} 
                             alt={user?.fullname}
-                            className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-full border-4 border-gray-50 shadow-sm" 
+                            className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-full border-4 border-gray-50 " 
                         />
                     ) : (
-                        <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center bg-gray-100 rounded-full border-4 border-gray-50 shadow-sm text-gray-400">
+                        <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center bg-gray-100 rounded-full border-4 border-gray-50  text-gray-400">
                             <UserCircleIcon className="w-16 h-16" />
                         </div>
                     )}
                     <div className="flex flex-col gap-1">
-                        <h3 className="text-2xl font-bold text-gray-900">{user?.fullname}</h3>
+                        <h3 className="font-inter text-2xl text-gray-900">{user?.fullname}</h3>
                         <h4 className="text-gray-500 font-medium">@{user?.username}</h4>
                         <div className="mt-3">
                             <span className={styles[userPrivilege] || styles.DEFAULT}>
@@ -124,7 +125,7 @@ export default function UserDetails() {
                     </div>
                 </div>
                 
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 w-full sm:w-auto">
+                <div className=" p-4 rounded-lg w-full sm:w-auto">
                     <p className="flex items-center gap-2 text-gray-600 text-sm">
                         <ArrowRightEndOnRectangleIcon className="w-5 h-5 text-gray-400" />
                         <span>Login Terakhir: <br className="hidden sm:block" /> <span className="font-medium text-gray-800">{formatDateTime(user?.lastOnline)}</span></span>
@@ -133,7 +134,7 @@ export default function UserDetails() {
             </div>
             
             {/* Informasi Pengguna */}
-            <section className="bg-white rounded-xl shadow-sm border border-zinc-200 p-6 flex flex-col">
+            <section className="bg-white rounded-xl  border border-zinc-200 p-6 flex flex-col">
                 <div className="flex flex-row justify-between items-center mb-6">
                     <div className="flex flex-row gap-3 items-center">
                         <div className="bg-green-100 text-green-600 rounded-lg p-2">
@@ -148,28 +149,28 @@ export default function UserDetails() {
                         <p className="text-gray-500 text-sm flex items-center gap-2">
                             <EnvelopeIcon className="w-4 h-4" /> Email
                         </p>
-                        <p className="sm:col-span-2 font-medium text-gray-900">{user?.email}</p>
+                        <p className="sm:col-span-2  text-gray-900">{user?.email}</p>
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-4 hover:bg-gray-50 transition-colors">
                         <p className="text-gray-500 text-sm flex items-center gap-2">
                             <PhoneIcon className="w-4 h-4" /> Telepon
                         </p>
-                        <p className="sm:col-span-2 font-medium text-gray-900">{user?.noHp ? user?.noHp : <span className="text-gray-400 italic">Tidak ada</span>}</p>
+                        <p className="sm:col-span-2 text-gray-900">{user?.noHp ? user?.noHp : <span className="text-gray-400 italic">Tidak ada</span>}</p>
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-4 hover:bg-gray-50 transition-colors">
                         <p className="text-gray-500 text-sm flex items-center gap-2">
                             <CalendarDaysIcon className="w-4 h-4" /> Terdaftar Sejak
                         </p>
-                        <p className="sm:col-span-2 font-medium text-gray-900">{formatDateTime(user?.createdAt)}</p>
+                        <p className="sm:col-span-2 text-gray-900">{formatDateTime(user?.createdAt)}</p>
                     </div>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-4 hover:bg-gray-50 transition-colors">
                         <p className="text-gray-500 text-sm flex items-center gap-2">
                             <HomeIcon className="w-4 h-4" /> Alamat Rumah
                         </p>
-                        <p className="sm:col-span-2 font-medium text-gray-900 leading-relaxed">
+                        <p className="sm:col-span-2 text-gray-900 leading-relaxed">
                             {user?.alamat ? user?.alamat : <span className="text-gray-400 italic">Tidak ada</span>}
                         </p>
                     </div>
@@ -177,14 +178,14 @@ export default function UserDetails() {
             </section>
 
             {/* Zona Berbahaya */}
-            {userPrivilege !== 'ADMIN' && (
+            {userPrivilege === 'ADMIN' && (
                 <section className="bg-red-50 rounded-xl border border-red-200 p-6 flex flex-col items-start gap-4">
                     <div>
                         <h2 className="text-xl font-bold text-red-700">Zona Berbahaya</h2>
                         <p className="text-sm text-red-600 mt-1">Pikirkan secara matang, setiap aksi pada zona ini tidak dapat dikembalikan atau dibatalkan.</p>
                     </div>
                     <button
-                        className="bg-red-600 hover:bg-red-700 text-white font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm focus:ring-4 focus:ring-red-200 outline-none"
+                        className="bg-red-600 hover:bg-red-700 text-white font-medium px-5 py-2.5 rounded-lg transition-colors  focus:ring-4 focus:ring-red-200 outline-none"
                         onClick={() => {
                             const confirmDelete = window.confirm(`Apakah Anda yakin ingin menghapus akun milik ${user?.fullname} secara permanen?`);
                             if (confirmDelete) {
