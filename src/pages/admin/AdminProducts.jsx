@@ -56,7 +56,7 @@ export default function AdminProduct() {
     );
 
     return (
-        <section className="w-full flex flex-col gap-4">
+        <section className="w-82 md:w-full overflow-auto flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h2 className="text-2xl font-semibold">Manajemen Produk</h2>
                 
