@@ -145,7 +145,7 @@ function Product() {
                                     </div> 
                                     <div className="flex flex-row px-4 mt-2 gap-3 w-full overflow-y-auto md:px-0">
                                         {images.map((image, index) => (
-                                            <div key={index} className="border border-stone-400 rounded-md w-20 h-20 cursor-pointer transition duration-300 hover:brightness-75 active:brightness-75" onClick={() => {setSelected(index)}}>
+                                            <div key={index} className="border border-stone-400 rounded-md w-20 h-20 cursor-pointer transition duration-300 hover:brightness-75 active:brightness-75 touch-manipulation" onClick={() => {setSelected(index)}}>
                                                 <img src={`${API_URL}/api/images/products/${image?.file}`} className="rounded-md h-full w-full object-cover"/>
                                             </div>
                                         ))} 
@@ -176,7 +176,7 @@ function Product() {
                             </div>
                             <hr className="text-stone-200"/>
                             <div className="font-poppins py-6 flex flex-col gap-1">
-                                <h2 className="font-poppins text-3xl font-semibold">Avg. Rating: {parseFloat(average.toFixed(2))}<span className="text-xl text-stone-400">/5</span></h2>
+                                <h2 className="font-poppins text-3xl font-semibold">Rating: {parseFloat(average.toFixed(2))}<span className="text-xl text-stone-400">/5</span></h2>
                                 <p className="text-xs text-stone-500">{overall} {`(${product?.rating?.length} pengulas)`}</p>
                             </div>
                             <hr className="text-stone-200"/>
@@ -204,6 +204,11 @@ function Product() {
                                             </div>
                                         ))}
                                     </div>
+                                )}
+                                {!isLoggedIn || product?.status !== "LOLOS" ? (
+                                    <button className="btn-solid mt-4 w-full border-none font-normal cursor-not-allowed bg-zinc-300 text-zinc-500/70 py-2" onClick={(e) => e.preventDefault()}>Barang belum terverifikasi atau anda belum login</button>
+                                ) : (
+                                    <a className="btn w-full mt-4 text-center font-inter">Berikan komentar & rating</a>
                                 )}
                             </div>
                             <hr className="text-stone-200"/>
@@ -244,7 +249,7 @@ function Product() {
                                             )}
                                             
                                         </button>
-                                        <a className="border py-2 flex-11/12 md:flex-1/2 btn-solid cursor-pointer text-center" href={`/buy/${id}?quantity=${quantity}`}>Beli Sekarang</a>
+                                        <a className="border py-2 flex-11/12 md:flex-1/2 btn-solid cursor-pointer text-center hover:brightness-90 active:brightness-90" href={`/buy/${id}?quantity=${quantity}`}>Beli Sekarang</a>
                                         <section className="hidden md:block md:flex-1/2">
                                             <input type="hidden" value={id} name="idProduk" />
                                             <input type="hidden" value={decode?.id} name="idUser" />
