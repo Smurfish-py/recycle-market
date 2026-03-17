@@ -1,4 +1,4 @@
-import { ArrowLeftStartOnRectangleIcon, UserIcon, UserCircleIcon,  ArrowLeftEndOnRectangleIcon, BookmarkIcon, ChevronLeftIcon, BookmarkSquareIcon, Bars3BottomRightIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftStartOnRectangleIcon, UserIcon, UserCircleIcon,  ArrowLeftEndOnRectangleIcon, ChevronLeftIcon, BookmarkIcon, BookmarkSquareIcon, ShoppingBagIcon, Bars3BottomRightIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -58,7 +58,7 @@ export default function Header({ customHeader, title, sendToParent}) {
     const userOption = (
         <div className={`absolute border-1 border-stone-300 rounded-md top-2 translate-y-15 right-3 bg-white w-fit max-w-60 h-fit px-2 py-2 ${isOpen ? "block" : "hidden"} flex flex-col justify-between gap-2`}>
             <div className="flex flex-col gap-2">
-                <h1 className="text-center font-inter font-semibold text-sm pb-2 border-b-1 border-stone-200">Pengaturan Akun</h1>
+                <h1 className="text-center font-inter font-semibold text-sm pb-2 border-b-1 border-stone-200">Opsi</h1>
                 <div className="px-2 flex items-center gap-4">
                     {!user?.profilePfp ? (
                         <UserIcon className="size-8" />
@@ -75,6 +75,12 @@ export default function Header({ customHeader, title, sendToParent}) {
                     <BookmarkSquareIcon className="size-8" />
                     <a className="flex flex-col gap-0 text-sm text-left active:underline hover:underline" href="/bookmark">
                         <strong>Markah</strong><span className="text-xs">Lihat produk yang anda simpan</span>
+                    </a>
+                </div> 
+                <div className="px-2 flex items-center gap-4">
+                    <ShoppingBagIcon className="size-8" />
+                    <a className="flex flex-col gap-0 text-sm text-left active:underline hover:underline" href="pesanan">
+                        <strong>Pesanan Anda</strong><span className="text-xs">Lihat produk yang anda pesan</span>
                     </a>
                 </div> 
             </div>
@@ -100,14 +106,15 @@ export default function Header({ customHeader, title, sendToParent}) {
                 <SearchBar className={"sr-only sm:not-sr-only"} sendToParent={setProductData} />
                 {isLoggedIn ? (
                     <>
-                        <div id="button" className="relative sr-only sm:not-sr-only flex flex-row gap-2 select-none">
-                            <a className="btn flex flex-row items-center gap-2 hover:cursor-pointer" href="/profile">
-                                <UserCircleIcon className="size-6" />
-                                <p>Akun</p>
-                            </a>
-                            <a className="btn-solid flex flex-row items-center border gap-1 hover:cursor-pointer select-none" href="/bookmark">
+                        <div id="button" className="relative sr-only sm:not-sr-only flex flex-row gap-0.5 select-none">
+                            <a className="btn text-green-main-1 border-none flex flex-row items-center border gap-1 hover:cursor-pointer select-none hover:bg-slate-100" href="/bookmark">
                                 <BookmarkIcon className="size-6" />
-                                <p>Markah</p>
+                            </a>
+                            <a className="btn text-green-main-1 border-none flex flex-row items-center border gap-1 hover:cursor-pointer select-none hover:bg-slate-100" href="/pesanan">
+                                <ShoppingBagIcon className="size-6" />
+                            </a>
+                            <a className="btn text-green-main-1 font-normal border-none flex flex-row items-center gap-2 hover:cursor-pointer hover:bg-slate-100" href="/profile">
+                                <UserCircleIcon className="size-7" />
                             </a>
                         </div>
                         <button className="visible sm:hidden" >
