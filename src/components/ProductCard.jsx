@@ -20,7 +20,7 @@ export default function ProductCard({ tagColor, product, API_URL }) {
     return (
         <div className="card items-center sm:max-md:w-full px-2 min-[480px]:max-[640px]:px-12 flex gap-2 sm:gap-0 md:flex-col md:items-start select-none">
             {/* Product picture */}
-            <div className="cursor-pointer sm:min-w-26 md:h-40 transition duration-300 hover:brightness-75 active:brightness-75" onClick={() => navigate(`/product/${product?.produk?.id || product.id}`)}>
+            <a className="cursor-pointer sm:min-w-26 md:h-40 transition duration-300 hover:brightness-75 active:brightness-75" href={`/product/${product?.produk?.id || product?.id}`}>
                 {
                 product.fotoProduk?.[0]?.file || product?.produk?.fotoProduk?.[0]?.file ? (
                     
@@ -31,13 +31,13 @@ export default function ProductCard({ tagColor, product, API_URL }) {
                         <p className="font-inter font-semibold text-gray-400">Tidak ada Foto</p>
                     </div>
                 )}
-            </div>
+            </a>
             <div className="h-full py-3 flex flex-col gap-2 justify-center sm:px-2 sm:gap-4">
             {/* Product Details */}
                 {/* Product name and Seller */}
                 <div>
                     {/* Product Name */}
-                    <h2 className="hyperlink font-inter font-semibold md:text-xl" onClick={() => navigate(`/product/${product?.produk?.id || product?.id}`)}>{product?.nama || product?.produk?.nama}</h2>
+                    <a className="hyperlink font-inter font-semibold md:text-xl" href={`/product/${product?.produk?.id || product?.id}`}>{product?.nama || product?.produk?.nama}</a>
                     {productStatus != "" && (
                         <p className={`text-sm font-semibold ${product?.status === 'DALAM_PENINJAUAN' ? "text-amber-300" : "text-red-600"}`}>{productStatus}</p>
                     )}
