@@ -6,10 +6,9 @@ import {
     ExclamationTriangleIcon, 
     PencilSquareIcon,
     ArchiveBoxXMarkIcon,
-    PlusCircleIcon,
     Cog6ToothIcon
 } from '@heroicons/react/24/outline';
-import { UserIcon, CheckBadgeIcon, ShoppingBagIcon } from '@heroicons/react/24/solid';
+import { UserIcon, CheckBadgeIcon } from '@heroicons/react/24/solid';
 
 import placeholder from '@/assets/images/login-illustration.png';
 import { findShopData } from '@/controllers/shop.controller';
