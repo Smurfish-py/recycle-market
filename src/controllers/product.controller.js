@@ -127,11 +127,8 @@ const checkBookmark = async (idUser, idProduct) => {
     }
 }
 
-// Tambahkan 3 fungsi ini di src/controllers/product.controller.js
-
 const getPendingProducts = async () => {
     try {
-        // Sesuaikan endpoint ini dengan backend Anda (contoh: mengambil produk berstatus PENDING)
         const res = await axios.get(`${API_URL}/api/products/pending`);
         return res;
     } catch (error) {
@@ -141,7 +138,6 @@ const getPendingProducts = async () => {
 
 const approveProduct = async (id) => {
     try {
-        // Sesuaikan endpoint ini. Biasanya PATCH/PUT status menjadi 'AVAILABLE'
         const res = await axios.patch(`${API_URL}/api/products/${id}/approve`);
         return res;
     } catch (error) {
@@ -151,7 +147,6 @@ const approveProduct = async (id) => {
 
 const rejectProduct = async (id) => {
     try {
-        // Sesuaikan endpoint ini. Bisa mengubah status menjadi 'REJECTED' atau DELETE produk
         const res = await axios.patch(`${API_URL}/api/products/${id}/reject`);
         return res;
     } catch (error) {

@@ -18,16 +18,13 @@ export default function UserDetails() {
     const userInfo = useOutletContext();
     const privilege = userInfo?.privilege?.[0]?.privilege;
 
-    // --- PERBAIKAN PRIVILEGE CHECKING ---
     useEffect(() => {
-        // Tunggu sampai context tidak null (sudah selesai di-load)
         if (userInfo !== null) {
             if (privilege !== "ADMIN") {
                 navigate("/");
             }
         }
     }, [userInfo, privilege, navigate]);
-    // ------------------------------------
 
     useEffect(() => {
         const fetchData = async (uid) => {
@@ -88,7 +85,6 @@ export default function UserDetails() {
     const userPrivilege = user?.privilege?.[0]?.privilege || "DEFAULT";
     return (
         <section className="flex flex-col gap-6 py-2 px-4 h-full max-h-140 pb-10 overflow-auto">
-            {/* Header & Back Button */}
             <div>
                 <button 
                     onClick={() => navigate(-1)} 
@@ -99,8 +95,7 @@ export default function UserDetails() {
                 </button>
                 <h2 className="text-2xl font-semibold text-gray-800">Detail Profil</h2>
             </div>
-            
-            {/* Kartu Profil Utama */}
+
             <div className="bg-white rounded-xl  border border-zinc-200 p-6 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-6">
                 <div className="flex flex-row items-center gap-6">
                     {user?.profilePfp ? (
@@ -132,8 +127,7 @@ export default function UserDetails() {
                     </p>
                 </div>
             </div>
-            
-            {/* Informasi Pengguna */}
+
             <section className="bg-white rounded-xl  border border-zinc-200 p-6 flex flex-col">
                 <div className="flex flex-row justify-between items-center mb-6">
                     <div className="flex flex-row gap-3 items-center">
@@ -177,7 +171,6 @@ export default function UserDetails() {
                 </div>
             </section>
 
-            {/* Zona Berbahaya */}
             {userPrivilege === 'ADMIN' && (
                 <section className="bg-red-50 rounded-xl border border-red-200 p-6 flex flex-col items-start gap-4">
                     <div>
@@ -189,7 +182,6 @@ export default function UserDetails() {
                         onClick={() => {
                             const confirmDelete = window.confirm(`Apakah Anda yakin ingin menghapus akun milik ${user?.fullname} secara permanen?`);
                             if (confirmDelete) {
-                                // TODO: Panggil fungsi delete user API di sini
                                 alert("Fitur hapus belum terhubung ke API");
                             }
                         }}

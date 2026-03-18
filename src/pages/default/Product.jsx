@@ -354,7 +354,6 @@ function Product() {
                     <form className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity" onSubmit={ handleRating }>
                         <input type="hidden" />
                         <div className="bg-white w-full max-w-lg rounded-xl shadow-xl flex flex-col overflow-auto">
-                            {/* Header Modal */}
                             <div className="flex justify-between items-center p-5 border-b border-stone-200">
                                 <h3 className="font-medium text-xl font-inter text-stone-800">Beri Penilaian</h3>
                                 <button 
@@ -365,8 +364,7 @@ function Product() {
                                     <XMarkIcon className="w-5 h-5 stroke-2" />
                                 </button>
                             </div>
-                            
-                            {/* Isi Modal Kosong */}
+
                             <div className="p-6 min-h-[250px] grid grid-cols-1 gap-2 bg-stone-50/50">
                                 <section>
                                     <h2 className="font-inter font-medium text-lg">Rating secara keseluruhan</h2>
@@ -378,7 +376,6 @@ function Product() {
                                 </div>
                             </div>
 
-                            {/* Footer Modal */}
                             <div className="mt-4 p-5 border-t border-stone-200 flex justify-end gap-3 bg-white">
                                 <button 
                                     type="button" 

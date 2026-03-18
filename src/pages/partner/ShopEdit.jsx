@@ -66,7 +66,7 @@ export default function ShopEdit() {
             setSubmitting(true);
             await updateShop(id, formData);
             alert("Informasi toko berhasil diperbarui!");
-            navigate(`/shop/${id}`); // Menggunakan navigate agar tidak hard-reload
+            navigate(`/shop/${id}`);
         } catch (error) {
             console.error("Gagal update toko:", error);
             alert("Gagal memperbarui informasi toko.");
@@ -87,7 +87,6 @@ export default function ShopEdit() {
     return (
         <div className="mt-20 mb-10 flex flex-col items-center justify-center w-full px-4">
             <div className="w-full max-w-4xl flex flex-col gap-4">
-                {/* Header Section */}
                 <div>
                     <button 
                         onClick={() => navigate(-1)} 
@@ -101,8 +100,6 @@ export default function ShopEdit() {
                 </div>
 
                 <form className="bg-white border border-gray-200 rounded-xl p-6 sm:p-8 flex flex-col gap-6" onSubmit={handleSubmit}>
-                    
-                    {/* Informasi Dasar */}
                     <div className="flex flex-col gap-4">
                         <div>
                             <label htmlFor="nama" className="block font-semibold text-gray-700 mb-1.5">Nama Toko</label>
@@ -130,14 +127,11 @@ export default function ShopEdit() {
                     </div>
 
                     <hr className="border-gray-200 my-2" /> 
-
-                    {/* Foto Profil Toko */}
                     <div className="flex flex-col gap-3">
                         <div className="flex justify-between items-center">
                             <h3 className="font-semibold text-lg text-gray-800">Foto Profil Toko</h3>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {/* Current */}
                             <div className="flex flex-col gap-2">
                                 <p className="text-sm font-medium text-gray-500">Saat Ini</p>
                                 <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-center justify-center h-48">
@@ -148,7 +142,6 @@ export default function ShopEdit() {
                                     />
                                 </div>
                             </div>
-                            {/* Preview */}
                             <div className="flex flex-col gap-2">
                                 <p className="text-sm font-medium text-gray-500">Preview Perubahan</p>
                                 <div className="border border-dashed border-gray-300 bg-gray-50 rounded-lg p-4 flex items-center justify-center h-48 relative overflow-hidden group">
@@ -175,13 +168,11 @@ export default function ShopEdit() {
 
                     <hr className="border-gray-200 my-2" />
 
-                    {/* Banner Toko */}
                     <div className="flex flex-col gap-3">
                         <div className="flex justify-between items-center">
                             <h3 className="font-semibold text-lg text-gray-800">Banner Toko</h3>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {/* Current */}
                             <div className="flex flex-col gap-2">
                                 <p className="text-sm font-medium text-gray-500">Saat Ini</p>
                                 <div className="border border-gray-200 bg-gray-50 rounded-lg p-2 flex items-center justify-center h-40">
@@ -192,7 +183,6 @@ export default function ShopEdit() {
                                     />
                                 </div>
                             </div>
-                            {/* Preview */}
                             <div className="flex flex-col gap-2">
                                 <p className="text-sm font-medium text-gray-500">Preview Perubahan</p>
                                 <div className="border border-dashed border-gray-300 bg-gray-50 rounded-lg p-2 flex items-center justify-center h-40">
@@ -218,8 +208,7 @@ export default function ShopEdit() {
                     </div>
 
                     <hr className="border-gray-200 mt-4 mb-2" />
-                    
-                    {/* Action Buttons */}
+
                     <div className="flex justify-end gap-3">
                         <button 
                             type="button" 

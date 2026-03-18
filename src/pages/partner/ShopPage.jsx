@@ -94,16 +94,13 @@ export default function ShopPage() {
 
     return (
         <div className="w-full lg:px-4 mt-16 mx-auto pb-20 font-inter">
-            {/* HEADER TOKO (Banner & PFP) */}
             <div className="relative w-full bg-white rounded-lg border border-zinc-300 mb-8">
-                {/* Banner */}
                 <div className="relative h-48 md:h-64 w-full rounded-t-lg overflow-hidden bg-zinc-200">
                     <img 
                         src={shop?.fileBanner ? `${API_URL}/api/images/users/shop/banner/${shop?.fileBanner}` : placeholder} 
                         className="w-full h-full object-cover brightness-75" 
                         alt="Banner Toko"
                     />
-                    {/* Tombol Edit Toko (Jika Pemilik) dipindah ke atas agar lebih rapi */}
                     {ownerState && (
                         <button 
                             onClick={() => navigate(`/shop/${id}/edit`)}
@@ -114,9 +111,7 @@ export default function ShopPage() {
                     )}
                 </div>
 
-                {/* Konten Profil (PFP dan Info) */}
                 <div className="px-6 md:px-10 pb-8 relative">
-                    {/* Foto Profil Melayang */}
                     <div className="absolute -top-16 md:-top-20 left-6 md:left-10">
                         <img 
                             src={shop?.filePfp ? `${API_URL}/api/images/users/shop/pfp/${shop?.filePfp}` : placeholder} 
@@ -125,7 +120,6 @@ export default function ShopPage() {
                         />
                     </div>
 
-                    {/* Info Toko */}
                     <div className="pt-20 md:pt-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
                         <div className="flex-1">
                             <h1 className="text-3xl md:text-4xl text-stone-800 font-poppins tracking-tight">
@@ -152,7 +146,6 @@ export default function ShopPage() {
                             </p>
                         </div>
 
-                        {/* Tombol Aksi Pemilik Toko */}
                         {!isTokenExpired(token) && ownerState && (
                             <div className="flex flex-col sm:flex-row gap-3 md:min-w-fit">
                                 <button 
@@ -173,15 +166,12 @@ export default function ShopPage() {
                 </div>
             </div>
 
-            {/* DAFTAR PRODUK */}
             <div className="px-4 md:px-0">
                 <div className="flex items-center gap-3 mb-6">
-                    {/* <ShoppingBagIcon className="size-7 text-green-main-2" /> */}
                     <h2 className="font-inter text-2xl font-medium text-stone-800 w-full text-center">Etalase Toko</h2>
                 </div>
 
                 {products?.length < 1 ? (
-                    /* EMPTY STATE YANG LEBIH BAIK */
                     <div className="bg-white border border-dashed border-zinc-300 rounded-2xl p-12 flex flex-col items-center justify-center text-center">
                         <div className="bg-zinc-100 p-4 rounded-full mb-4">
                             <ArchiveBoxXMarkIcon className="size-12 text-zinc-400" />
@@ -197,7 +187,6 @@ export default function ShopPage() {
                         )}
                     </div>
                 ) : (
-                    /* GRID PRODUK */
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                             {products?.map((product, index) => (

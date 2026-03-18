@@ -11,7 +11,6 @@ import { BookmarkIcon } from '@heroicons/react/24/outline';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-// PINDAH KE LUAR: Agar tidak dibuat ulang setiap kali komponen re-render
 const tagColor = {
     BAGUS: "text-blue-tag-new border border-blue-tag-new",
     MENENGAH: "text-yellow-tag-mid border border-yellow-tag-mid",
@@ -21,21 +20,19 @@ const tagColor = {
 };
 
 export default function BookmarkPage() {
-    // Beri nilai awal array kosong [], bukan undefined
     const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); // Tambahkan state loading
-    const [error, setError] = useState(null);         // Tambahkan state error
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        let isMounted = true; // Mencegah memory leak jika komponen di-unmount sebelum fetch selesai
+        let isMounted = true; 
 
         const fetchBookmarkList = async () => {
             try {
                 const token = localStorage.getItem('token');
-                
-                // Pengecekan token dipindah ke sini agar lebih aman
+
                 if (!token || isTokenExpired(token)) {
                     navigate('/login');
                     return;
@@ -46,7 +43,6 @@ export default function BookmarkPage() {
                 const res = await getBookMarkList(decoded.id);
                 
                 if (isMounted) {
-                    // Pastikan yang diset adalah array
                     setProducts(Array.isArray(res) ? res : []); 
                 }
             } catch (err) {
@@ -60,9 +56,8 @@ export default function BookmarkPage() {
         fetchBookmarkList();
 
         return () => { isMounted = false; };
-    }, [navigate]); // Masukkan navigate ke dependency array
+    }, [navigate]); 
 
-    // 1. Tampilan saat Loading
     if (isLoading) {
         return (
             <div className="min-h-screen flex justify-center items-center">
@@ -71,32 +66,28 @@ export default function BookmarkPage() {
         );
     }
 
-    // 2. Tampilan Utama
     return (
         <div className="mt-16 w-full flex flex-col items-center">
             <div className="w-full flex flex-col h-fit gap-2 md:border md:border-zinc-300 rounded-2xl overflow-hidden mb-8">
-                {/* Gambar diatur tingginya secara spesifik (misal: h-32 untuk mobile, lg:h-64 untuk desktop) */}
+ 
                 <img 
                     src={placeholder} 
                     alt="Banner Markah" 
                     className="h-32 md:h-48 lg:h-64 w-full object-cover" 
                 />
-                
-                {/* Teks dibiarkan mengambil ruang sisanya dengan padding yang proporsional */}
+ 
                 <section className="flex flex-col justify-center px-6 md:px-10 pb-6 pt-2">
                     <h2 className="text-2xl md:text-4xl font-semibold text-zinc-800">Markah Saya</h2>
                     <h4 className="text-sm md:text-base text-zinc-500 mt-1">Lihat barang-barang yang sudah kamu simpan</h4>
                 </section>
             </div>
 
-            {/* 3. Tampilan saat Error Server */}
             {error && (
                 <div className="w-full max-w-3xl mt-8 p-4 bg-red-50 text-red-600 border border-red-200 rounded-md text-center">
                     {error}
                 </div>
             )}
 
-            {/* 4. Tampilan Empty State vs Grid Produk */}
             {!error && products.length === 0 ? (
                 <section className='text-center leading-8 bg-zinc-50 w-full py-16 mt-6 rounded-lg border border-zinc-100'>
                     <div className="flex justify-center mb-4 text-zinc-300">
@@ -111,10 +102,9 @@ export default function BookmarkPage() {
                 </section>
             ) : (
                 <section className='w-full mt-6 lg:px-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-12'>
-                    {/* Element Loop: Gunakan ID produk sebagai key jika memungkinkan */}
                     {products.map((product) => (
                         <ProductCard 
-                            key={product?.id || product?.produk?.id} // Ganti dengan property ID unik yang sesuai dari API Anda
+                            key={product?.id || product?.produk?.id}
                             tagColor={tagColor} 
                             product={product} 
                             API_URL={API_URL} 

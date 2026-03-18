@@ -10,8 +10,7 @@ export default function SellForm() {
     const [files, setFiles] = useState([]);
     const [previewUrls, setPreviewUrls] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    
-    // Safety check untuk token
+
     const token = localStorage.getItem('token');
     const decode = token ? jwtDecode(token) : null;
 
@@ -22,17 +21,14 @@ export default function SellForm() {
         }
     }, [token, isTokenExpired]);
 
-    // Handle file upload & buat preview image
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
         setFiles(selectedFiles);
 
-        // Buat URL sementara untuk preview gambar
         const fileUrls = selectedFiles.map(file => URL.createObjectURL(file));
         setPreviewUrls(fileUrls);
     };
 
-    // Bersihkan URL preview dari memori saat komponen di-unmount
     useEffect(() => {
         return () => {
             previewUrls.forEach(url => URL.revokeObjectURL(url));
@@ -46,7 +42,6 @@ export default function SellForm() {
         const formElements = e.target.elements;
         const formData = new FormData();
 
-        // Append multiple files
         for (let i = 0; i < files.length; i++) {
             formData.append('photoProduct', files[i]);
         }
@@ -65,7 +60,6 @@ export default function SellForm() {
         try {
             const res = await addProduct(formData);
             alert("Produk berhasil diajukan!");
-            // Redirect ke halaman toko
             navigate(`/shop/${formElements.shopId.value}`);
         } catch (error) {
             console.error(error);
@@ -81,7 +75,6 @@ export default function SellForm() {
     return (
         <div className="min-h-screen bg-stone-50 mt-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto bg-white rounded-2xl border border-stone-200 overflow-hidden">
-                {/* Header Section */}
                 <div className="bg-green-main-2 px-8 py-6 text-white border-b border-green-700">
                     <h1 className="font-inter font-bold text-2xl">Form Pengajuan Produk Baru</h1>
                     <p className="text-md mt-1">Admin akan meninjau produk Anda sebelum ditampilkan ke publik. Batas waktu peninjauan 1 - 7 hari setelah upload.</p>
@@ -91,7 +84,6 @@ export default function SellForm() {
                 <form className="p-8 space-y-8" onSubmit={handleSubmit}>
                     <input type="hidden" defaultValue={decode?.idToko || ""} name="shopId" />
 
-                    {/* Section 1: Informasi Dasar */}
                     <div className="space-y-4">
                         <div>
                             <h2 className="font-inter text-lg font-bold text-zinc-800">Informasi Dasar</h2>
@@ -114,7 +106,6 @@ export default function SellForm() {
                         </div>
                     </div>
 
-                    {/* Section 2: Harga & Stok */}
                     <div className="space-y-4">
                         <h2 className="font-inter text-lg font-bold text-zinc-800 border-b border-stone-200 pb-2">Harga & Ketersediaan</h2>
                         
@@ -149,7 +140,6 @@ export default function SellForm() {
                         </div>
                     </div>
 
-                    {/* Section 3: Klasifikasi */}
                     <div className="space-y-4">
                         <h2 className="text-lg font-bold text-zinc-800 border-b border-stone-200 pb-2">Klasifikasi Barang</h2>
                         
@@ -174,7 +164,6 @@ export default function SellForm() {
                         </div>
                     </div>
 
-                    {/* Section 4: Upload Media */}
                     <div className="space-y-4">
                         <h2 className="text-lg font-bold text-zinc-800 border-b border-stone-200 pb-2">Foto Produk</h2>
                         
@@ -192,7 +181,6 @@ export default function SellForm() {
                             </label>
                         </div>
 
-                        {/* Image Previews */}
                         {previewUrls.length > 0 && (
                             <div className="mt-4 p-4 bg-stone-50 rounded-lg border border-stone-200">
                                 <p className="text-sm font-medium text-zinc-700 mb-3 flex items-center gap-2">
@@ -210,7 +198,6 @@ export default function SellForm() {
                         )}
                     </div>
 
-                    {/* Submit Button */}
                     <div className="pt-6 border-t border-stone-200 flex justify-end gap-3">
                         <button 
                             type="button" 

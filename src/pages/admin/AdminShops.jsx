@@ -30,7 +30,6 @@ export default function AdminShops() {
     }, []);
 
     const handleStatusChange = async (idToko, currentStatus) => {
-        // Toggle status: Jika saat ini PENDING ubah jadi APPROVE, begitupun sebaliknya
         const newStatus = currentStatus === 'APPROVE' ? 'PENDING' : 'APPROVE';
         const confirmMessage = newStatus === 'APPROVE' ? 'menyetujui (Approve)' : 'menangguhkan (Pending)';
 
@@ -48,7 +47,6 @@ export default function AdminShops() {
 
             if (response.ok) {
                 alert(`Status toko berhasil diubah menjadi ${newStatus}!`);
-                // Update state UI lokal agar tabel langsung berubah tanpa reload halaman
                 setShops(prevShops => 
                     prevShops.map(shop => 
                         shop.id === idToko ? { ...shop, shopStatus: newStatus } : shop
@@ -121,15 +119,12 @@ export default function AdminShops() {
                                         </td>
                                         <td className="text-center">
                                             <div className="flex items-center justify-center gap-2">
-                                                {/* Tombol Detail */}
                                                 <Link 
                                                     to={`/shop/${shop.id}/details`} 
                                                     className="px-3 py-1.5 rounded-md font-semibold text-xs transition-colors border bg-sky-50 text-sky-600 border-sky-200 hover:bg-sky-100"
                                                 >
                                                     Detail
                                                 </Link>
-                                                
-                                                {/* Tombol Status */}
                                                 <button 
                                                     onClick={() => handleStatusChange(shop.id, shop.shopStatus)}
                                                     className={`px-3 py-1.5 rounded-md font-semibold text-xs transition-colors border ${

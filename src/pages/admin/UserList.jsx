@@ -18,7 +18,6 @@ export default function UserListPage() {
         default: "bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md font-bold text-[10px] uppercase tracking-wider"
     }
 
-    // Admin Checking
     useEffect(() => {
         if (userInfo !== null) {
             if (privilege !== "ADMIN") {
@@ -43,7 +42,6 @@ export default function UserListPage() {
         fetchAllAccount();
     }, []);
 
-    // Logika Pencarian
     const filteredUsers = usersList.filter(user => 
         user?.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user?.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -52,14 +50,12 @@ export default function UserListPage() {
 
     return (
         <section className="w-full flex flex-col gap-4 h-full pb-10 font-inter">
-            {/* Header & Search Bar */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
                 <div>
                     <h2 className="text-xl sm:text-2xl font-semibold text-stone-800">Daftar Pengguna</h2>
                     <p className="text-xs sm:text-sm text-zinc-500 mt-1">Kelola hak akses dan detail pengguna terdaftar.</p>
                 </div>
-                
-                {/* Search Bar */}
+
                 <div className="relative w-full md:w-80">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
@@ -89,7 +85,6 @@ export default function UserListPage() {
                     </div>
                 ) : (
                     <>
-                        {/* 1. TAMPILAN MOBILE (Card Layout) */}
                         <div className="md:hidden flex flex-col gap-4">
                             {filteredUsers.map((user, index) => (
                                 <div key={user?.id} className="bg-white border border-zinc-200 rounded-xl p-4  flex flex-col gap-3">
@@ -124,7 +119,6 @@ export default function UserListPage() {
                             ))}
                         </div>
 
-                        {/* 2. TAMPILAN DESKTOP (Table Layout) */}
                         <div className="hidden md:block overflow-x-auto rounded-md">
                             <table className="w-full text-sm text-left text-gray-500 border-collapse">
                                 <thead className="font-poppins text-xs text-gray-700 uppercase bg-gray-50 border-b border-zinc-200 tracking-wider">

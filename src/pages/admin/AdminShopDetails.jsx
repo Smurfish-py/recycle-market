@@ -74,7 +74,6 @@ export default function AdminShopDetail() {
 
     return (
         <div className="font-inter max-w-7xl mx-auto space-y-6 pb-10">
-            {/* Header / Nav */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-1">
                     <button 
@@ -100,10 +99,7 @@ export default function AdminShopDetail() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                {/* Kolom Kiri - Info Utama & Produk (Lebih Lebar) */}
                 <div className="lg:col-span-2 space-y-6">
-                    
-                    {/* Card Profil Toko */}
                     <div className="bg-white border border-zinc-200 rounded-md overflow-hidden">
                         <div className="h-24 bg-gradient-to-r from-green-main-2 to-green-main-2/60"></div>
                         <div className="px-6 sm:px-8 pb-8">
@@ -130,7 +126,6 @@ export default function AdminShopDetail() {
                         </div>
                     </div>
 
-                    {/* Card Daftar Produk */}
                     <div className="bg-white border border-zinc-200 rounded-md p-6 sm:p-8">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="font-bold text-lg text-stone-800">Daftar Produk</h3>
@@ -170,11 +165,7 @@ export default function AdminShopDetail() {
                         )}
                     </div>
                 </div>
-
-                {/* Kolom Kanan - Sidebar Info (Lebih Kecil) */}
                 <div className="space-y-6">
-                    
-                    {/* Card Info Pemilik */}
                     <div className="bg-white border border-zinc-200 rounded-md p-6">
                         <h3 className="font-bold text-stone-800 mb-6 flex items-center gap-2 border-b border-zinc-100 pb-4">
                             <UserIcon className="size-5 text-emerald-600" /> Informasi Pemilik
@@ -208,7 +199,6 @@ export default function AdminShopDetail() {
                         </div>
                     </div>
 
-                    {/* Card Danger Zone */}
                     <div className="bg-white border border-rose-200 rounded-md shadow-sm p-6 relative overflow-hidden">
                         <h3 className="font-bold text-rose-700 mb-2 flex items-center gap-2">
                             <TrashIcon className="size-5" /> Danger Zone

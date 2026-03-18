@@ -5,16 +5,14 @@ export default function AdminRequests() {
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     
-    // Sesuaikan Base URL ini dengan URL backend Anda (misal: localhost:3000)
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
-    // Mengambil data dari Backend API (Tabel Permintaan)
     const fetchRequests = async () => {
         try {
             const response = await fetch(`${API_URL}/api/requests/pending`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Opsional jika endpoint di-protect
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
             const data = await response.json();
@@ -35,21 +33,19 @@ export default function AdminRequests() {
         if (!window.confirm(`Yakin ingin men${confirmMessage} permintaan ini?`)) return;
 
         try {
-            // Panggil API controller backend untuk update status
             const response = await fetch(`${API_URL}/api/requests/${idRequest}/process`, {
-                method: 'PUT', // Pastikan backend Anda menggunakan PUT/POST
+                method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify({ action }) // Mengirim 'DISETUJUI' atau 'DITOLAK'
+                body: JSON.stringify({ action })
             });
 
             console.log(response)
 
             if (response.ok) {
                 alert(`Permintaan berhasil di-${confirmMessage}!`);
-                // Hapus data dari UI tanpa perlu refresh halaman
                 setRequests(prev => prev.filter(req => req.id !== idRequest));
             } else {
                 const errorData = await response.json();
@@ -99,7 +95,6 @@ export default function AdminRequests() {
                                     <tr key={req.id} className="hover:bg-green-accent/20 transition-colors">
                                         <td className="text-center text-zinc-500">{index + 1}</td>
                                         <td className="font-semibold text-stone-700">
-                                            {/* Data 'user' didapat dari relasi backend include: { user: true } */}
                                             {req.user?.fullname || "User Tidak Diketahui"}
                                             <p className="text-[10px] text-zinc-400 font-normal">ID User: {req.idUser}</p>
                                         </td>
