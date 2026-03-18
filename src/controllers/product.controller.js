@@ -159,6 +159,33 @@ const rejectProduct = async (id) => {
     }
 }
 
+const getRatingByUserId = async (id) => {
+    try {
+        const res = await axios.get(`${API_URL}/api/rating/user/${id}`);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const postRating = async (idProduct, idUser, data) => {
+    try {
+        const res = await axios.post(`${API_URL}/api/rating/${idProduct}/${idUser}`, data);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const deleteRating = async (id) => {
+    try {
+        const res = await axios.delete(`${API_URL}/api/rating/delete/${id}`);
+        return res;
+    } catch (error) {
+
+    }
+}
+
 export { 
     findAllProducts, 
     findProductId, 
@@ -175,5 +202,8 @@ export {
     removeBookMark,
     getPendingProducts,
     approveProduct,
-    rejectProduct
+    rejectProduct,
+    getRatingByUserId,
+    postRating,
+    deleteRating
 }
