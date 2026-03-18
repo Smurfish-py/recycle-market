@@ -27,11 +27,13 @@ export default function BuyProductPage() {
 
     const { id } = useParams();
     const [searchParams] = useSearchParams();
-    const [isCod, setIsCod] = useState(false); 
+    
+    // --- PERUBAHAN: State isCod diganti agar mendukung 3 metode ---
+    const [paymentMethod, setPaymentMethod] = useState("E-wallet"); 
+    
     const [product, setProduct] = useState(null);
     const [user, setUser] = useState(null);
 
-    // --- TAMBAHAN: State untuk Form Pembeli ---
     const [formData, setFormData] = useState({
         nama: "",
         email: "",
@@ -43,6 +45,9 @@ export default function BuyProductPage() {
 
     const quantity = parseInt(searchParams.get('quantity')) || 1;
     const biayaAdmin = 1500;
+
+    // Deteksi apakah bebas biaya admin (COD & Barter gratis admin)
+    const isBebasAdmin = paymentMethod === 'COD' || paymentMethod === 'Barter';
 
     useEffect(() => {
         const fetchProduct = async (id) => {
@@ -70,7 +75,7 @@ export default function BuyProductPage() {
     }, [id]);
 
     function buyMethod(e) {
-        setIsCod(e.target.value === 'COD');
+        setPaymentMethod(e.target.value);
     }
 
     const handleChange = (e) => {
@@ -80,7 +85,6 @@ export default function BuyProductPage() {
 
     const handlePayment = async (e) => {
         e.preventDefault(); 
-        const totalHarga = isCod ? (product?.harga * quantity) : (product?.harga * quantity + biayaAdmin);
 
         try {
             const response = await fetch(`${API_URL}/api/checkout`, {
@@ -93,7 +97,7 @@ export default function BuyProductPage() {
                     alamat: formData.alamat,
                     kodePos: formData.kodePos,
                     deskripsi: formData.deskripsi,
-                    jenisHarga: isCod ? "COD" : "E-wallet",
+                    jenisHarga: paymentMethod, // Kirimkan value asli: COD, E-wallet, atau Barter
                     productId: product.id, 
                     quantity: quantity,
                     userId: decode?.id
@@ -106,8 +110,9 @@ export default function BuyProductPage() {
                 throw new Error(result.message || "Gagal dari server");
             }
 
-            if (isCod) {
-                alert(`Pesanan COD berhasil! ID Pesanan: ${result.orderId}`);
+            // Jika COD atau Barter, langsung sukses tanpa buka popup Midtrans
+            if (isBebasAdmin) {
+                alert(`Pesanan ${paymentMethod} berhasil! ID Pesanan: ${result.orderId}`);
                 navigate('/pesanan');
                 return;
             }
@@ -143,12 +148,12 @@ export default function BuyProductPage() {
     };
 
     return (
-        <div className="relative flex flex-col min-h-screen">
+        <div className="relative flex flex-col min-h-screen font-inter">
             <Header customHeader={true} title={"Detail Pembayaran"} />
             <main className="grow md:mt-4">
                 <div className="px-4 md:px-14 mt-16 text-2xl font-semibold mb-6 flex flex-col text-center">
                     Informasi Pembayaran
-                    <span className="text-sm font-normal text-gray-400/90">Lengkapi data berikut untuk memproses pembayaran anda</span>
+                    <span className="text-sm font-normal text-gray-400/90">Lengkapi data berikut untuk memproses pesanan Anda</span>
                 </div>
                 <form onSubmit={handlePayment} className="flex justify-center flex-col-reverse gap-2 md:flex-row md:px-12 md:pb-12 md:gap-8">
                     <section className="md:border md:border-gray-200 h-fit flex-2/3 rounded-lg p-4 lg:p-6">
@@ -162,15 +167,15 @@ export default function BuyProductPage() {
                                     name="nama" 
                                     required 
                                     placeholder="John Doe"
-                                    className={`border w-full px-2 py-1 rounded-sm border-stone-200 ml-1 ${user?.fullname ? "bg-stone-200 cursor-not-allowed text-stone-400" : ""}`} 
+                                    className={`border w-full px-3 py-2 text-sm rounded-md border-stone-200 ${user?.fullname ? "bg-stone-100 cursor-not-allowed text-stone-500" : ""}`} 
                                     disabled={!!user?.fullname} 
-                                    value={formData.nama} // Menggunakan value, bukan defaultValue
+                                    value={formData.nama}
                                     onChange={handleChange}
                                 />
                             </div>
                             
-                            <div className="w-full flex flex-row gap-2">
-                                <section className="flex-1 ">
+                            <div className="w-full flex flex-col md:flex-row gap-4">
+                                <section className="flex-1">
                                     <label htmlFor="email" className="font-semibold">Email</label>
                                     <input 
                                         id="email" 
@@ -178,7 +183,7 @@ export default function BuyProductPage() {
                                         type="email" 
                                         required
                                         placeholder="john-doe@gmail.com"
-                                        className={`border w-full px-2 py-1 rounded-sm border-stone-200 ml-1 ${user?.email ? "bg-stone-200 cursor-not-allowed text-stone-400" : ""}`}
+                                        className={`border w-full px-3 py-2 text-sm rounded-md border-stone-200 ${user?.email ? "bg-stone-100 cursor-not-allowed text-stone-500" : ""}`}
                                         disabled={!!user?.email}
                                         value={formData.email} 
                                         onChange={handleChange}
@@ -192,7 +197,7 @@ export default function BuyProductPage() {
                                         type="tel"
                                         required 
                                         placeholder="081234567891"
-                                        className={`border w-full px-2 py-1 rounded-sm border-stone-300 ml-1 ${user?.noHp ? "bg-stone-200 cursor-not-allowed text-stone-400" : ""}`}
+                                        className={`border w-full px-3 py-2 text-sm rounded-md border-stone-200 ${user?.noHp ? "bg-stone-100 cursor-not-allowed text-stone-500" : ""}`}
                                         disabled={!!user?.noHp}
                                         value={formData.noHp} 
                                         onChange={handleChange}
@@ -200,28 +205,28 @@ export default function BuyProductPage() {
                                 </section>
                             </div>
                             
-                            <div className="w-full flex flex-row gap-2">
-                                <section className="flex-2/3">
+                            <div className="w-full flex flex-col md:flex-row gap-4">
+                                <section className="flex-2/3 w-full">
                                     <label htmlFor="alamat" className="font-semibold">Alamat</label>
                                     <textarea
                                         id="alamat"
                                         name="alamat"
                                         required 
                                         placeholder="Jl. Sawit Selatan No.3..."
-                                        className={`border px-2 py-1 rounded-sm border-stone-300 ml-1 h-8 min-h-8 ${user?.alamat ? "bg-stone-200 cursor-not-allowed text-stone-400" : ""}`}
+                                        className={`border w-full px-3 py-2 text-sm rounded-md border-stone-200 min-h-[42px] ${user?.alamat ? "bg-stone-100 cursor-not-allowed text-stone-500" : ""}`}
                                         disabled={!!user?.alamat}
                                         value={formData.alamat} 
                                         onChange={handleChange}
                                     />
                                 </section>
-                                <section className="flex-1/3">
+                                <section className="flex-1/3 w-full">
                                     <label htmlFor="kodePos" className="font-semibold">Kode Pos</label>
                                     <input 
                                         id="kodePos" 
                                         name="kodePos" 
                                         required 
                                         placeholder="10243" 
-                                        className="border w-full px-2 py-1 rounded-sm border-stone-300 ml-1" 
+                                        className="border w-full px-3 py-2 text-sm rounded-md border-stone-200" 
                                         value={formData.kodePos}
                                         onChange={handleChange}
                                     />
@@ -229,81 +234,109 @@ export default function BuyProductPage() {
                             </div>
                             
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="deskripsi" className="font-semibold">Deskripsi</label>
+                                <label htmlFor="deskripsi" className="font-semibold">Deskripsi Pesanan (Opsional)</label>
                                 <textarea 
                                     id="deskripsi" 
                                     name="deskripsi" 
-                                    placeholder="Tolong jangan dilempar..." 
-                                    className="border w-full px-2 py-1 rounded-sm border-stone-300 ml-1"
+                                    placeholder="Catatan tambahan untuk penjual..." 
+                                    className="border w-full px-3 py-2 text-sm rounded-md border-stone-200 min-h-[80px]"
                                     value={formData.deskripsi}
                                     onChange={handleChange}
                                 />
                             </div>
                             
-                            <hr className="text-gray-300" />
+                            <hr className="text-gray-200" />
                             <div>
-                                <h2 className="text-2xl font-semibold mb-4">Metode Pembayaran</h2>
+                                <h2 className="text-xl md:text-2xl font-semibold mb-4 text-stone-800">Metode Pembayaran</h2>
                                 <section>
-                                    <select className="bg-stone-300/80 px-4 py-2 rounded-sm cursor-pointer mb-3" name="jenisHarga" onChange={buyMethod} required defaultValue={"E-wallet"}>
-                                        <option value="" disabled>-- Pilih Opsi --</option>
-                                        <option value={"COD"}>Cash on Delivery (COD)</option>
-                                        <option value={"E-wallet"}>E-wallet (QRIS)</option>
+                                    <select 
+                                        className="bg-stone-100 border border-stone-200 text-stone-800 text-sm font-medium px-4 py-2.5 rounded-md cursor-pointer mb-3 w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-green-main-2" 
+                                        name="jenisHarga" 
+                                        onChange={buyMethod} 
+                                        required 
+                                        defaultValue={"E-wallet"}
+                                    >
+                                        <option value="" disabled>-- Pilih Opsi Pembayaran --</option>
+                                        <option value={"E-wallet"}>E-wallet (QRIS / Transfer)</option>
+                                        <option value={"COD"}>Cash on Delivery (Bayar di Tempat)</option>
+                                        <option value={"Barter"}>Barter (Tukar Tambah / Tukar Barang)</option>
                                     </select>
-                                    {isCod && (
-                                        <div className="bg-green-main-2/30 px-4 py-2 flex items-center gap-4 rounded-sm">
-                                            <HandThumbUpIcon className="size-10 md:size-6" />
-                                            <p>Dengan metode pembayaran COD, anda tidak perlu membayar biaya administrasi website!</p>
+
+                                    {/* Info Khusus COD */}
+                                    {paymentMethod === 'COD' && (
+                                        <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 flex items-start gap-3 rounded-md mb-4 shadow-sm">
+                                            <HandThumbUpIcon className="w-6 h-6 shrink-0 text-green-600 mt-0.5" />
+                                            <p className="text-sm leading-relaxed">Dengan metode pembayaran COD, Anda tidak perlu membayar biaya administrasi website!</p>
                                         </div>
                                     )}
-                                    <button type="submit" className="btn btn-solid w-full md:hidden">Bayar</button>
+
+                                    {/* Info Khusus BARTER */}
+                                    {paymentMethod === 'Barter' && (
+                                        <div className="bg-purple-50 border border-purple-200 text-purple-800 px-4 py-3 flex items-start gap-3 rounded-md mb-4 shadow-sm">
+                                            <BuildingStorefrontIcon className="w-6 h-6 shrink-0 text-purple-600 mt-0.5" />
+                                            <p className="text-sm leading-relaxed">Anda memilih opsi <b>Barter</b>. Tidak ada biaya yang ditagihkan. Pastikan Anda menghubungi penjual via chat/kontak setelah pesanan dibuat untuk berdiskusi mengenai barang yang akan ditukar!</p>
+                                        </div>
+                                    )}
+
+                                    <button type="submit" className="btn btn-solid w-full md:hidden mt-2 py-3 rounded-md text-sm font-semibold">Buat Pesanan</button>
                                 </section>
                             </div>
                         </div>
                     </section>
 
-                    <section className="md:border md:border-gray-200 rounded-md min-h-full flex-1/3 p-4 lg:p-6">
-                        <h2 className="text-2xl font-semibold mb-6">Barang Anda</h2>
+                    {/* --- RINGKASAN BARANG --- */}
+                    <section className="md:border md:border-gray-200 rounded-lg h-fit flex-1/3 p-4 lg:p-6 bg-stone-50 md:bg-white shadow-sm md:shadow-none mb-6 md:mb-0">
+                        <h2 className="text-xl font-semibold mb-6 text-stone-800">Ringkasan Belanja</h2>
                         <section className="flex gap-4 items-center">
                             {!product?.fotoProduk?.[0].file ? 
-                                <div className="size-30 bg-stone-200 rounded-md"></div> : 
-                                <img src={`${API_URL}/api/images/products/${product?.fotoProduk?.[0].file}`} className="size-30 object-cover aspect-square rounded-md" />
+                                <div className="w-20 h-20 bg-stone-200 rounded-md shrink-0"></div> : 
+                                <img src={`${API_URL}/api/images/products/${product?.fotoProduk?.[0].file}`} className="w-20 h-20 object-cover aspect-square rounded-md shrink-0 border border-stone-200" />
                             }
                             <div>
-                                <h3 className="text-xl">{product?.nama}</h3>
-                                <section className="flex items-center gap-2">
-                                    <BuildingStorefrontIcon className="size-4" />
+                                <h3 className="text-base font-semibold text-stone-800 leading-tight line-clamp-2">{product?.nama}</h3>
+                                <section className="flex items-center gap-1.5 mt-2">
+                                    <BuildingStorefrontIcon className="w-4 h-4 text-stone-400" />
                                     <div className="flex items-center gap-1">
-                                        <p className="text-sm">{product?.toko?.nama}</p>
-                                        {product?.toko?.shopStatus === 'APPROVE' && <CheckBadgeIcon className="size-4 text-green-main-2" />}
+                                        <p className="text-xs text-stone-600 font-medium">{product?.toko?.nama}</p>
+                                        {product?.toko?.shopStatus === 'APPROVE' && <CheckBadgeIcon className="w-4 h-4 text-green-main-2" title="Toko Terverifikasi" />}
                                     </div>
                                 </section>
                             </div>
                         </section>
-                        <hr className="my-6 text-gray-300" />
-                        <section>
-                            <div className="flex justify-between">
-                                <p className="opacity-50">Harga satuan</p>
-                                <p className="text-rose-400">Rp. {product?.harga?.toLocaleString('id-ID')}</p>
+                        <hr className="my-5 text-gray-200" />
+                        <section className="text-sm">
+                            <div className="flex justify-between mb-3">
+                                <p className="text-stone-500">Harga satuan</p>
+                                <p className="font-semibold text-stone-700">Rp {product?.harga?.toLocaleString('id-ID')}</p>
                             </div>
-                            <div className="flex justify-between">
-                                <p className="opacity-50">Jumlah</p>
-                                <p className="text-rose-400">{quantity}</p>
+                            <div className="flex justify-between mb-3">
+                                <p className="text-stone-500">Jumlah</p>
+                                <p className="font-semibold text-stone-700">{quantity} Barang</p>
                             </div>
-                            <div className="flex justify-between">
-                                <p className="opacity-50">Biaya admin</p>
-                                <p className="text-rose-400">
-                                    Rp. {isCod ? "0" : biayaAdmin.toLocaleString('id-ID')}
+                            <div className="flex justify-between mb-5">
+                                <p className="text-stone-500">Biaya admin</p>
+                                <p className="font-semibold text-stone-700">
+                                    {isBebasAdmin ? (
+                                        <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded text-xs">Gratis</span>
+                                    ) : (
+                                        `Rp ${biayaAdmin.toLocaleString('id-ID')}`
+                                    )}
                                 </p>
                             </div>
-                            <div className="mt-8 flex justify-between">
-                                <p className="font-semibold opacity-70">Total</p>
-                                <p className="font-semibold text-rose-400">
-                                    Rp. {isCod ? (product?.harga * quantity)?.toLocaleString('id-ID') : (product?.harga * quantity + biayaAdmin)?.toLocaleString('id-ID')}
+                            
+                            <hr className="border-dashed border-stone-300 mb-4" />
+                            
+                            <div className="flex justify-between items-center">
+                                <p className="font-bold text-stone-800">Total Tagihan</p>
+                                <p className="font-bold text-lg text-green-700">
+                                    Rp {isBebasAdmin ? (product?.harga * quantity)?.toLocaleString('id-ID') : (product?.harga * quantity + biayaAdmin)?.toLocaleString('id-ID')}
                                 </p>
                             </div>
-                            <hr className="mt-6 lg:my-6 text-gray-300" />
+                            
                         </section>
-                        <button type="submit" className="btn btn-solid w-full hidden md:block hover:brightness-90 active:brightness-90 mt-20">Bayar</button>
+                        <button type="submit" className="bg-green-main-2 hover:bg-green-700 text-white w-full hidden md:block mt-8 py-3 rounded-md transition-colors font-semibold shadow-sm">
+                            Buat Pesanan
+                        </button>
                     </section>
                 </form>
             </main>

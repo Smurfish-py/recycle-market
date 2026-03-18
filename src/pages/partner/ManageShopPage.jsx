@@ -342,8 +342,13 @@ export default function ManageShopPage() {
                                             </div>
                                             <div>
                                                 <p className="text-zinc-400">Metode</p>
-                                                <span className="bg-white border border-zinc-300 px-2 py-0.5 rounded-sm text-[10px] font-bold text-zinc-600 mt-1 inline-block">
-                                                    {order.metode}
+                                                {/* TAMBAHAN BARTER DI MOBILE */}
+                                                <span className={`border px-2 py-0.5 rounded-sm text-[10px] font-bold mt-1 inline-block uppercase tracking-wide ${
+                                                    order.metode === 'LANGSUNG' ? 'border-green-300 text-green-700 bg-green-50' :
+                                                    order.metode === 'BARTER' ? 'border-purple-300 text-purple-700 bg-purple-50' :
+                                                    'border-sky-300 text-sky-700 bg-sky-50'
+                                                }`}>
+                                                    {order.metode === 'LANGSUNG' ? 'COD' : order.metode}
                                                 </span>
                                             </div>
                                         </div>
@@ -383,8 +388,13 @@ export default function ManageShopPage() {
                                                 </td>
                                                 <td className="px-4 py-3 font-semibold text-stone-700">User #{order.idUser}</td>
                                                 <td className="px-4 py-3 text-center">
-                                                    <span className="bg-white border border-zinc-300 px-2 py-1 rounded-sm text-[10px] font-bold text-zinc-600">
-                                                        {order.metode}
+                                                    {/* TAMBAHAN BARTER DI DESKTOP */}
+                                                    <span className={`border px-2 py-1 rounded-sm text-[10px] font-bold tracking-wide uppercase ${
+                                                        order.metode === 'LANGSUNG' ? 'border-green-300 text-green-700 bg-green-50' :
+                                                        order.metode === 'BARTER' ? 'border-purple-300 text-purple-700 bg-purple-50' :
+                                                        'border-sky-300 text-sky-700 bg-sky-50'
+                                                    }`}>
+                                                        {order.metode === 'LANGSUNG' ? 'COD' : order.metode}
                                                     </span>
                                                 </td>
                                                 <td className="px-4 py-3 font-semibold text-green-700 text-right">

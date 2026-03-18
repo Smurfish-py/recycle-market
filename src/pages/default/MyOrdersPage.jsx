@@ -29,11 +29,9 @@ export default function MyOrdersPage() {
                 const historyData = await getUserTransactionHistory(userId);
                 
                 if (isMounted) {
-                    // Pastikan yang diset adalah array
                     setOrders(Array.isArray(historyData) ? historyData : []);
                 }
             } catch (err) {
-                // Console.error dihapus, error hanya ditampilkan di UI state
                 if (isMounted) setError("Gagal memuat riwayat pesanan Anda.");
             } finally {
                 if (isMounted) setLoading(false);

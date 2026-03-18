@@ -46,7 +46,6 @@ export default function AdminOrders() {
 
     return (
         <div className="font-inter">
-            {/* Header: Dibuat stack (atas-bawah) di HP, sejajar di layar besar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
                     <h2 className="text-xl sm:text-2xl font-semibold text-stone-700">Log Pesanan (Transaksi)</h2>
@@ -58,19 +57,18 @@ export default function AdminOrders() {
                 </div>
             </div>
 
-            <div className="card max-w-260 border border-zinc-300 bg-white flex flex-col p-4 sm:p-6 col-span-1 lg:col-span-3 rounded-md">
+            <div className="card max-w-260 border border-zinc-300 bg-white flex flex-col p-4 sm:p-6 col-span-1 lg:col-span-3 rounded-md shadow-sm">
                 
                 {isLoading ? (
                     <div className="text-center py-10 text-zinc-500 animate-pulse">Memuat data pesanan...</div>
                 ) : (
                     <>
-                        {/* 1. TAMPILAN MOBILE (Card Layout) - Tersembunyi di layar medium ke atas */}
                         <div className="md:hidden flex flex-col gap-4">
                             {orders.map((order, index) => (
-                                <div key={order.id} className="border border-zinc-200 rounded-md px-3 py-2 bg-zinc-50">
+                                <div key={order.id} className="border border-zinc-200 rounded-md px-3 py-2 bg-zinc-50 shadow-sm">
                                     <div className="flex justify-between items-start mb-3 border-b border-zinc-200 pb-3">
                                         <div>
-                                            <span className="font-bold text-stone-700 text-sm">Pesanan #{index + 1}</span>
+                                            <span className="font-bold text-stone-700 text-sm">Pesanan #{order.id}</span>
                                             <p className="text-[10px] text-zinc-500 mt-0.5">
                                                 {new Date(order.tanggal).toLocaleDateString('id-ID', {
                                                     day: '2-digit', month: 'short', year: 'numeric',
@@ -78,11 +76,17 @@ export default function AdminOrders() {
                                                 })}
                                             </p>
                                         </div>
-                                        <div className="space-x-2">
-                                            <span className="bg-zinc-100 px-2 py-1 border border-stone-300 rounded-sm text-[10px] font-bold text-zinc-600">
-                                                {order.metode}
+                                        <div className="space-x-2 flex items-center">
+                                            {/* Badge Metode Mobile */}
+                                            <span className={`px-2 py-1 border rounded-sm text-[10px] font-bold tracking-wide uppercase ${
+                                                order.metode === 'LANGSUNG' ? 'border-green-300 text-green-700 bg-green-50' :
+                                                order.metode === 'BARTER' ? 'border-purple-300 text-purple-700 bg-purple-50' :
+                                                'border-sky-300 text-sky-700 bg-sky-50'
+                                            }`}>
+                                                {order.metode === 'LANGSUNG' ? 'COD' : order.metode}
                                             </span>
-                                            <span className={`px-2 py-1 rounded-sm text-[10px] font-bold ${
+
+                                            <span className={`px-2 py-1 rounded-sm text-[10px] font-bold tracking-wide uppercase ${
                                                 order.status === 'PAID' ? 'bg-green-100 text-green-700' :
                                                 order.status === 'FAILED' ? 'bg-rose-100 text-rose-700' :
                                                 'bg-orange-100 text-orange-600 border border-orange-200'
@@ -100,9 +104,9 @@ export default function AdminOrders() {
                                         </div>
                                         <div>
                                             <p className="text-zinc-400">Email Pembeli</p>
-                                            <p className="font-semibold text-stone-700">{order.email}</p>
+                                            <p className="font-semibold text-stone-700 truncate" title={order.email}>{order.email}</p>
                                         </div>
-                                        <div>
+                                        <div className="col-span-2">
                                             <p className="text-zinc-400">Alamat Pembeli</p>
                                             <p className="font-semibold text-stone-700">{order.alamat}</p>
                                         </div>
@@ -118,15 +122,10 @@ export default function AdminOrders() {
                                             <p className="text-zinc-400">Kuantitas</p>
                                             <p className="font-semibold text-stone-700">{order.kuantitas}</p>
                                         </div>
-                                        <div>
-                                            <p className="text-zinc-400">Tanggal</p>
-                                            <p className="font-semibold text-stone-700">{formatDateTime(order?.tanggal)}</p>
-                                        </div>
                                     </div>
                                     <hr className="text-zinc-200" />
-                                    <div className="flex justify-between items-center mt-2 text-sm font-semibold text-zinc-500">
-                                        <p>Jumlah harga</p>
-                                        {console.log(order)}
+                                    <div className="flex justify-between items-center mt-2 text-sm font-semibold text-zinc-500 py-1">
+                                        <p>Total Tagihan</p>
                                         <span className="font-bold text-green-700 text-sm">
                                             {formatRupiah(order.harga * order.kuantitas)}
                                         </span>
@@ -134,50 +133,52 @@ export default function AdminOrders() {
                                 </div>
                             ))}
                         </div>
-
-                        {/* 2. TAMPILAN DESKTOP/TABLET (Table Layout) - Tersembunyi di layar kecil */}
                         <div className="hidden md:block overflow-x-auto rounded-md">
                             <table className="
-                                w-full border border-zinc-300 border-collapse
+                                w-full border border-zinc-300 border-collapse text-left
                                 [&_tr]:h-12 [&_tr]:border [&_tr]:border-zinc-300
-                                [&_th]:px-4 [&_th]:py-2 [&_th]:border [&_th]:border-zinc-300 [&_th]:whitespace-nowrap
-                                [&_td]:px-4 [&_td]:py-2 [&_td]:border [&_td]:border-zinc-300 [&_td]:whitespace-nowrap
+                                [&_th]:px-4 [&_th]:py-3 [&_th]:border [&_th]:border-zinc-300 [&_th]:whitespace-nowrap
+                                [&_td]:px-4 [&_td]:py-3 [&_td]:border [&_td]:border-zinc-300 [&_td]:whitespace-nowrap
                             ">
-                                <thead className="bg-zinc-200 text-left font-poppins text-sm uppercase text-stone-600 tracking-wider">
+                                <thead className="bg-zinc-100 font-poppins text-xs uppercase text-stone-600 tracking-wider">
                                     <tr>
-                                        <th className="text-center w-12">No</th>
+                                        <th className="text-center w-16">ID</th>
                                         <th>Tanggal</th>
                                         <th>Pembeli</th>
                                         <th>Email Pembeli</th>
                                         <th>Alamat Pembeli</th>
                                         <th>Telepon Pembeli</th>
-                                        <th>ID Penjual</th>
-                                        <th>Metode</th>
-                                        <th>Total Tagihan</th>
+                                        <th className="text-center">ID Penjual</th>
+                                        <th className="text-center">Metode</th>
+                                        <th className="text-right">Total Tagihan</th>
                                         <th className="text-center">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-sm">
-                                    {orders.map((order, index) => (
-                                        <tr key={order.id} className="hover:bg-green-accent/20 transition-colors">
-                                            <td className="text-center text-zinc-500 font-mono">{index + 1}</td>
+                                    {orders.map((order) => (
+                                        <tr key={order.id} className="hover:bg-stone-50 transition-colors">
+                                            <td className="text-center text-zinc-500 font-mono">#{order.id}</td>
                                             <td className="text-zinc-600">
                                                 {new Date(order.tanggal).toLocaleDateString('id-ID', {
-                                                    day: '2-digit', month: 'long', year: 'numeric',
+                                                    day: '2-digit', month: 'short', year: 'numeric',
                                                     hour: '2-digit', minute: '2-digit'
                                                 })}
                                             </td>
                                             <td className="font-semibold text-stone-700">{order.nama}</td>
-                                            <td className="font-semibold text-stone-700">{order.email}</td>
-                                            <td className="font-semibold text-stone-700">{order.alamat}</td>
-                                            <td className="font-semibold text-stone-700">{order.noHp}</td>
-                                            <td className="font-semibold text-stone-700">Toko #{order.idPenjual}</td>
-                                            <td>
-                                                <span className="bg-zinc-100 border border-zinc-300 px-2 py-1 rounded-sm text-xs font-bold text-zinc-600">
-                                                    {order.metode}
+                                            <td className="text-stone-600">{order.email}</td>
+                                            <td className="text-stone-600 max-w-[200px] truncate" title={order.alamat}>{order.alamat}</td>
+                                            <td className="text-stone-600">{order.noHp}</td>
+                                            <td className="font-semibold text-stone-700 text-center">#{order.idPenjual}</td>
+                                            <td className="text-center">
+                                                <span className={`border px-2.5 py-1 rounded-sm text-[10px] font-bold tracking-wide uppercase ${
+                                                    order.metode === 'LANGSUNG' ? 'border-green-300 text-green-700 bg-green-50' :
+                                                    order.metode === 'BARTER' ? 'border-purple-300 text-purple-700 bg-purple-50' :
+                                                    'border-sky-300 text-sky-700 bg-sky-50'
+                                                }`}>
+                                                    {order.metode === 'LANGSUNG' ? 'COD' : order.metode}
                                                 </span>
                                             </td>
-                                            <td className="font-semibold text-green-700">
+                                            <td className="font-bold text-green-700 text-right">
                                                 {formatRupiah(order.harga * order.kuantitas)}
                                             </td>
                                             <td className="text-center">
@@ -196,8 +197,6 @@ export default function AdminOrders() {
                         </div>
                     </>
                 )}
-                
-                {/* Empty State */}
                 {!isLoading && orders.length === 0 && (
                     <div className="text-center py-16 border-x border-b border-zinc-300 text-zinc-400 italic bg-zinc-50/50 rounded-b-md">
                         Belum ada riwayat transaksi di aplikasi.
