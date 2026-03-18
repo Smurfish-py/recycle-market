@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-import { UserCircleIcon, BuildingStorefrontIcon, BookmarkIcon as BookmarkOutline, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
-import { BookmarkIcon as BookmarkSolid } from '@heroicons/react/24/solid';
+import { UserCircleIcon, BuildingStorefrontIcon, BookmarkIcon as BookmarkOutline, PlusIcon, MinusIcon, XMarkIcon, StarIcon } from "@heroicons/react/24/outline";
+import { BookmarkIcon as BookmarkSolid, StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 
-import { findProductId, checkBookmark, removeBookMark, addToBookMark } from "@/controllers/product.controller";
+import { findProductId, checkBookmark, removeBookMark, addToBookMark, getRatingByUserId, postRating, deleteRating } from "@/controllers/product.controller";
 import { findShopData } from "@/controllers/shop.controller";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import isTokenExpired from '@/service/isTokenExpired';
@@ -26,8 +26,10 @@ function Product() {
     const [selected, setSelected] = useState(0);
     const [images, setImages] = useState([]);
     const [quantity, setQuantity] = useState(1);
-    const [ marked, setMarked ] = useState(false);
+    const [marked, setMarked] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [hasGivenRating, setHasGivenRating] = useState(false);
     
     let productRating = 0;
     let overall;
@@ -61,6 +63,15 @@ function Product() {
 
     useEffect(() => {
         if (token != null && !isTokenExpired(token)) setIsLoggedIn(true);
+
+        const fetchUserRating = async (userId) => {
+            try {
+                const response = await getRatingByUserId(userId);
+                setHasGivenRating(response.data);
+            } catch (error) {
+                console.error({error})
+            }
+        }
 
         const fetchShopData = async (shopId) => {
             try {
@@ -96,6 +107,7 @@ function Product() {
         }
 
         fetchData(id);
+        fetchUserRating(decode?.id);
 
         if (decode?.id) {
             checkMarked(decode?.id, id);
@@ -116,7 +128,69 @@ function Product() {
             setMarked(true);
             alert(res?.msg);
         }
+    }
+
+    async function handleRating(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        const dataKirim = {
+            rating: Number(formData.get('rating')),
+            komentar: formData.get('komentar')
+        };
+
+        if (!dataKirim.rating) {
+            alert("Silakan pilih bintang terlebih dahulu!");
+            return; 
         }
+
+        try {
+            const res = await postRating(id, decode?.id, dataKirim);       
+            alert("Ulasan berhasil dikirim!");
+            setIsModalOpen(false);
+            window.location.reload();
+
+        } catch (error) {
+            console.error("Gagal mengirim ulasan:", error);
+            alert("Terjadi kesalahan saat mengirim ulasan.");
+        }
+    }
+
+    async function handleDeleteRating(idUser) {
+        try {
+            if (confirm("Apakah anda yakin ingin menghapus ulasan mengenai produk ini?")) {
+                const res = await deleteRating(idUser);
+                if (!res) alert("Gagal menghapus ulasan") 
+            }
+            window.location.reload();
+        } catch (error) {
+            console.error("Gagal menghapus ulasan");
+        }
+    }
+
+    function starRating() {
+        const ratingOptions = [1, 2, 3, 4, 5];
+
+        return ratingOptions.map((ratingValue) => (
+            <div key={ratingValue} className="flex flex-row items-center mb-2">
+                <input type="radio" name="rating" id={`rating-${ratingValue}`} value={ratingValue} />
+                <label htmlFor={`rating-${ratingValue}`} className="flex flex-row ml-2 cursor-pointer">
+                    <span className="inline-flex items-center text-yellow-400">
+                        {[...Array(5)].map((_, starIndex) => {
+                            if (starIndex < ratingValue) {
+                                return <StarIconSolid key={starIndex} className="size-5" />;
+                            }
+                            return <StarIcon key={starIndex} className="size-5 text-stone-300" />;
+                        })}
+                        
+                    </span>
+                    <span className="ml-2 text-sm text-stone-600 font-medium">
+                        {ratingValue} Bintang
+                    </span>
+                </label>
+            </div>
+        ));
+    }
 
     return (
         <>
@@ -194,7 +268,12 @@ function Product() {
                                         {product?.rating?.map((rating, index) => (
                                             <div key={index} className="flex flex-row gap-2 py-2 px-1.5">
                                                 <div className="flex items-center">
-                                                    <UserCircleIcon className="size-6"></UserCircleIcon>
+                                                    {product?.rating?.[index]?.user?.profilePfp == null ? (
+                                                        <UserCircleIcon className="size-10"></UserCircleIcon>
+                                                    ) : (
+                                                        <img src={`${API_URL}/api/images/users/${product?.rating?.[index]?.user?.profilePfp }`} className='size-10 lg:size-10 border border-zinc-600 rounded-full aspect-square object-cover object-left' />
+                                                    )}
+                                                    
                                                 </div>
                                                 <div>
                                                     <h3 className="text-base font-semibold">{product?.rating?.[index]?.user?.username}</h3>
@@ -205,14 +284,21 @@ function Product() {
                                         ))}
                                     </div>
                                 )}
+                                
                                 {!isLoggedIn || product?.status !== "LOLOS" ? (
                                     <button className="btn-solid mt-4 w-full border-none font-normal cursor-not-allowed bg-zinc-300 text-zinc-500/70 py-2" onClick={(e) => e.preventDefault()}>Barang belum terverifikasi atau anda belum login</button>
                                 ) : (
-                                    <a className="btn w-full mt-4 text-center font-inter">Berikan komentar & rating</a>
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {hasGivenRating?.length < 1 ? setIsModalOpen(true) : handleDeleteRating(decode?.id)}} 
+                                        className={`btn ${hasGivenRating?.length < 1 ? "" : "text-red-500 border-red-400"} w-full mt-4 text-center font-inter cursor-pointer`}
+                                    >
+                                        {hasGivenRating?.length < 1 ? "Berikan komentar & rating" : "Hapus ulasan anda"}
+                                    </button>
                                 )}
                             </div>
                             <hr className="text-stone-200"/>
-                            <form className="font-poppins py-6 flex flex-col gap-4">
+                            <div className="font-poppins py-6 flex flex-col gap-4">
                                 <div className="flex flex-row justify-between items-center">
                                     <p className="font-semibold">Stok: {product.stok > 100 ? "100+" : product.stok}</p>
                                     <div className="flex flex-rowjustify-between items-center px-2 h-8 rounded-sm bg-green-accent">
@@ -229,7 +315,7 @@ function Product() {
                                         }}/>
 
                                         <PlusIcon className="size-8 px-2 stroke-2 cursor-pointer" onClick={(e) => {
-                                            e.preventDefault;
+                                            e.preventDefault();
                                             setQuantity((prev) => Math.min(product.stok, prev + 1));
                                         }}/>
                                     </div>
@@ -259,11 +345,59 @@ function Product() {
                                         </section>
                                     </div>
                                 )}
-                            </form>
+                            </div>
                         </section>
                     </div>
                 </main>
                 <Footer />
+                {isModalOpen && (
+                    <form className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity" onSubmit={ handleRating }>
+                        <input type="hidden" />
+                        <div className="bg-white w-full max-w-lg rounded-xl shadow-xl flex flex-col overflow-auto">
+                            {/* Header Modal */}
+                            <div className="flex justify-between items-center p-5 border-b border-stone-200">
+                                <h3 className="font-medium text-xl font-inter text-stone-800">Beri Penilaian</h3>
+                                <button 
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="text-stone-400 hover:text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-full p-1.5 transition-colors"
+                                    title="Tutup"
+                                >
+                                    <XMarkIcon className="w-5 h-5 stroke-2" />
+                                </button>
+                            </div>
+                            
+                            {/* Isi Modal Kosong */}
+                            <div className="p-6 min-h-[250px] grid grid-cols-1 gap-2 bg-stone-50/50">
+                                <section>
+                                    <h2 className="font-inter font-medium text-lg">Rating secara keseluruhan</h2>
+                                    {starRating()}
+                                </section>
+                                <div>
+                                    <label className="font-inter font-medium text-lg">Komentar</label> <br />
+                                    <textarea className="input-text w-full h-full" name="komentar"></textarea>
+                                </div>
+                            </div>
+
+                            {/* Footer Modal */}
+                            <div className="mt-4 p-5 border-t border-stone-200 flex justify-end gap-3 bg-white">
+                                <button 
+                                    type="button" 
+                                    onClick={() => setIsModalOpen(false)} 
+                                    className="px-5 py-2 font-semibold text-stone-600 bg-white border border-stone-300 rounded-md hover:bg-stone-100 transition-colors"
+                                >
+                                    Batal
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    className="btn-solid px-6 py-2 hover:brightness-95 active:brightness-95"
+                                >
+                                    Kirim Ulasan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                )}
+
             </div>
         </>
     )
