@@ -10,16 +10,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ManageShopPage() {
     const navigate = useNavigate();
-    
-    // State Toko & Produk
+
     const [shop, setShop] = useState(null);
     const [products, setProducts] = useState([]);
-    
-    // State Pesanan Masuk
     const [orders, setOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
 
-    // State UI & Loading Utama
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -28,7 +24,7 @@ export default function ManageShopPage() {
 
         const fetchShopAndProducts = async () => {
             try {
-                // 1. Ambil token dari localStorage
+
                 const token = localStorage.getItem('token');
                 
                 if (!token) {
@@ -39,7 +35,6 @@ export default function ManageShopPage() {
                     return;
                 }
 
-                // 2. Decode token untuk mendapatkan ID User
                 const decodedToken = jwtDecode(token);
                 const userId = decodedToken.id;
 
@@ -50,10 +45,8 @@ export default function ManageShopPage() {
                 setLoading(true);
                 setError(null);
 
-                // 3. Fetch Data Toko menggunakan userId
                 const shopResponse = await findShopDataByUser(userId);
 
-                // Ekstrak data toko dengan aman
                 let extractedShop = null;
                 if (shopResponse?.id) {
                     extractedShop = shopResponse;
@@ -69,10 +62,8 @@ export default function ManageShopPage() {
                     if (extractedShop && extractedShop.id) {
                         setShop(extractedShop);
 
-                        // 4. Fetch Data Produk
                         const productRes = await findProductByShopId(extractedShop.id);
 
-                        // Ekstrak data produk
                         let extractedProducts = [];
                         if (Array.isArray(productRes?.data?.data)) {
                             extractedProducts = productRes.data.data;
@@ -83,12 +74,10 @@ export default function ManageShopPage() {
                         }
                         
                         setProducts(extractedProducts);
-                        
-                        // 5. Fetch Data Pesanan Masuk khusus Toko ini
                         fetchShopOrders(userId);
 
                     } else {
-                        setShop(null); // User belum punya toko
+                        setShop(null); 
                     }
                 }
             } catch (err) {
@@ -104,8 +93,6 @@ export default function ManageShopPage() {
         return () => { isMounted = false; };
     }, [navigate]);
 
-
-    // Fungsi mengambil data pesanan khusus toko ini
     const fetchShopOrders = async (idPenjual) => {
         setLoadingOrders(true);
         try {
@@ -138,7 +125,6 @@ export default function ManageShopPage() {
         }
     };
 
-    // Fungsi utilitas format uang
     const formatRupiah = (angka) => {
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
     };
