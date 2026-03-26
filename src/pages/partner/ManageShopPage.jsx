@@ -126,7 +126,7 @@ export default function ManageShopPage() {
     };
 
     const handleDeleteProduct = async (id) => {
-        if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+        if (window.confirm("Apakah Anda yakin ingin menghapus produk ini? semua hal yang berkaitan dengan produk akan hilang termasuk data transaksi dan markah yang disimpan pengguna.")) {
             try {
                 await deleteProductById(id);
                 setProducts(products.filter(p => p.id !== id));
@@ -363,7 +363,6 @@ export default function ManageShopPage() {
                                 ))}
                             </div>
 
-                            {/* Tampilan Desktop (Table) */}
                             <div className="hidden md:block overflow-x-auto rounded-md">
                                 <table className="w-full text-left border-collapse">
                                     <thead className="bg-stone-50 border-b border-stone-200">
