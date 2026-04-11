@@ -42,8 +42,6 @@ export default function AdminRequests() {
                 body: JSON.stringify({ action })
             });
 
-            console.log(response)
-
             if (response.ok) {
                 alert(`Permintaan berhasil di-${confirmMessage}!`);
                 setRequests(prev => prev.filter(req => req.id !== idRequest));
