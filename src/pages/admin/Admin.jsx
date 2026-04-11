@@ -2,13 +2,15 @@ import { useOutletContext, useNavigate } from "react-router-dom";
 import { findAllUsers, protectedPage, countUsers } from "@/controllers/user.controller";
 import { countProducts } from "@/controllers/product.controller";
 import { useEffect, useState } from "react";
-import { ExclamationTriangleIcon, ShoppingBagIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import { ShoppingBagIcon, UserGroupIcon, InboxArrowDownIcon } from "@heroicons/react/24/outline";
 
 export default function Admin() {
     const [ usersList, setUsersList ] = useState([]);
+    const [ isLoading, setIsLoading ] = useState(true);
     const [ adminAccount, setAdminAccount ] = useState([]);
     const [ usersCount, setUsersCount ] = useState(0);
     const [ userTotal, setUserTotal ] = useState(0);
+    const [requests, setRequests] = useState([]);
     const [ product, setProduct ] = useState(0);
     const [ productTotal, setProductTotal ] = useState(0);
 
@@ -16,6 +18,25 @@ export default function Admin() {
     const navigate = useNavigate();
 
     const privilege = userInfo?.privilege?.[0]?.privilege;
+
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+    const fetchRequests = async () => {
+        try {
+            const response = await fetch(`${API_URL}/api/requests/pending`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            setRequests(data);
+        } catch (error) {
+            console.error("Gagal mengambil data permintaan:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         if (userInfo !== null) {
@@ -31,6 +52,7 @@ export default function Admin() {
             setUsersList(res.data);
         }
         fetchAllAccount();
+        fetchRequests();
     }, [findAllUsers]);
 
     useEffect(() => {
@@ -119,13 +141,13 @@ export default function Admin() {
                 </div>
                 <div className="card border-1 border-zinc-300 h-45 flex flex-col px-6">
                     <div className="flex-3/7 flex items-center justify-between">
-                        <h3 className="font-poppins font-normal text-lg">Jumlah Pengaduan</h3>
+                        <h3 className="font-poppins font-normal text-lg">Jumlah Permintaan</h3>
                         <i className="bg-green-accent p-2 border-1 border-green-main-2 text-green-main-2 rounded-md">
-                            <ExclamationTriangleIcon className="size-7"/>
+                            <InboxArrowDownIcon className="size-7"/>
                         </i>
                     </div>
                     <div className="flex-4/7 flex justify-center flex-col gap-3">
-                        <h2 className="text-5xl">15</h2>
+                        <h2 className="text-5xl">{requests.length}</h2>
                         <p className="flex gap-1">
                             <span className="bg-rose-100 text-rose-400 py-0.5 px-2 rounded-sm text-xs">Belum Dibaca</span>
                         </p>
