@@ -13,7 +13,6 @@ function ProductByCategory() {
 
     useEffect(() => {
         if (queryResults[0] != undefined || queryResults.message != null) {
-            console.log(queryResults)
             navigate('/');
         }
     }, [queryResults]);
