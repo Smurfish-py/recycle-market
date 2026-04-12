@@ -147,7 +147,6 @@ export default function AdminShops() {
                             ))}
                         </div>
 
-                        {/* Tampilan Desktop: Menggunakan Table */}
                         <div className="hidden md:block overflow-x-auto rounded-md">
                             <table className="w-full text-sm text-left text-gray-500 border-collapse">
                                 <thead className="font-poppins text-xs text-gray-700 uppercase bg-gray-50 border-b border-zinc-200 tracking-wider">
