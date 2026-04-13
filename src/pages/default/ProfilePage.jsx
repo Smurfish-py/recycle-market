@@ -75,7 +75,7 @@ export default function ProfilePage() {
                         {user?.profilePfp == null ? (
                             <UserCircleIcon className='size-50 text-green-main-2/80' />
                         ) : (
-                            <img src={`${API_URL}/api/images/users/${user?.profilePfp}`} className='size-20 lg:size-45 border border-zinc-600 rounded-full aspect-square object-cover object-left' />
+                            <img src={`${API_URL}/api/images/users/${user?.profilePfp}`} className='size-20 lg:size-45 border-4 border-green-main-1/70 rounded-full aspect-square object-cover object-center' />
                         )}
                     </div>
                     <div className='w-2/3 px-4 flex flex-col justify-center gap-2 lg:gap-6 lg:px-6 lg:py-4'>
