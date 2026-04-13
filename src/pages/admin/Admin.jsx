@@ -165,7 +165,7 @@ export default function Admin() {
                         [&_th]:px-2 [&_th]:border [&_th]:border-zinc-300
                         [&_td]:px-2 [&_td]:w-fit [&_td]:border  [&_td]:border-zinc-300 
                         ">
-                            <thead className="bg-zinc-300 text-left font-inter">
+                            <thead className="font-poppins text-xs text-gray-700 uppercase bg-gray-50 border-b border-zinc-200 tracking-wider">
                                 <tr>
                                     <th>No</th>
                                     <th>Id</th>
