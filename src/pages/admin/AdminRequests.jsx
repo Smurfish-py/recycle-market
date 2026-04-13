@@ -79,7 +79,7 @@ export default function AdminRequests() {
                             [&_th]:px-4 [&_th]:border [&_th]:border-zinc-300
                             [&_td]:px-4 [&_td]:border [&_td]:border-zinc-300 
                         ">
-                            <thead className="bg-zinc-200 text-left font-poppins text-sm uppercase text-stone-600">
+                            <thead className="font-poppins text-xs text-gray-700 uppercase bg-gray-50 border-b border-zinc-200 tracking-wide">
                                 <tr>
                                     <th className="text-center w-12">No</th>
                                     <th>Pengaju</th>
