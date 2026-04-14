@@ -8,6 +8,9 @@ import placeholder from '@/assets/images/login-illustration.png';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Urutan status pengiriman untuk validasi tombol
+const SHIPPING_STAGES = ['MENUNGGU', 'DIPERSIAPKAN', 'PENGEMASAN', 'PENGANTARAN', 'SAMPAI_TUJUAN'];
+
 export default function ManageShopPage() {
     const navigate = useNavigate();
 
@@ -18,6 +21,10 @@ export default function ManageShopPage() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // State untuk Modal Pengiriman
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
 
     useEffect(() => {
         let isMounted = true;
@@ -101,7 +108,6 @@ export default function ManageShopPage() {
             });
             const allData = await response.json();
             
-            // Filter hanya pesanan di mana idPenjual cocok dengan userId pemilik toko
             const myOrders = allData.filter(order => order.idPenjual === idPenjual);
             setOrders(myOrders);
 
@@ -129,9 +135,42 @@ export default function ManageShopPage() {
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
     };
 
+    const handleOpenModal = (order) => {
+        setSelectedOrder(order);
+        setIsModalOpen(true);
+    };
+
+    const handleUpdateShippingStatus = async (orderId, newStatus) => {
+        try {
+            setOrders(prev => prev.map(o => o.id === orderId ? { ...o, statusPengiriman: newStatus } : o));
+            setSelectedOrder(prev => ({ ...prev, statusPengiriman: newStatus }));
+
+            await fetch(`${API_URL}/api/transaksi/${orderId}/shipping`, {
+                method: 'PATCH', 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                },
+                body: JSON.stringify({ statusPengiriman: newStatus })
+            });
+        } catch (error) {
+            console.error("Gagal update status pengiriman:", error);
+            alert("Terjadi kesalahan saat mengupdate status.");
+        }
+    };
+
+    const formatShippingText = (status) => {
+        switch(status) {
+            case 'DIPERSIAPKAN': return 'Dipersiapkan';
+            case 'PENGEMASAN': return 'Pengemasan';
+            case 'PENGANTARAN': return 'Pengantaran';
+            case 'SAMPAI_TUJUAN': return 'Sampai Tujuan';
+            case 'MENUNGGU':
+            default: return 'Menunggu';
+        }
+    };
 
     // --- RENDER UI STATE ---
-
     if (loading) {
         return (
             <div className="flex justify-center items-center p-10 min-h-[60vh]">
@@ -169,13 +208,79 @@ export default function ManageShopPage() {
         );
     }
 
+    const currentStatusIndex = SHIPPING_STAGES.indexOf(selectedOrder?.statusPengiriman || 'MENUNGGU');
+
+    const shippingSteps = [
+        { id: 'DIPERSIAPKAN', title: 'Dipersiapkan', desc: 'Penjual sedang memproses pesanan.', color: 'amber' },
+        { id: 'PENGEMASAN', title: 'Pengemasan', desc: 'Pesanan sedang dikemas secara aman.', color: 'blue' },
+        { id: 'PENGANTARAN', title: 'Pengantaran', desc: 'Pesanan diserahkan ke kurir.', color: 'purple' },
+        { id: 'SAMPAI_TUJUAN', title: 'Sampai Tujuan', desc: 'Berhasil sampai ke pembeli.', color: 'green' }
+    ];
+
     // --- TAMPILAN UTAMA MANAGE SHOP ---
     return (
-        <div className="space-y-8 pt-16 pb-10 px-4 md:px-12 font-inter max-w-7xl mx-auto">
+        <div className="space-y-8 pt-16 pb-10 px-4 md:px-12 font-inter max-w-7xl mx-auto relative">
             
-            {/* Header Profil Toko dengan Banner dan PFP */}
+            {/* --- MODAL STATUS PENGIRIMAN --- */}
+            {isModalOpen && selectedOrder && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl p-6 md:p-8 relative">
+                        <button 
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute top-4 right-5 text-zinc-400 hover:text-red-500 font-bold text-xl"
+                            title="Tutup Modal"
+                        >
+                            ✕
+                        </button>
+                        <h2 className="text-xl font-bold mb-6 text-zinc-800 font-poppins border-b pb-3">
+                            Status Pengiriman - Pesanan #{selectedOrder.id}
+                        </h2>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                            {shippingSteps.map((step, index) => {
+                                const stepStageIndex = index + 1; 
+                                const isCompleted = currentStatusIndex >= stepStageIndex;
+                                const isNextToClick = currentStatusIndex === stepStageIndex - 1; 
+                                
+                                return (
+                                    <div key={step.id} className={`border rounded-lg p-4 flex flex-col justify-between items-center text-center gap-3 transition-colors ${
+                                        isCompleted ? 'border-green-300 bg-green-50/50' : 
+                                        isNextToClick ? 'border-zinc-300 bg-white shadow-sm' : 
+                                        'border-stone-100 bg-stone-50 opacity-60'
+                                    }`}>
+                                        <div className="flex flex-col items-center">
+                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg mb-2 ${
+                                                isCompleted ? 'bg-green-100 text-green-600' :
+                                                isNextToClick ? `bg-${step.color}-100 text-${step.color}-600` :
+                                                'bg-stone-200 text-stone-400'
+                                            }`}>
+                                                {isCompleted ? '✓' : index + 1}
+                                            </div>
+                                            <h3 className="font-semibold text-sm text-zinc-800">{step.title}</h3>
+                                            <p className="text-xs text-zinc-500 mt-1">{step.desc}</p>
+                                        </div>
+                                        
+                                        <button 
+                                            disabled={!isNextToClick}
+                                            onClick={() => handleUpdateShippingStatus(selectedOrder.id, step.id)}
+                                            className={`mt-2 w-full py-2 rounded text-xs font-bold transition-colors ${
+                                                isCompleted ? 'bg-green-100 text-green-700 cursor-not-allowed' :
+                                                isNextToClick ? 'bg-green-600 hover:bg-green-700 text-white' :
+                                                'bg-stone-200 text-stone-400 cursor-not-allowed'
+                                            }`}
+                                        >
+                                            {isCompleted ? 'Selesai' : isNextToClick ? 'Update Status' : 'Terkunci'}
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
+            
+            {/* Header Profil Toko */}
             <div className="bg-white rounded-lg border border-stone-200 overflow-hidden ">
-                {/* Banner Toko */}
                 <div className="h-32 sm:h-48 w-full bg-stone-300">
                     <img 
                         src={shop?.fileBanner ? `${API_URL}/api/images/users/shop/banner/${shop?.fileBanner}` : placeholder} 
@@ -184,10 +289,8 @@ export default function ManageShopPage() {
                     />
                 </div>
 
-                {/* Info Toko & PFP */}
                 <div className="px-6 pb-6 pt-4 relative flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <div className="flex items-end gap-4 sm:gap-6">
-                        {/* Profile Picture Toko (PFP) */}
                         <div className="relative -mt-16 sm:-mt-20 shrink-0">
                             <img 
                                 src={shop?.filePfp ? `${API_URL}/api/images/users/shop/pfp/${shop?.filePfp}` : placeholder} 
@@ -205,14 +308,12 @@ export default function ManageShopPage() {
                         </div>
                     </div>
 
-                    {/* Badge Status */}
                     <div className="pb-2 sm:pb-4 self-start sm:self-auto">
                         <span className={`inline-flex items-center px-3 py-1.5 ${shop?.shopStatus !== "APPROVE" ? "border-amber-200 bg-amber-50 text-amber-500" : "bg-green-50 text-green-main-2 border-green-200"} rounded text-xs font-bold border tracking-wide uppercase`}>
                             {shop?.shopStatus !== "APPROVE" ? "Belum Terverifikasi" : "Partner Terverifikasi"}
                         </span>
                     </div>
                 </div>
-                {/* Deskripsi untuk mobile */}
                 <p className="text-zinc-500 text-sm px-6 pb-6 sm:hidden">
                     {shop?.deskripsi_toko || shop?.deskripsi || "Belum ada deskripsi toko."}
                 </p>
@@ -298,7 +399,7 @@ export default function ManageShopPage() {
                         <div className="text-center py-10 text-zinc-500 animate-pulse">Memeriksa pesanan baru...</div>
                     ) : orders.length > 0 ? (
                         <>
-                            {/* Tampilan Mobile (Card) */}
+                            {/* Tampilan Mobile */}
                             <div className="md:hidden flex flex-col gap-4">
                                 {orders.map((order) => (
                                     <div key={order.id} className="border border-zinc-200 rounded-lg p-4 bg-zinc-50">
@@ -323,12 +424,11 @@ export default function ManageShopPage() {
                                         
                                         <div className="grid grid-cols-2 gap-2 text-xs text-zinc-600 mb-3">
                                             <div>
-                                                <p className="text-zinc-400">ID Pembeli</p>
-                                                <p className="font-semibold text-stone-700">User #{order.idUser}</p>
+                                                <p className="text-zinc-400">Pembeli</p>
+                                                <p className="font-semibold text-stone-700">{order.nama}</p>
                                             </div>
                                             <div>
                                                 <p className="text-zinc-400">Metode</p>
-                                                {/* TAMBAHAN BARTER DI MOBILE */}
                                                 <span className={`border px-2 py-0.5 rounded-sm text-[10px] font-bold mt-1 inline-block uppercase tracking-wide ${
                                                     order.metode === 'LANGSUNG' ? 'border-green-300 text-green-700 bg-green-50' :
                                                     order.metode === 'BARTER' ? 'border-purple-300 text-purple-700 bg-purple-50' :
@@ -339,16 +439,45 @@ export default function ManageShopPage() {
                                             </div>
                                         </div>
 
-                                        <div className="flex justify-between items-center py-3 rounded  mt-2 ">
+                                        <div className="flex justify-between items-center py-2 border-b border-zinc-100">
+                                            <span className="text-xs text-zinc-500 font-medium">Progres Pengiriman</span>
+                                            <span className="font-bold text-zinc-800 text-[11px] uppercase">
+                                                {order.metode === 'BARTER' ? '-' : formatShippingText(order.statusPengiriman)}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex justify-between items-center py-3 rounded mt-1 border-b border-zinc-200 mb-3">
                                             <span className="text-xs text-zinc-500 font-medium">Total Pembayaran</span>
                                             <span className="font-bold text-green-700 text-sm">
                                                 {formatRupiah(order.harga * order.kuantitas)}
                                             </span>
                                         </div>
+
+                                        {/* Aksi Pengiriman untuk Mobile */}
+                                        <div className="flex justify-end pt-1">
+                                            {order.metode === 'BARTER' ? (
+                                                <a 
+                                                    href={`https://wa.me/${order.noHp ? order.noHp.replace(/^0/, '62') : ''}`} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer" 
+                                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-xs font-bold transition-colors w-full text-center"
+                                                >
+                                                    Hubungi WhatsApp
+                                                </a>
+                                            ) : (
+                                                <button 
+                                                    onClick={() => handleOpenModal(order)}
+                                                    className="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-md text-xs font-bold transition-colors w-full text-center"
+                                                >
+                                                    Update Status
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
 
+                            {/* Tampilan Desktop */}
                             <div className="hidden md:block overflow-x-auto rounded-md">
                                 <table className="w-full text-left border-collapse">
                                     <thead className="bg-stone-50 border-b border-stone-200">
@@ -358,7 +487,9 @@ export default function ManageShopPage() {
                                             <th className="px-4 py-3 text-sm font-semibold text-zinc-600">Pembeli</th>
                                             <th className="px-4 py-3 text-sm font-semibold text-zinc-600 text-center">Metode</th>
                                             <th className="px-4 py-3 text-sm font-semibold text-zinc-600 text-right">Total Tagihan</th>
-                                            <th className="px-4 py-3 text-sm font-semibold text-zinc-600 text-center">Status</th>
+                                            <th className="px-4 py-3 text-sm font-semibold text-zinc-600 text-center">Pembayaran</th>
+                                            <th className="px-4 py-3 text-sm font-semibold text-zinc-600 text-center">Pengiriman</th>
+                                            <th className="px-4 py-3 text-sm font-semibold text-zinc-600 text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody className="text-sm">
@@ -371,9 +502,8 @@ export default function ManageShopPage() {
                                                         hour: '2-digit', minute: '2-digit'
                                                     })}
                                                 </td>
-                                                <td className="px-4 py-3 font-semibold text-stone-700">User #{order.idUser}</td>
+                                                <td className="px-4 py-3 font-semibold text-stone-700">{order.nama}</td>
                                                 <td className="px-4 py-3 text-center">
-                                                    {/* TAMBAHAN BARTER DI DESKTOP */}
                                                     <span className={`border px-2 py-1 rounded-sm text-[10px] font-bold tracking-wide uppercase ${
                                                         order.metode === 'LANGSUNG' ? 'border-green-300 text-green-700 bg-green-50' :
                                                         order.metode === 'BARTER' ? 'border-purple-300 text-purple-700 bg-purple-50' :
@@ -393,6 +523,30 @@ export default function ManageShopPage() {
                                                     }`}>
                                                         {order.status}
                                                     </span>
+                                                </td>
+                                                {/* Status Pengiriman */}
+                                                <td className="px-4 py-3 text-center text-xs font-semibold text-zinc-600 uppercase tracking-wide">
+                                                    {order.metode === 'BARTER' ? '-' : formatShippingText(order.statusPengiriman)}
+                                                </td>
+                                                {/* Kolom Aksi Tombol */}
+                                                <td className="px-4 py-3 text-center">
+                                                    {order.metode === 'BARTER' ? (
+                                                        <a 
+                                                            href={`https://wa.me/${order.noHp ? order.noHp.replace(/^0/, '62') : ''}`} 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer" 
+                                                            className="inline-block bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-[11px] font-bold transition-colors w-full"
+                                                        >
+                                                            WhatsApp
+                                                        </a>
+                                                    ) : (
+                                                        <button 
+                                                            onClick={() => handleOpenModal(order)}
+                                                            className="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1.5 rounded text-[11px] font-bold transition-colors w-full"
+                                                        >
+                                                            Update Status
+                                                        </button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
