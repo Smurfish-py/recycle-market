@@ -271,7 +271,7 @@ function Product() {
                                                     {product?.rating?.[index]?.user?.profilePfp == null ? (
                                                         <UserCircleIcon className="size-10"></UserCircleIcon>
                                                     ) : (
-                                                        <img src={`${API_URL}/api/images/users/${product?.rating?.[index]?.user?.profilePfp }`} className='size-10 lg:size-10 border border-zinc-600 rounded-full aspect-square object-cover object-center' />
+                                                        <img src={`${API_URL}/api/images/users/${product?.rating?.[index]?.user?.profilePfp }`} className='size-10 border border-zinc-600 rounded-full aspect-square object-cover object-center' />
                                                     )}
                                                     
                                                 </div>
