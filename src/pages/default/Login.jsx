@@ -2,12 +2,13 @@ import { EyeIcon, EyeSlashIcon, ExclamationTriangleIcon } from "@heroicons/react
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import illustration from '@/assets/images/login-illustration.png';
-import { handleLogin } from "../../controllers/user.controller";
-import isTokenExpired from "../../service/isTokenExpired";
+import { handleLogin } from "@/controllers/user.controller";
+import isTokenExpired from "@/service/isTokenExpired";
 
 function Login() {
     const [ visible, setVisible] = useState(false);
     const [ errorMsg, setErrorMsg ] = useState('');
+    const [ isLoading, setIsLoading ] = useState(false); // Tambahkan state loading
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
@@ -17,6 +18,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true); // Aktifkan loading saat submit
 
         const email = e.target.email.value;
         const password = e.target.password.value;
@@ -27,9 +29,10 @@ function Login() {
                 localStorage.setItem('token', token);
                 navigate('/');
             }
-            
         } catch (error) {
             setErrorMsg(error);
+        } finally {
+            setIsLoading(false); // Matikan loading setelah proses selesai
         }
     }
 
@@ -79,7 +82,22 @@ function Login() {
 
                                 <div id="button-and-helps">
                                     <a href="" className="text-left text-sm md:text-xs lg:text-sm">Lupa password?</a> <br />
-                                    <button type="submit" className="btn-solid w-full h-10 mt-2 cursor-pointer md:text-sm lg:text-base">SIGN IN</button>
+                                    {/* Tombol dengan efek loading */}
+                                    <button 
+                                        type="submit" 
+                                        disabled={isLoading}
+                                        className="btn-solid w-full h-10 mt-2 flex justify-center items-center cursor-pointer md:text-sm lg:text-base disabled:opacity-70 disabled:cursor-not-allowed"
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Memproses...
+                                            </>
+                                        ) : "SIGN IN"}
+                                    </button>
                                     <p className="font-poppins font-light text-center mt-8 text-sm md:text-[12px] lg:text-sm">
                                         Belum punya akun? 
                                         <span>
