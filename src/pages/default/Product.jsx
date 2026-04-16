@@ -197,7 +197,7 @@ function Product() {
             <div className="relative flex flex-col min-h-screen">
                 <Header customHeader={true} title={"Detail Produk"} />
                 <main className="mt-12 grow md:mt-4">
-                    <div className="md:flex md:flex-row md:px-12 md:py-16 md:gap-24">
+                    <div className="md:flex md:flex-row md:px-12 md:py-16 md:gap-12">
                         <section className="w-full flex flex-col gap-2 select-none md:w-110">
                             <div className="hidden lg:flex flex-row gap-3 font-poppins font-semibold my-3 text-xs pl-3">
                                 <a className="text-stone-400 hover:text-neutral-800" href="/">BERANDA</a>
@@ -267,7 +267,7 @@ function Product() {
                                     <div className="max-h-50 overflow-y-auto divide-y divide-gray-200">
                                         {product?.rating?.map((rating, index) => (
                                             <div key={index} className="flex flex-row gap-2 py-2 px-1.5">
-                                                <div className="flex items-center">
+                                                <div className="flex items-center shrink-0">
                                                     {product?.rating?.[index]?.user?.profilePfp == null ? (
                                                         <UserCircleIcon className="size-10"></UserCircleIcon>
                                                     ) : (
