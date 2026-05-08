@@ -1,5 +1,5 @@
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { findAllUsers, protectedPage, countUsers } from "@/controllers/user.controller";
+import { findAllUsers, countUsers } from "@/controllers/user.controller";
 import { countProducts } from "@/controllers/product.controller";
 import { useEffect, useState } from "react";
 import { ShoppingBagIcon, UserGroupIcon, InboxArrowDownIcon } from "@heroicons/react/24/outline";
@@ -10,7 +10,7 @@ export default function Admin() {
     const [ adminAccount, setAdminAccount ] = useState([]);
     const [ usersCount, setUsersCount ] = useState(0);
     const [ userTotal, setUserTotal ] = useState(0);
-    const [requests, setRequests] = useState([]);
+    const [ requests, setRequests] = useState([]);
     const [ product, setProduct ] = useState(0);
     const [ productTotal, setProductTotal ] = useState(0);
 
@@ -20,6 +20,24 @@ export default function Admin() {
     const privilege = userInfo?.privilege?.[0]?.privilege;
 
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            navigate('/login', { replace: true });
+            return;
+        }
+
+        if (userInfo === null) {
+            return;
+        }
+
+        if (privilege !== "ADMIN") {
+            navigate('/', { replace: true });
+        }
+        
+    }, [userInfo, privilege, navigate]);
 
     const fetchRequests = async () => {
         try {
@@ -39,21 +57,13 @@ export default function Admin() {
     };
 
     useEffect(() => {
-        if (userInfo !== null) {
-            if (privilege !== "ADMIN") {
-                navigate('/');
-            }
-        }
-    }, [userInfo, privilege, navigate]);
-
-    useEffect(() => {
         const fetchAllAccount = async () => {
             const res = await findAllUsers();
             setUsersList(res.data);
         }
         fetchAllAccount();
         fetchRequests();
-    }, [findAllUsers]);
+    }, []);
 
     useEffect(() => {
         const admins = usersList.filter(user => user?.privilege?.[0]?.privilege === "ADMIN");
@@ -72,7 +82,7 @@ export default function Admin() {
             );
         }
         userCount();
-    }, [countUsers]);
+    }, []);
 
     useEffect(() => {
         const productCount = async () => {
@@ -87,22 +97,19 @@ export default function Admin() {
         }
 
         productCount();
-    }, [countProducts]);
+    }, []);
 
-    useEffect(() => {
-        const checkPrivilege = async () => {
-            const checkAllowed = await protectedPage(['ADMIN'], privilege);
-
-            if (!checkAllowed) {
-                navigate('/');
-                return;
-            }
-        };
-
-        if (privilege) {
-            checkPrivilege();
-        }
-    }, [privilege, navigate]);
+    
+    if (userInfo === null || (isLoading && !requests.length)) {
+        return (
+            <div className="w-full h-screen flex justify-center items-center">
+                <div className="flex flex-col items-center gap-3 text-zinc-500 -mt-20">
+                    <div className="w-8 h-8 border-4 border-green-main-2 border-t-transparent rounded-full animate-spin"></div>
+                    <p>Memuat data Admin...</p>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
