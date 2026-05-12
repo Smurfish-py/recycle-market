@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateShop, findShopData } from "@/controllers/shop.controller";
 import { ChevronLeftIcon, CloudArrowUpIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { jwtDecode } from "jwt-decode"; 
 
 import placeholder from '@/assets/images/login-illustration.png';
 
@@ -25,17 +26,35 @@ export default function ShopEdit() {
         const fetchShopData = async (shopId) => {
             try {
                 setLoading(true);
+
+                const token = localStorage.getItem("token"); 
+                
+                if (!token) {
+                    navigate("/login", { replace: true });
+                    return;
+                }
+
                 const res = await findShopData(shopId);
+
+                const decodedToken = jwtDecode(token);
+                const currentUserId = decodedToken.id; 
+
+                if (res.userId !== currentUserId) {
+                    navigate("/login", { replace: true }); 
+                    return;
+                }
+
                 setShop(res);
             } catch (error) {
                 console.error("Gagal mengambil data toko:", error);
+                navigate("/login", { replace: true });
             } finally {
                 setLoading(false);
             }
         }
 
         if (id) fetchShopData(id);
-    }, [id]);
+    }, [id, navigate]);
 
     async function handleFileChangePfp(e) {
         const file = e.target.files[0];
