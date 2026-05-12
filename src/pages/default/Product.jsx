@@ -8,7 +8,8 @@ import { jwtDecode } from "jwt-decode";
 import { UserCircleIcon, BuildingStorefrontIcon, BookmarkIcon as BookmarkOutline, PlusIcon, MinusIcon, XMarkIcon, StarIcon } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkSolid, StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 
-import { findProductId, checkBookmark, removeBookMark, addToBookMark, getRatingByUserId, postRating, deleteRating } from "@/controllers/product.controller";
+// getRatingByUserId dihapus dari import karena kita cek langsung dari state product
+import { findProductId, checkBookmark, removeBookMark, addToBookMark, postRating, deleteRating } from "@/controllers/product.controller";
 import { findShopData } from "@/controllers/shop.controller";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import isTokenExpired from '@/service/isTokenExpired';
@@ -29,7 +30,6 @@ function Product() {
     const [marked, setMarked] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [hasGivenRating, setHasGivenRating] = useState(false);
     
     let productRating = 0;
     let overall;
@@ -61,17 +61,13 @@ function Product() {
         overall = "Luar Biasa Positif";
     }
 
+    // LOGIKA BARU: Mengecek apakah user login sudah berkomentar di produk ini
+    const userHasRated = product?.rating?.some(
+        (ulasan) => ulasan.idUser === decode?.id || ulasan.user?.id === decode?.id
+    );
+
     useEffect(() => {
         if (token != null && !isTokenExpired(token)) setIsLoggedIn(true);
-
-        const fetchUserRating = async (userId) => {
-            try {
-                const response = await getRatingByUserId(userId);
-                setHasGivenRating(response.data);
-            } catch (error) {
-                console.error({error})
-            }
-        }
 
         const fetchShopData = async (shopId) => {
             try {
@@ -107,7 +103,6 @@ function Product() {
         }
 
         fetchData(id);
-        fetchUserRating(decode?.id);
 
         if (decode?.id) {
             checkMarked(decode?.id, id);
@@ -159,7 +154,7 @@ function Product() {
     async function handleDeleteRating(idUser) {
         try {
             if (confirm("Apakah anda yakin ingin menghapus ulasan mengenai produk ini?")) {
-                const res = await deleteRating(idUser);
+                const res = await deleteRating(id, idUser); // Pastikan fungsi deleteRating di controller menerima parameter `id` (produk)
                 if (!res) alert("Gagal menghapus ulasan") 
             }
             window.location.reload();
@@ -251,7 +246,7 @@ function Product() {
                             <hr className="text-stone-200"/>
                             <div className="font-poppins py-6 flex flex-col gap-1">
                                 <h2 className="font-poppins text-3xl font-semibold">Rating: {parseFloat(average.toFixed(2))}<span className="text-xl text-stone-400">/5</span></h2>
-                                <p className="text-xs text-stone-500">{overall} {`(${product?.rating?.length} pengulas)`}</p>
+                                <p className="text-xs text-stone-500">{overall} {`(${product?.rating?.length || 0} pengulas)`}</p>
                             </div>
                             <hr className="text-stone-200"/>
                             <div className="font-poppins py-6 flex flex-col gap-1">
@@ -290,10 +285,10 @@ function Product() {
                                 ) : (
                                     <button 
                                         type="button" 
-                                        onClick={() => {hasGivenRating?.length < 1 ? setIsModalOpen(true) : handleDeleteRating(decode?.id)}} 
-                                        className={`btn ${hasGivenRating?.length < 1 ? "" : "text-red-500 border-red-400"} w-full mt-4 text-center font-inter cursor-pointer`}
+                                        onClick={() => { !userHasRated ? setIsModalOpen(true) : handleDeleteRating(decode?.id) }} 
+                                        className={`btn ${!userHasRated ? "" : "text-red-500 border-red-400"} w-full mt-4 text-center font-inter cursor-pointer`}
                                     >
-                                        {hasGivenRating?.length < 1 ? "Berikan komentar & rating" : "Hapus ulasan anda"}
+                                        {!userHasRated ? "Berikan komentar & rating" : "Hapus ulasan anda"}
                                     </button>
                                 )}
                             </div>
@@ -360,6 +355,7 @@ function Product() {
                                     onClick={() => setIsModalOpen(false)}
                                     className="text-stone-400 hover:text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-full p-1.5 transition-colors"
                                     title="Tutup"
+                                    type="button"
                                 >
                                     <XMarkIcon className="w-5 h-5 stroke-2" />
                                 </button>
