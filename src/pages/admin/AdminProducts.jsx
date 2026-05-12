@@ -14,11 +14,21 @@ export default function AdminProduct() {
     const privilege = userInfo?.privilege?.[0]?.privilege;
 
     useEffect(() => {
-        if (userInfo !== null) {
-            if (privilege !== "ADMIN") {
-                navigate("/");
-            }
+        const token = localStorage.getItem("token");
+        
+        if (!token) {
+            navigate('/login', { replace: true });
+            return;
         }
+
+        if (userInfo === null) {
+            return;
+        }
+
+        if (privilege !== "ADMIN") {
+            navigate('/', { replace: true });
+        }
+        
     }, [userInfo, privilege, navigate]);
 
     const fetchProducts = async () => {
@@ -54,6 +64,17 @@ export default function AdminProduct() {
         product.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.kategori.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    if (userInfo === null) {
+        return (
+            <div className="w-full h-screen flex justify-center items-center">
+                <div className="flex flex-col items-center gap-3 text-zinc-500 -mt-20">
+                    <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p>Memverifikasi akses Admin...</p>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <section className="w-82 md:w-full overflow-auto flex flex-col gap-4">
