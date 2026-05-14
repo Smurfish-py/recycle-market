@@ -4,11 +4,8 @@ import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-
 import { UserCircleIcon, BuildingStorefrontIcon, BookmarkIcon as BookmarkOutline, PlusIcon, MinusIcon, XMarkIcon, StarIcon } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkSolid, StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
-
-// getRatingByUserId dihapus dari import karena kita cek langsung dari state product
 import { findProductId, checkBookmark, removeBookMark, addToBookMark, postRating, deleteRating } from "@/controllers/product.controller";
 import { findShopData } from "@/controllers/shop.controller";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
@@ -154,8 +151,7 @@ function Product() {
     async function handleDeleteRating(idUser) {
         try {
             if (confirm("Apakah anda yakin ingin menghapus ulasan mengenai produk ini?")) {
-                const res = await deleteRating(id, idUser); // Pastikan fungsi deleteRating di controller menerima parameter `id` (produk)
-                if (!res) alert("Gagal menghapus ulasan") 
+                const res = await deleteRating(id, idUser); 
             }
             window.location.reload();
         } catch (error) {
