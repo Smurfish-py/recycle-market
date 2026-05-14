@@ -172,12 +172,13 @@ const postRating = async (idProduct, idUser, data) => {
     }
 }
 
-const deleteRating = async (id) => {
+const deleteRating = async (idProduct, idUser) => {
     try {
-        const res = await axios.delete(`${API_URL}/api/rating/delete/${id}`);
+        const res = await axios.delete(`${API_URL}/api/rating/delete/${idProduct}/${idUser}`);
         return res;
     } catch (error) {
-
+        console.error("Error pada deleteRating:", error);
+        throw error;
     }
 }
 
